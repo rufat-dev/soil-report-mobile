@@ -1,6 +1,7 @@
 import 'package:soilreport/src/features/home/presentation/dashboard_screen/dashboard_screen_controller.dart';
 import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/utils/app_theme.dart';
+import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +11,15 @@ class DashboardStats extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(dashboardScreenControllerProvider);
+    final activeState = ref
+        .read(dashboardScreenControllerProvider.notifier)
+        .effectiveState;
     final l10n = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
+    final isLoading = activeState.checkState.isNullOrLoading;
+    final deviceCount = activeState.devices.length;
+    final groupCount = activeState.groups.length;
+    final statusCatalogCount = activeState.operationStatuses.length;
 
     return Container(
       padding: const EdgeInsets.all(4),
@@ -25,23 +33,29 @@ class DashboardStats extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          _stat(context,
-              icon: Icons.timeline_rounded,
-              iconColor: AppTheme().teal,
-              value: '0',
-              label: l10n.dashboardPagePeriodCount),
+          _stat(
+            context,
+            icon: Icons.devices_other_outlined,
+            iconColor: AppTheme().teal,
+            value: isLoading ? '—' : '$deviceCount',
+            label: l10n.dashboardStatDevicesLabel,
+          ),
           _verticalDivider(context),
-          _stat(context,
-              icon: Icons.description_outlined,
-              iconColor: colorScheme.primary,
-              value: '0',
-              label: l10n.dashboardPagePolicies),
+          _stat(
+            context,
+            icon: Icons.folder_copy_outlined,
+            iconColor: colorScheme.primary,
+            value: isLoading ? '—' : '$groupCount',
+            label: l10n.dashboardStatGroupsLabel,
+          ),
           _verticalDivider(context),
-          _stat(context,
-              icon: Icons.verified_outlined,
-              iconColor: AppTheme().success,
-              value: '0',
-              label: l10n.dashboardPageNoClaimsDaysCount),
+          _stat(
+            context,
+            icon: Icons.assignment_turned_in_outlined,
+            iconColor: AppTheme().success,
+            value: isLoading ? '—' : '$statusCatalogCount',
+            label: l10n.dashboardStatOperationStatusesLabel,
+          ),
         ],
       ),
     );

@@ -2,11 +2,11 @@ import 'package:soilreport/src/core/utils/size_extension.dart';
 import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:soilreport/src/features/alerts/presentation/alerts_screen.dart';
+import 'package:soilreport/src/features/recommendations/presentation/recommendation_screen.dart';
+import 'package:soilreport/src/features/statistics/presentation/statistics_screen.dart';
 import '../dashboard_screen/dashboard_screen.dart';
 import '../dashboard_screen/dashboard_screen_controller.dart';
-import '../statistics/statistics_screen.dart';
-import '../alerts/alerts_screen.dart';
-import '../recommendations/recommendation_screen.dart';
 
 class TabbedScreen extends ConsumerStatefulWidget {
   const TabbedScreen({super.key});
@@ -60,7 +60,9 @@ class _TabbedScreenState extends ConsumerState<TabbedScreen>
           color: colorScheme.surface,
           border: Border(
             top: BorderSide(
-              color: Theme.of(context).dividerTheme.color ?? colorScheme.outlineVariant,
+              color:
+                  Theme.of(context).dividerTheme.color ??
+                  colorScheme.outlineVariant,
               width: 0.5,
             ),
           ),
@@ -122,16 +124,10 @@ class _TabbedScreenState extends ConsumerState<TabbedScreen>
     if (index == 0) {
       lerp = anim.clamp(0, 1);
     } else if (index == _tabController.length - 1) {
-      lerp = ((index - 1) <= anim && anim <= index)
-          ? index - anim
-          : 1.0;
+      lerp = ((index - 1) <= anim && anim <= index) ? index - anim : 1.0;
     } else {
-      final left = (index - 1 <= anim && anim <= index)
-          ? index - anim
-          : 1.0;
-      final right = (index <= anim && anim <= index + 1)
-          ? anim - index
-          : 0.0;
+      final left = (index - 1 <= anim && anim <= index) ? index - anim : 1.0;
+      final right = (index <= anim && anim <= index + 1) ? anim - index : 0.0;
       lerp = left == 1.0 ? right.clamp(0, 1) : left.clamp(0, 1);
     }
 

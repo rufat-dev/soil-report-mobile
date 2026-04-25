@@ -37,6 +37,7 @@ class TextInputWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextAlign textAlign;
   final Color? backgroundColor;
+
   /// Optional widget shown at the end of the field (e.g. Lucide icon via [TextInputLucideIcons.icon]).
   final Widget? trailing;
 
@@ -71,8 +72,11 @@ class TextInputWidget extends StatelessWidget {
           width: 4,
         ),
         borderRadius: BorderRadius.circular(10),
-        color: backgroundColor ??
-            (context.isDarkMode ? AppTheme().surfaceDark900 : colorScheme.surface),
+        color:
+            backgroundColor ??
+            (context.isDarkMode
+                ? AppTheme().surfaceDark900
+                : colorScheme.surface),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: Row(
@@ -104,17 +108,18 @@ class TextInputWidget extends StatelessWidget {
                 disabledBorder: InputBorder.none,
                 hintText: hintText,
                 contentPadding: contentPadding ?? EdgeInsets.zero,
-                hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
+                hintStyle: Theme.of(
+                  context,
+                ).textTheme.bodySmall!.copyWith(fontSize: 14),
               ),
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(fontSize: 14),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall!.copyWith(fontSize: 14),
               onSubmitted: onSubmitted,
               onChanged: onChanged,
             ),
           ),
-          if (trailing != null) ...[
-            const SizedBox(width: 8),
-            trailing!,
-          ],
+          if (trailing != null) ...[const SizedBox(width: 8), trailing!],
         ],
       ),
     );

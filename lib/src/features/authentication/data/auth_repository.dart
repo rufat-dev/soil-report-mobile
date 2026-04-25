@@ -163,6 +163,26 @@ class AuthRepository extends RestService {
     }
   }
 
+  /// Best-effort: registers the device FCM token on the API (BigQuery `users.fcm_token`).
+  Future<void> registerFcmToken(String fcmToken) async {
+    final idToken = _secureStorage.currentScope.accessToken;
+    if (idToken.isNullOrEmpty || fcmToken.trim().isEmpty) {
+      return;
+    }
+    try {
+      await Dio().post<void>(
+        Urls.usersFcmTokenUrl,
+        data: jsonEncode({'fcm_token': fcmToken.trim()}),
+        options: Options(
+          headers: {'Authorization': 'Bearer $idToken'},
+          contentType: 'application/json',
+        ),
+      );
+    } catch (_) {
+      // Token sync is non-fatal; next app launch or refresh will retry.
+    }
+  }
+
   // ════════════════════════════════════════════════════════════════════
   //  Firebase Identity Toolkit: Lookup User
   //  POST identitytoolkit.googleapis.com/v1/accounts:lookup

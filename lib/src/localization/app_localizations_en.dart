@@ -168,6 +168,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardPageViewAllSignDocs => 'View All';
 
   @override
+  String get dashboardStatDevicesLabel => 'Devices';
+
+  @override
+  String get dashboardStatGroupsLabel => 'Groups';
+
+  @override
+  String get dashboardStatOperationStatusesLabel => 'Operation statuses';
+
+  @override
+  String get dashboardDevicesSectionTitle => 'Devices';
+
+  @override
+  String get dashboardDevicesEmptyTitle => 'No devices yet';
+
+  @override
+  String get dashboardDevicesEmptySubtitle =>
+      'Add a purchased device to start receiving soil data.';
+
+  @override
+  String get dashboardDevicesAddButton => 'Add Device';
+
+  @override
+  String get dashboardGroupsSectionTitle => 'Device groups';
+
+  @override
+  String get dashboardGroupsEmptyTitle => 'No groups yet';
+
+  @override
+  String get dashboardGroupsEmptySubtitle =>
+      'Create a group to organize your devices and shared settings.';
+
+  @override
+  String get dashboardGroupsAddButton => 'Add group';
+
+  @override
+  String get addGroupTitle => 'Add group';
+
+  @override
+  String get addGroupNameLabel => 'Group name';
+
+  @override
+  String get addGroupNotesLabel => 'Notes (optional)';
+
+  @override
+  String get addGroupSubmitButton => 'Create group';
+
+  @override
+  String get addGroupSuccessTitle => 'Group created';
+
+  @override
+  String get addGroupSuccessSubtitle => 'Your group was saved successfully.';
+
+  @override
+  String get addGroupErrorTitle => 'Could not create group';
+
+  @override
+  String get addGroupErrorSubtitle => 'Please check the data and try again.';
+
+  @override
+  String get addGroupRequiredField => 'This field is required.';
+
+  @override
+  String get addGroupUngroupedDevicesTitle => 'Devices without a group';
+
+  @override
+  String get addGroupNoUngroupedDevices =>
+      'You have no devices without a group. Add a device or remove one from a group first.';
+
+  @override
   String get tab1Title => 'Statistics';
 
   @override
@@ -188,7 +257,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alertsNoAlerts => 'All clear — no active alerts';
 
   @override
+  String get emptyStatisticsTitle => 'No statistics yet';
+
+  @override
+  String get emptyStatisticsSubtitle =>
+      'Data will appear after your device sends soil readings.';
+
+  @override
+  String get emptyAlertsTitle => 'No alerts yet';
+
+  @override
+  String get emptyAlertsSubtitle =>
+      'Alerts will appear here when your fields need attention.';
+
+  @override
+  String get emptyRecommendationsTitle => 'No recommendations yet';
+
+  @override
+  String get emptyRecommendationsSubtitle =>
+      'Recommendations will appear here after enough data is collected.';
+
+  @override
   String get recommendationsNoItems => 'No recommendations right now';
+
+  @override
+  String get addDeviceTitle => 'Add Device';
+
+  @override
+  String get addDeviceIdLabel => 'Device ID';
+
+  @override
+  String get addDeviceNameLabel => 'Device Name';
+
+  @override
+  String get addDeviceGroupDropdownLabel => 'Device Group';
+
+  @override
+  String get addDeviceGroupNoneOption => 'None';
+
+  @override
+  String get addDevicePlantDropdownLabel => 'Plant Type';
+
+  @override
+  String get addDeviceSoilDropdownLabel => 'Soil Type';
+
+  @override
+  String get addDevicePlantFallbackName => 'Plant';
+
+  @override
+  String get addDeviceSoilFallbackName => 'Soil';
+
+  @override
+  String get addDeviceGroupAutofillInfo =>
+      'Plant and soil types are auto-filled from selected group devices.';
+
+  @override
+  String get addDeviceLocationLabel => 'Location';
+
+  @override
+  String get addDeviceLocationNotSelected => 'No location selected';
+
+  @override
+  String get addDeviceLocationNameLabel => 'Location Name / Notes';
+
+  @override
+  String get addDeviceFirmwareLabel => 'Firmware Version';
+
+  @override
+  String get addDeviceSubmitButton => 'Submit Device';
+
+  @override
+  String get addDeviceSuccessTitle => 'Device added';
+
+  @override
+  String get addDeviceSuccessSubtitle =>
+      'Your device has been linked successfully.';
+
+  @override
+  String get addDeviceErrorTitle => 'Could not add device';
+
+  @override
+  String get addDeviceErrorSubtitle => 'Please check the data and try again.';
+
+  @override
+  String get addDeviceRequiredField => 'This field is required.';
+
+  @override
+  String get addDeviceMapTitle => 'Pick location';
+
+  @override
+  String get addDeviceMapConfirmButton => 'Use this location';
 
   @override
   String get recommendationsMarkApplied => 'Mark Applied';

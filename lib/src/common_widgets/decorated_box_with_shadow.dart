@@ -20,10 +20,7 @@ class DecoratedBoxWithShadow extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
-        child: child,
-      ),
+      child: Padding(padding: const EdgeInsets.all(Sizes.p16), child: child),
     );
   }
 }

@@ -20,9 +20,7 @@ class LucideThemedIcon extends StatelessWidget {
   /// Menu drawer: primary header in light mode, dark surface in dark mode.
   static Color menuDrawerIconTint(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    return context.isDarkMode
-        ? cs.onSurface.withAlpha(242)
-        : cs.onPrimary;
+    return context.isDarkMode ? cs.onSurface.withAlpha(242) : cs.onPrimary;
   }
 
   /// Footer social row — slightly softer than [menuDrawerIconTint].

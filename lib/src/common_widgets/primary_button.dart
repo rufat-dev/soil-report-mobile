@@ -8,8 +8,12 @@ import 'package:soilreport/src/constants/app_sizes.dart';
 /// the text.
 /// @param onPressed - callback to be called when the button is pressed.
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton(
-      {super.key, required this.text, this.isLoading = false, this.onPressed});
+  const PrimaryButton({
+    super.key,
+    required this.text,
+    this.isLoading = false,
+    this.onPressed,
+  });
   final String text;
   final bool isLoading;
   final VoidCallback? onPressed;
@@ -24,10 +28,9 @@ class PrimaryButton extends StatelessWidget {
             : Text(
                 text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: Colors.white),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge!.copyWith(color: Colors.white),
               ),
       ),
     );

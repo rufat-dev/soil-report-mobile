@@ -148,6 +148,31 @@ class RestService{
     }
   }
 
+  Future<void> rawDelete(
+    String url, {
+    Map<String, String>? headers,
+    int recursionCounter = 1,
+  }) async {
+    final finalHeaders = _buildHeaders(headers);
+    try {
+      await (_dio ?? Dio()).delete<dynamic>(
+        url,
+        options: Options(
+          headers: finalHeaders,
+          contentType: 'application/json',
+        ),
+      );
+    } on DioException catch (ex) {
+      await refreshAccess(
+        ex,
+        method: 'DELETE',
+        url: url,
+        headers: headers,
+        recursionCounter: recursionCounter,
+      );
+    }
+  }
+
   Future<Map<String,dynamic>> rawGet(
       String url,
       {Map<String, String>? headers,
@@ -169,6 +194,36 @@ class RestService{
       return await refreshAccess(
         ex,
         method: 'GET',
+        url: url,
+        headers: headers,
+        recursionCounter: recursionCounter,
+      );
+    }
+  }
+
+  /// GET where the JSON root may be a List or a Map (e.g. SoilReportFn `/alerts` returns an array).
+  Future<dynamic> rawGetDynamic(
+    String url, {
+    Map<String, String>? headers,
+    int recursionCounter = 1,
+  }) async {
+    final finalHeaders = _buildHeaders(headers);
+    try {
+      final response = await (_dio ?? Dio()).get<dynamic>(
+        url,
+        options: Options(
+          headers: finalHeaders,
+          contentType: 'application/json',
+        ),
+      );
+      if (response.data != null) {
+        return response.data;
+      }
+      throw ApiIssueException();
+    } on DioException catch (ex) {
+      return await refreshAccess(
+        ex,
+        method: 'GETD',
         url: url,
         headers: headers,
         recursionCounter: recursionCounter,
@@ -375,6 +430,12 @@ class RestService{
           switch (method) {
             case 'GET':
               return await rawGet(url, headers: headers, recursionCounter: ++recursionCounter);
+            case 'GETD':
+              return await rawGetDynamic(
+                url,
+                headers: headers,
+                recursionCounter: ++recursionCounter,
+              );
             case 'POST':
               if (payload != null) {
                 return await rawPostWithPayload(url, payload, headers: headers, recursionCounter: ++recursionCounter);
@@ -389,6 +450,7 @@ class RestService{
               if (payload != null) {
                 return await rawDeleteWithPayload(url, payload, headers: headers, recursionCounter: ++recursionCounter);
               }
+              await rawDelete(url, headers: headers, recursionCounter: ++recursionCounter);
               break;
           }
         }

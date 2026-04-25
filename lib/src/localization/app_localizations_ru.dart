@@ -170,6 +170,75 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dashboardPageViewAllSignDocs => 'Показать все';
 
   @override
+  String get dashboardStatDevicesLabel => 'Устройства';
+
+  @override
+  String get dashboardStatGroupsLabel => 'Группы';
+
+  @override
+  String get dashboardStatOperationStatusesLabel => 'Статусы';
+
+  @override
+  String get dashboardDevicesSectionTitle => 'Устройства';
+
+  @override
+  String get dashboardDevicesEmptyTitle => 'Устройств пока нет';
+
+  @override
+  String get dashboardDevicesEmptySubtitle =>
+      'Добавьте купленное устройство, чтобы начать получать данные почвы.';
+
+  @override
+  String get dashboardDevicesAddButton => 'Добавить устройство';
+
+  @override
+  String get dashboardGroupsSectionTitle => 'Группы устройств';
+
+  @override
+  String get dashboardGroupsEmptyTitle => 'Групп пока нет';
+
+  @override
+  String get dashboardGroupsEmptySubtitle =>
+      'Создайте группу, чтобы организовать устройства и общие настройки.';
+
+  @override
+  String get dashboardGroupsAddButton => 'Добавить группу';
+
+  @override
+  String get addGroupTitle => 'Новая группа';
+
+  @override
+  String get addGroupNameLabel => 'Название группы';
+
+  @override
+  String get addGroupNotesLabel => 'Заметки (необязательно)';
+
+  @override
+  String get addGroupSubmitButton => 'Создать группу';
+
+  @override
+  String get addGroupSuccessTitle => 'Группа создана';
+
+  @override
+  String get addGroupSuccessSubtitle => 'Группа успешно сохранена.';
+
+  @override
+  String get addGroupErrorTitle => 'Не удалось создать группу';
+
+  @override
+  String get addGroupErrorSubtitle => 'Проверьте данные и попробуйте снова.';
+
+  @override
+  String get addGroupRequiredField => 'Это поле обязательно.';
+
+  @override
+  String get addGroupUngroupedDevicesTitle => 'Устройства без группы';
+
+  @override
+  String get addGroupNoUngroupedDevices =>
+      'Нет устройств без группы. Добавьте устройство или снимите его с группы.';
+
+  @override
   String get tab1Title => 'Статистика';
 
   @override
@@ -190,7 +259,95 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alertsNoAlerts => 'Всё в порядке — активных оповещений нет';
 
   @override
+  String get emptyStatisticsTitle => 'Пока нет статистики';
+
+  @override
+  String get emptyStatisticsSubtitle =>
+      'Данные появятся после отправки показаний с устройства.';
+
+  @override
+  String get emptyAlertsTitle => 'Пока нет оповещений';
+
+  @override
+  String get emptyAlertsSubtitle =>
+      'Оповещения появятся здесь, когда полям потребуется внимание.';
+
+  @override
+  String get emptyRecommendationsTitle => 'Пока нет рекомендаций';
+
+  @override
+  String get emptyRecommendationsSubtitle =>
+      'Рекомендации появятся здесь после накопления достаточного объема данных.';
+
+  @override
   String get recommendationsNoItems => 'Сейчас рекомендаций нет';
+
+  @override
+  String get addDeviceTitle => 'Добавить устройство';
+
+  @override
+  String get addDeviceIdLabel => 'ID устройства';
+
+  @override
+  String get addDeviceNameLabel => 'Название устройства';
+
+  @override
+  String get addDeviceGroupDropdownLabel => 'Группа устройств';
+
+  @override
+  String get addDeviceGroupNoneOption => 'Нет';
+
+  @override
+  String get addDevicePlantDropdownLabel => 'Тип растения';
+
+  @override
+  String get addDeviceSoilDropdownLabel => 'Тип почвы';
+
+  @override
+  String get addDevicePlantFallbackName => 'Растение';
+
+  @override
+  String get addDeviceSoilFallbackName => 'Почва';
+
+  @override
+  String get addDeviceGroupAutofillInfo =>
+      'Тип растения и почвы будет подставлен из устройств выбранной группы.';
+
+  @override
+  String get addDeviceLocationLabel => 'Локация';
+
+  @override
+  String get addDeviceLocationNotSelected => 'Локация не выбрана';
+
+  @override
+  String get addDeviceLocationNameLabel => 'Название / заметка о локации';
+
+  @override
+  String get addDeviceFirmwareLabel => 'Версия прошивки';
+
+  @override
+  String get addDeviceSubmitButton => 'Сохранить устройство';
+
+  @override
+  String get addDeviceSuccessTitle => 'Устройство добавлено';
+
+  @override
+  String get addDeviceSuccessSubtitle => 'Устройство успешно привязано.';
+
+  @override
+  String get addDeviceErrorTitle => 'Не удалось добавить устройство';
+
+  @override
+  String get addDeviceErrorSubtitle => 'Проверьте данные и попробуйте снова.';
+
+  @override
+  String get addDeviceRequiredField => 'Это поле обязательно.';
+
+  @override
+  String get addDeviceMapTitle => 'Выбор локации';
+
+  @override
+  String get addDeviceMapConfirmButton => 'Использовать эту локацию';
 
   @override
   String get recommendationsMarkApplied => 'Применить';

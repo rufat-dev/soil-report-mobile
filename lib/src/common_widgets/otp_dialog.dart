@@ -79,18 +79,20 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              widget.isEmailVerifyOtp ? 'Email Verification' : 'Phone Verification',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              widget.isEmailVerifyOtp
+                  ? 'Email Verification'
+                  : 'Phone Verification',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Text(
               widget.isEmailVerifyOtp ? widget.email : widget.phoneNumber,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -108,9 +110,9 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
                 keyboardType: TextInputType.number,
                 maxLength: 6,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      letterSpacing: 10,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineMedium?.copyWith(letterSpacing: 10),
                 decoration: InputDecoration(
                   hintText: '------',
                   border: OutlineInputBorder(
@@ -145,7 +147,10 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
                 ),
                 child: Text(
                   widget.isEmailVerifyOtp ? 'Resend Email' : 'Resend SMS',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

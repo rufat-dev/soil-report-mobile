@@ -287,7 +287,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         ref.read(notificationsControllerProvider.notifier);
 
     return Dismissible(
-      key: Key('notification_${notification.id}'),
+      key: Key('notification_${notification.id ?? 'unknown'}'),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
@@ -302,7 +302,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      onDismissed: (_) => controller.deleteMessage(notification.id!),
+      onDismissed: (_) => controller.deleteMessage(notification.id),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10.0),
         child: GestureDetector(
@@ -490,7 +490,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         ),
       ],
     );
-    await controller.closeNotification(notification.id!);
+    await controller.closeNotification(notification.id);
   }
 
   Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
@@ -544,20 +544,4 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     }
     return 'Just now';
   }
-}
-
-class _CurvedHeaderClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..lineTo(0, size.height * 0.75)
-      ..quadraticBezierTo(
-          size.width / 2, size.height * 1.1, size.width, size.height * 0.75)
-      ..lineTo(size.width, 0)
-      ..close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

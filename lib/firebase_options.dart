@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC7OB8-bZn5ApqRr9ONZa320Xy1JXPd93o',
-    appId: '1:778730128171:android:25e39344a54266b416fb6e',
-    messagingSenderId: '778730128171',
-    projectId: 'YOUR_PROJECT_ID',
-    storageBucket: 'YOUR_PROJECT_ID.firebasestorage.app',
+    apiKey: 'AIzaSyB36AiXHSnognOkFd6xYBO7i6mHeH01UW8',
+    appId: '1:1050702560039:android:3ba14504bdaf39cb918702',
+    messagingSenderId: '1050702560039',
+    projectId: 'soil-report-a2ded',
+    storageBucket: 'soil-report-a2ded.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAA5jaxGicWOPCXC-6BpqE4XUTlVBWTnmc',
-    appId: '1:778730128171:ios:0bb34f232b9a25f416fb6e',
-    messagingSenderId: '778730128171',
-    projectId: 'YOUR_PROJECT_ID',
-    storageBucket: 'YOUR_PROJECT_ID.firebasestorage.app',
+    apiKey: 'AIzaSyD1lZaTgW0uOnaATBl38F9HCJSRc_81FkY',
+    appId: '1:1050702560039:ios:c2d2ca55a68190e4918702',
+    messagingSenderId: '1050702560039',
+    projectId: 'soil-report-a2ded',
+    storageBucket: 'soil-report-a2ded.firebasestorage.app',
     iosBundleId: 'com.rufatdev.soilreport',
   );
 

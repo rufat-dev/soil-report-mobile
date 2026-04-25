@@ -70,8 +70,10 @@ final Map<String, _L10nGetter> _keyMap = {
 
   // Reset Password
   'ResetPasswordPage.RepeatPassword': (l) => l.resetPasswordPageRepeatPassword,
-  'ResetPasswordPage.ConfirmNewPassword': (l) => l.resetPasswordPageConfirmNewPassword,
-  'ResetPasswordPage.ConfirmPassword': (l) => l.resetPasswordPageConfirmPassword,
+  'ResetPasswordPage.ConfirmNewPassword': (l) =>
+      l.resetPasswordPageConfirmNewPassword,
+  'ResetPasswordPage.ConfirmPassword': (l) =>
+      l.resetPasswordPageConfirmPassword,
 
   // Dashboard
   'DashboardPage.Title': (l) => l.dashboardPageTitle,
@@ -145,11 +147,16 @@ final Map<String, _L10nGetter> _keyMap = {
   'UserAgreement.ConceptSubtitle7': (l) => l.userAgreementConceptSubtitle7,
   'UserAgreement.ConceptSubtitle8': (l) => l.userAgreementConceptSubtitle8,
   'UserAgreement.ConceptSubtitle9': (l) => l.userAgreementConceptSubtitle9,
-  'UserAgreement.GeneralInformationTitle': (l) => l.userAgreementGeneralInformationTitle,
-  'UserAgreement.GeneralInformationSubtitle': (l) => l.userAgreementGeneralInformationSubtitle,
-  'UserAgreement.GeneralInformationOption1': (l) => l.userAgreementGeneralInformationOption1,
-  'UserAgreement.GeneralInformationOption2': (l) => l.userAgreementGeneralInformationOption2,
-  'UserAgreement.GeneralInformationOption3': (l) => l.userAgreementGeneralInformationOption3,
+  'UserAgreement.GeneralInformationTitle': (l) =>
+      l.userAgreementGeneralInformationTitle,
+  'UserAgreement.GeneralInformationSubtitle': (l) =>
+      l.userAgreementGeneralInformationSubtitle,
+  'UserAgreement.GeneralInformationOption1': (l) =>
+      l.userAgreementGeneralInformationOption1,
+  'UserAgreement.GeneralInformationOption2': (l) =>
+      l.userAgreementGeneralInformationOption2,
+  'UserAgreement.GeneralInformationOption3': (l) =>
+      l.userAgreementGeneralInformationOption3,
 
   // Privacy Policy / Security
   'PrivacyPolicy.Subtitle': (l) => l.privacyPolicySubtitle,
@@ -163,9 +170,12 @@ final Map<String, _L10nGetter> _keyMap = {
   'PrivacyPolicy.ConceptSubtitle5': (l) => l.privacyPolicyConceptSubtitle5,
   'PrivacyPolicy.ConceptSubtitle6': (l) => l.privacyPolicyConceptSubtitle6,
   'PrivacyPolicy.ObligationTitle': (l) => l.privacyPolicyObligationTitle,
-  'PrivacyPolicy.ObligationSubtitle1': (l) => l.privacyPolicyObligationSubtitle1,
-  'PrivacyPolicy.ObligationSubtitle2': (l) => l.privacyPolicyObligationSubtitle2,
-  'PrivacyPolicy.ObligationSubtitle3': (l) => l.privacyPolicyObligationSubtitle3,
+  'PrivacyPolicy.ObligationSubtitle1': (l) =>
+      l.privacyPolicyObligationSubtitle1,
+  'PrivacyPolicy.ObligationSubtitle2': (l) =>
+      l.privacyPolicyObligationSubtitle2,
+  'PrivacyPolicy.ObligationSubtitle3': (l) =>
+      l.privacyPolicyObligationSubtitle3,
 
   // Profile
   'ProfilePage.Title': (l) => l.profilePageTitle,
@@ -181,29 +191,37 @@ final Map<String, _L10nGetter> _keyMap = {
   'Notification.DeleteAllMessage': (l) => l.notificationDeleteAllMessage,
   'Notification.Swipe.Delete': (l) => l.notificationSwipeDelete,
   'Notification.Detail.Close': (l) => l.notificationDetailClose,
-  'Notification.ThereIsNoNotification': (l) => l.notificationThereIsNoNotification,
+  'Notification.ThereIsNoNotification': (l) =>
+      l.notificationThereIsNoNotification,
   'Notifications.Loading': (l) => l.notificationsLoading,
   'Notifications.Error': (l) => l.notificationsError,
 
   // Change Account / Linked Accounts
   'ChangeProfilePage.Title': (l) => l.changeProfilePageTitle,
   'ChangeProfilePage.Empty': (l) => l.changeProfilePageEmpty,
-  'ChangeProfilePage.AddNewAccountButton': (l) => l.changeProfilePageAddNewAccountButton,
+  'ChangeProfilePage.AddNewAccountButton': (l) =>
+      l.changeProfilePageAddNewAccountButton,
   'DeletePopup.SuccessTitle': (l) => l.deletePopupSuccessTitle,
   'DeletePopup.AccountRemoved': (l) => l.deletePopupAccountRemoved,
   'DeletePopup.ConfirmTitle': (l) => l.deletePopupConfirmTitle,
   'DeletePopup.RemoveAccountMessage': (l) => l.deletePopupRemoveAccountMessage,
-  'DeletePopup.RemoveAccountAddedMeMessage': (l) => l.deletePopupRemoveAccountAddedMeMessage,
+  'DeletePopup.RemoveAccountAddedMeMessage': (l) =>
+      l.deletePopupRemoveAccountAddedMeMessage,
 
   // Linked Account OTP
-  'LinkedAccountOtpPage.VerifyButton': (l) => l.linkedAccountOtpPageVerifyButton,
-  'LinkedAccountOtpPage.PhoneNumberSent': (l) => l.linkedAccountOtpPagePhoneNumberSent,
-  'LinkedAccountOtpPage.EnterSixDigitCode': (l) => l.linkedAccountOtpPageEnterSixDigitCode,
+  'LinkedAccountOtpPage.VerifyButton': (l) =>
+      l.linkedAccountOtpPageVerifyButton,
+  'LinkedAccountOtpPage.PhoneNumberSent': (l) =>
+      l.linkedAccountOtpPagePhoneNumberSent,
+  'LinkedAccountOtpPage.EnterSixDigitCode': (l) =>
+      l.linkedAccountOtpPageEnterSixDigitCode,
 
   // Linked Account Success
   'LinkedAccountSuccessPage.Title': (l) => l.linkedAccountSuccessPageTitle,
-  'LinkedAccountSuccessPage.Subtitle': (l) => l.linkedAccountSuccessPageSubtitle,
-  'LinkedAccountSuccessPage.DoneButton': (l) => l.linkedAccountSuccessPageDoneButton,
+  'LinkedAccountSuccessPage.Subtitle': (l) =>
+      l.linkedAccountSuccessPageSubtitle,
+  'LinkedAccountSuccessPage.DoneButton': (l) =>
+      l.linkedAccountSuccessPageDoneButton,
 
   // Stories
   'StoryPage.SeeMore': (l) => l.storyPageSeeMore,

@@ -1,5 +1,6 @@
 class NotificationModel {
-  final int? id;
+  /// CRM `alert_id` when loaded from the API.
+  final String? id;
   final NotificationContent? notification;
   final bool? seen;
   final DateTime? createdDate;
@@ -12,7 +13,7 @@ class NotificationModel {
   });
 
   NotificationModel copyWith({
-    int? id,
+    String? id,
     NotificationContent? notification,
     bool? seen,
     DateTime? createdDate,

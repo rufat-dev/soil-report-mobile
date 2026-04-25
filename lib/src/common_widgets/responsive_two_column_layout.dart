@@ -30,28 +30,30 @@ class ResponsiveTwoColumnLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= breakpoint) {
-        return Row(
-          mainAxisAlignment: rowMainAxisAlignment,
-          crossAxisAlignment: rowCrossAxisAlignment,
-          children: [
-            Flexible(flex: startFlex, child: startContent),
-            SizedBox(width: spacing),
-            Flexible(flex: endFlex, child: endContent),
-          ],
-        );
-      } else {
-        return Column(
-          mainAxisAlignment: columnMainAxisAlignment,
-          crossAxisAlignment: columnCrossAxisAlignment,
-          children: [
-            startContent,
-            SizedBox(height: spacing),
-            endContent,
-          ],
-        );
-      }
-    });
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= breakpoint) {
+          return Row(
+            mainAxisAlignment: rowMainAxisAlignment,
+            crossAxisAlignment: rowCrossAxisAlignment,
+            children: [
+              Flexible(flex: startFlex, child: startContent),
+              SizedBox(width: spacing),
+              Flexible(flex: endFlex, child: endContent),
+            ],
+          );
+        } else {
+          return Column(
+            mainAxisAlignment: columnMainAxisAlignment,
+            crossAxisAlignment: columnCrossAxisAlignment,
+            children: [
+              startContent,
+              SizedBox(height: spacing),
+              endContent,
+            ],
+          );
+        }
+      },
+    );
   }
 }

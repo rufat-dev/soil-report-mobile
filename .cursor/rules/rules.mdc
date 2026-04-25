@@ -1,0 +1,77 @@
+---
+description: |
+  Flutter project scaffold rules for soil testing kit app.
+  Ensures Cursor always generates fully functional code aligned with architecture, 
+  folder structure, and conventions.
+globs:
+  - "lib/**/*"
+alwaysApply: true
+---
+
+# 📂 Project Structure
+- lib/
+  - core/ → shared utilities, logging, and helpers
+  - data/
+    - models/ → Dart data models with json_annotation + json_serializable
+    - repositories/ → abstractions + implementations for data access
+  - presentation/
+    - screens/ → each screen widget (UI layer)
+    - controllers/ → screen controllers with @riverpod annotations
+  - features/ → feature-specific logic combining presentation + data
+  - routing/ → navigation using GoRouter
+  - localization/ → language support
+  - cache/ → local persistence using Drift
+
+# 📌 Conventions
+- State management: Riverpod with Riverpod codegen (`@riverpod` for controllers).
+- Networking: Dio for API calls.
+- Caching: Drift for persistence.
+- Loading states: Skeletonizer for shimmer/loading animations.
+- Presentation: Each feature has `Screen.dart` + `ScreenController.dart`.
+- Controllers: Contain state/business logic, no UI code.
+- Repositories/services: Abstract classes + implementations, mockable for tests.
+- Enforce clean separation of concerns at all times.
+- Optimize for clarity and maintainability. Avoid over-engineering.
+
+# ✅ Rules for Cursor
+- Generate **fully runnable, compiling Dart/Flutter code**.
+- Respect **existing folder structure** and file conventions.
+- Place new code in the correct directory before generating.
+- Use Riverpod + GoRouter + Drift + Dio consistently.
+- For new features: always create both `Screen` and `ScreenController`.
+- Apply Skeletonizer for loading states where relevant.
+- Favor executable code over explanations or vague recommendations.
+
+# Minimize boilerplate
+- Prefer Riverpod provider overrides for testing over creating interfaces by default.
+- Add interfaces only where they provide clear value (testability/reuse), e.g., shared services like authentication or policies; skip for single-use slices.
+- Centralize networking: expose a single `Dio` via a provider; avoid ad-hoc `Dio()` instantiations.
+- Reuse existing `RestService` and `SecureStorage`; avoid introducing extra layers or patterns without justification.
+- Co-locate interface and implementation when created (same file) to reduce file sprawl.
+- Keep controllers free of UI and widgets free of business logic; don’t add layers just to enforce separation.
+
+# Controller Pattern
+- **CRITICAL**: When using controllers in widgets, ALWAYS follow this pattern in the build method:
+  1. First: `ref.watch(controllerProvider)` to listen for state changes
+  2. Then: `ref.read(controllerProvider.notifier).effectiveState` to access current state
+- This ensures the widget rebuilds when the effective state changes
+- Example:
+  ```dart
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(dashboardScreenControllerProvider);
+    final activeState = ref.read(dashboardScreenControllerProvider.notifier).effectiveState;
+    // ... rest of build method
+  }
+  ```
+- **ABSOLUTE RULE (DO NOT VIOLATE)**: Do not introduce `FutureOr<bool>`, ad-hoc `AsyncNotifier<bool>`, or generic boolean controller states for screen controllers in this project.
+- Controllers must follow the existing project-specific controller/state pattern used in current feature modules (explicit state class, notifier APIs, and `effectiveState` usage).
+- Before creating or refactoring any controller, inspect an existing controller in the same feature and mirror its exact pattern. If there is any ambiguity, stop and ask the user before implementing.
+- Never switch a controller to a different Riverpod pattern without explicit user approval.
+
+# CRITICAL: File Management
+- **NEVER delete existing source code files unless they were created from scratch in the current session**
+- If reverting changes, modify file contents back to original state instead of deleting
+- Only delete files that were created during the current conversation and the user explicitly wants removed
+- When in doubt, ask the user before deleting any files
+- Use git revert/checkout for safe file restoration

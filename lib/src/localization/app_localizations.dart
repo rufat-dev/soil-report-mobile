@@ -400,6 +400,138 @@ abstract class AppLocalizations {
   /// **'View All'**
   String get dashboardPageViewAllSignDocs;
 
+  /// No description provided for @dashboardStatDevicesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices'**
+  String get dashboardStatDevicesLabel;
+
+  /// No description provided for @dashboardStatGroupsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get dashboardStatGroupsLabel;
+
+  /// No description provided for @dashboardStatOperationStatusesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation statuses'**
+  String get dashboardStatOperationStatusesLabel;
+
+  /// No description provided for @dashboardDevicesSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices'**
+  String get dashboardDevicesSectionTitle;
+
+  /// No description provided for @dashboardDevicesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No devices yet'**
+  String get dashboardDevicesEmptyTitle;
+
+  /// No description provided for @dashboardDevicesEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a purchased device to start receiving soil data.'**
+  String get dashboardDevicesEmptySubtitle;
+
+  /// No description provided for @dashboardDevicesAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Device'**
+  String get dashboardDevicesAddButton;
+
+  /// No description provided for @dashboardGroupsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Device groups'**
+  String get dashboardGroupsSectionTitle;
+
+  /// No description provided for @dashboardGroupsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups yet'**
+  String get dashboardGroupsEmptyTitle;
+
+  /// No description provided for @dashboardGroupsEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a group to organize your devices and shared settings.'**
+  String get dashboardGroupsEmptySubtitle;
+
+  /// No description provided for @dashboardGroupsAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add group'**
+  String get dashboardGroupsAddButton;
+
+  /// No description provided for @addGroupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add group'**
+  String get addGroupTitle;
+
+  /// No description provided for @addGroupNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get addGroupNameLabel;
+
+  /// No description provided for @addGroupNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get addGroupNotesLabel;
+
+  /// No description provided for @addGroupSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get addGroupSubmitButton;
+
+  /// No description provided for @addGroupSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group created'**
+  String get addGroupSuccessTitle;
+
+  /// No description provided for @addGroupSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your group was saved successfully.'**
+  String get addGroupSuccessSubtitle;
+
+  /// No description provided for @addGroupErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create group'**
+  String get addGroupErrorTitle;
+
+  /// No description provided for @addGroupErrorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check the data and try again.'**
+  String get addGroupErrorSubtitle;
+
+  /// No description provided for @addGroupRequiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get addGroupRequiredField;
+
+  /// No description provided for @addGroupUngroupedDevicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Devices without a group'**
+  String get addGroupUngroupedDevicesTitle;
+
+  /// No description provided for @addGroupNoUngroupedDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no devices without a group. Add a device or remove one from a group first.'**
+  String get addGroupNoUngroupedDevices;
+
   /// No description provided for @tab1Title.
   ///
   /// In en, this message translates to:
@@ -436,11 +568,179 @@ abstract class AppLocalizations {
   /// **'All clear — no active alerts'**
   String get alertsNoAlerts;
 
+  /// No description provided for @emptyStatisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No statistics yet'**
+  String get emptyStatisticsTitle;
+
+  /// No description provided for @emptyStatisticsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data will appear after your device sends soil readings.'**
+  String get emptyStatisticsSubtitle;
+
+  /// No description provided for @emptyAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No alerts yet'**
+  String get emptyAlertsTitle;
+
+  /// No description provided for @emptyAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts will appear here when your fields need attention.'**
+  String get emptyAlertsSubtitle;
+
+  /// No description provided for @emptyRecommendationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommendations yet'**
+  String get emptyRecommendationsTitle;
+
+  /// No description provided for @emptyRecommendationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations will appear here after enough data is collected.'**
+  String get emptyRecommendationsSubtitle;
+
   /// No description provided for @recommendationsNoItems.
   ///
   /// In en, this message translates to:
   /// **'No recommendations right now'**
   String get recommendationsNoItems;
+
+  /// No description provided for @addDeviceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Device'**
+  String get addDeviceTitle;
+
+  /// No description provided for @addDeviceIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Device ID'**
+  String get addDeviceIdLabel;
+
+  /// No description provided for @addDeviceNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Device Name'**
+  String get addDeviceNameLabel;
+
+  /// No description provided for @addDeviceGroupDropdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Device Group'**
+  String get addDeviceGroupDropdownLabel;
+
+  /// No description provided for @addDeviceGroupNoneOption.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get addDeviceGroupNoneOption;
+
+  /// No description provided for @addDevicePlantDropdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant Type'**
+  String get addDevicePlantDropdownLabel;
+
+  /// No description provided for @addDeviceSoilDropdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Soil Type'**
+  String get addDeviceSoilDropdownLabel;
+
+  /// No description provided for @addDevicePlantFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant'**
+  String get addDevicePlantFallbackName;
+
+  /// No description provided for @addDeviceSoilFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'Soil'**
+  String get addDeviceSoilFallbackName;
+
+  /// No description provided for @addDeviceGroupAutofillInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant and soil types are auto-filled from selected group devices.'**
+  String get addDeviceGroupAutofillInfo;
+
+  /// No description provided for @addDeviceLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get addDeviceLocationLabel;
+
+  /// No description provided for @addDeviceLocationNotSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No location selected'**
+  String get addDeviceLocationNotSelected;
+
+  /// No description provided for @addDeviceLocationNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Name / Notes'**
+  String get addDeviceLocationNameLabel;
+
+  /// No description provided for @addDeviceFirmwareLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Firmware Version'**
+  String get addDeviceFirmwareLabel;
+
+  /// No description provided for @addDeviceSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Device'**
+  String get addDeviceSubmitButton;
+
+  /// No description provided for @addDeviceSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Device added'**
+  String get addDeviceSuccessTitle;
+
+  /// No description provided for @addDeviceSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your device has been linked successfully.'**
+  String get addDeviceSuccessSubtitle;
+
+  /// No description provided for @addDeviceErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add device'**
+  String get addDeviceErrorTitle;
+
+  /// No description provided for @addDeviceErrorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check the data and try again.'**
+  String get addDeviceErrorSubtitle;
+
+  /// No description provided for @addDeviceRequiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get addDeviceRequiredField;
+
+  /// No description provided for @addDeviceMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick location'**
+  String get addDeviceMapTitle;
+
+  /// No description provided for @addDeviceMapConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location'**
+  String get addDeviceMapConfirmButton;
 
   /// No description provided for @recommendationsMarkApplied.
   ///

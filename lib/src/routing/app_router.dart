@@ -7,6 +7,8 @@ import 'package:soilreport/src/features/authentication/presentation/passcode/pas
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/change_account_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/linked_account_otp_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/linked_account_success_screen.dart';
+import 'package:soilreport/src/features/home/presentation/device_add/add_device_screen.dart';
+import 'package:soilreport/src/features/home/presentation/group_add/add_group_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/conditions_and_terms_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/menu_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/offers_screen.dart';
@@ -45,6 +47,8 @@ enum AppRoute {
   linkedAccountOtp,
   linkedAccountSuccess,
   authAlert,
+  addDevice,
+  addGroup,
 }
 
 @Riverpod(keepAlive: true)
@@ -53,8 +57,7 @@ GoRouter goRouter(Ref ref) {
   return GoRouter(
     initialLocation: '/loading',
     debugLogDiagnostics: false,
-    refreshListenable:
-        GoRouterRefreshStream(authRepository.authStateChanges()),
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     redirect: (context, state) {
       final isLoggedIn = authRepository.currentUser != null;
       final path = state.uri.path;
@@ -75,8 +78,9 @@ GoRouter goRouter(Ref ref) {
         name: AppRoute.loading.name,
         builder: (context, state) => const LoadingPage(),
         redirect: (context, state) {
-          final connectivityStatus =
-              ref.read(connectivityServiceProvider).connectivityStatus;
+          final connectivityStatus = ref
+              .read(connectivityServiceProvider)
+              .connectivityStatus;
           switch (connectivityStatus) {
             case ConnectivityStatus.hasServerConnection:
               break;
@@ -183,8 +187,8 @@ GoRouter goRouter(Ref ref) {
                     );
                   }
                   throw SystemErrorException(
-                      sysMessage:
-                          'linked account otp params do not exist');
+                    sysMessage: 'linked account otp params do not exist',
+                  );
                 },
               ),
               GoRoute(
@@ -201,8 +205,8 @@ GoRouter goRouter(Ref ref) {
                     );
                   }
                   throw SystemErrorException(
-                      sysMessage:
-                          'linked account success params do not exist');
+                    sysMessage: 'linked account success params do not exist',
+                  );
                 },
               ),
               GoRoute(
@@ -226,6 +230,16 @@ GoRouter goRouter(Ref ref) {
             path: '/profile',
             name: AppRoute.profile.name,
             builder: (context, state) => const ProfileScreen(),
+          ),
+          GoRoute(
+            path: '/addDevice',
+            name: AppRoute.addDevice.name,
+            builder: (context, state) => const AddDeviceScreen(),
+          ),
+          GoRoute(
+            path: '/addGroup',
+            name: AppRoute.addGroup.name,
+            builder: (context, state) => const AddGroupScreen(),
           ),
         ],
       ),

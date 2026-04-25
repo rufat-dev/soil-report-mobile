@@ -18,8 +18,12 @@ FirebaseService firebaseService(Ref ref) {
 @Riverpod()
 Future<void> firebaseServiceInitializer(Ref ref) async {
   final pin = ref.read(authStateChangesProvider).value?.pin;
+  final auth = ref.read(authRepositoryProvider);
   try {
-    await ref.read(firebaseServiceProvider).init(pin);
+    await ref.read(firebaseServiceProvider).init(
+          pin,
+          onFcmTokenRegistered: auth.registerFcmToken,
+        );
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -32,18 +36,22 @@ class FirebaseService{
   StreamSubscription<String>? _tokenRefreshSubscription;
   bool _topicsSubscribed = false;
   String? _currentPin;
+  Future<void> Function(String token)? _onFcmTokenRegistered;
 
-  Future<void> init(String? pin) async {
+  Future<void> init(
+    String? pin, {
+    Future<void> Function(String token)? onFcmTokenRegistered,
+  }) async {
     _currentPin = pin;
+    _onFcmTokenRegistered = onFcmTokenRegistered;
     try{
       await FirebaseMessaging.instance.setAutoInitEnabled(true);
       await _requestNotificationPermissions();
       await _setForegroundPresentationOptions();
       await _registerTokenRefreshListener();
       await _postCurrentDeviceInfo();
-    } catch (ex){
-      final a = ex.toString();
-      final b = a;
+    } catch (ex) {
+      debugPrint(ex.toString());
     }
   }
 
@@ -56,8 +64,9 @@ class FirebaseService{
           token: fcmToken,
         );
         if (notificationModel != null) {
-          debugPrint('FirebaseService: device token refreshed (registration no-op)');
+          debugPrint('FirebaseService: device token refreshed');
           await _subscribeToTopicsOnce();
+          await _onFcmTokenRegistered?.call(fcmToken);
         }
       },
     );
@@ -106,7 +115,11 @@ class FirebaseService{
         token: fcmToken,
       );
       if (initialModel != null) {
-        debugPrint('FirebaseService: posting device info (registration no-op)');
+        debugPrint('FirebaseService: FCM token obtained');
+        final t = initialModel.token;
+        if (t != null && t.isNotEmpty) {
+          await _onFcmTokenRegistered?.call(t);
+        }
       }
     } catch (e) {
       debugPrint(e.toString());

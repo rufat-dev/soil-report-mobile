@@ -15,8 +15,9 @@ class LocalizationRepository {
   LocalizationRepository(this._ref);
 
   Future<void> setLocale({required String localeCode}) async {
-    _ref.read(localeProvider.notifier).state =
-        AsyncValue.data(Locale(localeCode));
+    _ref.read(localeProvider.notifier).state = AsyncValue.data(
+      Locale(localeCode),
+    );
     try {
       await _ref
           .read(secureStorageProvider)
@@ -26,11 +27,13 @@ class LocalizationRepository {
 
   Future<void> loadSavedLocale() async {
     try {
-      final saved =
-          await _ref.read(secureStorageProvider).readSensitiveData('locale');
+      final saved = await _ref
+          .read(secureStorageProvider)
+          .readSensitiveData('locale');
       if (saved != null && saved.isNotEmpty) {
-        _ref.read(localeProvider.notifier).state =
-            AsyncValue.data(Locale(saved));
+        _ref.read(localeProvider.notifier).state = AsyncValue.data(
+          Locale(saved),
+        );
       }
     } catch (_) {}
   }

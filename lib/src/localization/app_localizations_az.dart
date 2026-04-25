@@ -169,6 +169,75 @@ class AppLocalizationsAz extends AppLocalizations {
   String get dashboardPageViewAllSignDocs => 'Hamısına bax';
 
   @override
+  String get dashboardStatDevicesLabel => 'Cihazlar';
+
+  @override
+  String get dashboardStatGroupsLabel => 'Qruplar';
+
+  @override
+  String get dashboardStatOperationStatusesLabel => 'Statuslar';
+
+  @override
+  String get dashboardDevicesSectionTitle => 'Cihazlar';
+
+  @override
+  String get dashboardDevicesEmptyTitle => 'Hələ cihaz yoxdur';
+
+  @override
+  String get dashboardDevicesEmptySubtitle =>
+      'Torpaq məlumatlarını görmək üçün aldığınız cihazı əlavə edin.';
+
+  @override
+  String get dashboardDevicesAddButton => 'Cihaz əlavə et';
+
+  @override
+  String get dashboardGroupsSectionTitle => 'Cihaz qrupları';
+
+  @override
+  String get dashboardGroupsEmptyTitle => 'Hələ qrup yoxdur';
+
+  @override
+  String get dashboardGroupsEmptySubtitle =>
+      'Cihazları və ümumi tənzimləmələri təşkil etmək üçün qrup yaradın.';
+
+  @override
+  String get dashboardGroupsAddButton => 'Qrup əlavə et';
+
+  @override
+  String get addGroupTitle => 'Qrup əlavə et';
+
+  @override
+  String get addGroupNameLabel => 'Qrup adı';
+
+  @override
+  String get addGroupNotesLabel => 'Qeydlər (istəyə bağlı)';
+
+  @override
+  String get addGroupSubmitButton => 'Qrup yarat';
+
+  @override
+  String get addGroupSuccessTitle => 'Qrup yaradıldı';
+
+  @override
+  String get addGroupSuccessSubtitle => 'Qrup uğurla saxlanıldı.';
+
+  @override
+  String get addGroupErrorTitle => 'Qrup yaradıla bilmədi';
+
+  @override
+  String get addGroupErrorSubtitle => 'Məlumatları yoxlayıb yenidən cəhd edin.';
+
+  @override
+  String get addGroupRequiredField => 'Bu sahə məcburidir.';
+
+  @override
+  String get addGroupUngroupedDevicesTitle => 'Qrupsuz cihazlar';
+
+  @override
+  String get addGroupNoUngroupedDevices =>
+      'Qrupsuz cihazınız yoxdur. Cihaz əlavə edin və ya birini qrupdan çıxarın.';
+
+  @override
   String get tab1Title => 'Statistika';
 
   @override
@@ -190,7 +259,96 @@ class AppLocalizationsAz extends AppLocalizations {
       'Hər şey qaydasındadır — aktiv xəbərdarlıq yoxdur';
 
   @override
+  String get emptyStatisticsTitle => 'Hələ statistika yoxdur';
+
+  @override
+  String get emptyStatisticsSubtitle =>
+      'Cihaz torpaq oxunuşlarını göndərdikdən sonra məlumat görünəcək.';
+
+  @override
+  String get emptyAlertsTitle => 'Hələ xəbərdarlıq yoxdur';
+
+  @override
+  String get emptyAlertsSubtitle =>
+      'Sahələr diqqət tələb etdikdə xəbərdarlıqlar burada görünəcək.';
+
+  @override
+  String get emptyRecommendationsTitle => 'Hələ tövsiyə yoxdur';
+
+  @override
+  String get emptyRecommendationsSubtitle =>
+      'Kifayət qədər məlumat toplandıqdan sonra tövsiyələr burada görünəcək.';
+
+  @override
   String get recommendationsNoItems => 'Hazırda tövsiyə yoxdur';
+
+  @override
+  String get addDeviceTitle => 'Cihaz əlavə et';
+
+  @override
+  String get addDeviceIdLabel => 'Cihaz ID';
+
+  @override
+  String get addDeviceNameLabel => 'Cihaz adı';
+
+  @override
+  String get addDeviceGroupDropdownLabel => 'Cihaz qrupu';
+
+  @override
+  String get addDeviceGroupNoneOption => 'Yoxdur';
+
+  @override
+  String get addDevicePlantDropdownLabel => 'Bitki növü';
+
+  @override
+  String get addDeviceSoilDropdownLabel => 'Torpaq növü';
+
+  @override
+  String get addDevicePlantFallbackName => 'Bitki';
+
+  @override
+  String get addDeviceSoilFallbackName => 'Torpaq';
+
+  @override
+  String get addDeviceGroupAutofillInfo =>
+      'Bitki və torpaq növü seçilmiş qrupdakı cihazdan avtomatik doldurulur.';
+
+  @override
+  String get addDeviceLocationLabel => 'Məkan';
+
+  @override
+  String get addDeviceLocationNotSelected => 'Məkan seçilməyib';
+
+  @override
+  String get addDeviceLocationNameLabel => 'Məkan adı / qeydi';
+
+  @override
+  String get addDeviceFirmwareLabel => 'Firmware versiyası';
+
+  @override
+  String get addDeviceSubmitButton => 'Cihazı göndər';
+
+  @override
+  String get addDeviceSuccessTitle => 'Cihaz əlavə edildi';
+
+  @override
+  String get addDeviceSuccessSubtitle => 'Cihaz uğurla hesabınıza bağlandı.';
+
+  @override
+  String get addDeviceErrorTitle => 'Cihaz əlavə edilə bilmədi';
+
+  @override
+  String get addDeviceErrorSubtitle =>
+      'Məlumatları yoxlayıb yenidən cəhd edin.';
+
+  @override
+  String get addDeviceRequiredField => 'Bu sahə məcburidir.';
+
+  @override
+  String get addDeviceMapTitle => 'Məkan seçimi';
+
+  @override
+  String get addDeviceMapConfirmButton => 'Bu məkanı istifadə et';
 
   @override
   String get recommendationsMarkApplied => 'Tətbiq et';

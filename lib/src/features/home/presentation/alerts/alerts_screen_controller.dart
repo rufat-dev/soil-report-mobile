@@ -37,14 +37,14 @@ class AlertsScreenController extends _$AlertsScreenController
     );
   }
 
-  Future<void> markAsRead(int id) async {
+  Future<void> markAsRead(String id) async {
     final updated = state.alerts
         .map((a) => a.id == id ? a.copyWith(isRead: true) : a)
         .toList();
     state = state.copyWith(alerts: updated);
   }
 
-  Future<void> dismissAlert(int id) async {
+  Future<void> dismissAlert(String id) async {
     final updated = state.alerts.where((a) => a.id != id).toList();
     state = state.copyWith(alerts: updated);
   }
@@ -71,7 +71,7 @@ class AlertsScreenState extends BaseState {
 
 final _mockAlerts = [
   SoilAlertModel(
-    id: 1,
+    id: 'mock-1',
     title: 'Low Soil Moisture',
     description: 'Moisture in Field A – North has dropped below 20%. Irrigation recommended.',
     severity: SoilAlertSeverity.critical,
@@ -79,7 +79,7 @@ final _mockAlerts = [
     createdAt: DateTime.now().subtract(const Duration(hours: 3)),
   ),
   SoilAlertModel(
-    id: 2,
+    id: 'mock-2',
     title: 'pH Level Rising',
     description: 'pH in Greenhouse Plot reached 7.8. Consider adding sulfur-based amendments.',
     severity: SoilAlertSeverity.warning,
@@ -87,7 +87,7 @@ final _mockAlerts = [
     createdAt: DateTime.now().subtract(const Duration(hours: 12)),
   ),
   SoilAlertModel(
-    id: 3,
+    id: 'mock-3',
     title: 'Nitrogen Deficiency Detected',
     description: 'Nitrogen levels in Field B – South are below optimal range (< 30 ppm).',
     severity: SoilAlertSeverity.warning,
@@ -95,7 +95,7 @@ final _mockAlerts = [
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
   ),
   SoilAlertModel(
-    id: 4,
+    id: 'mock-4',
     title: 'New Sample Processed',
     description: 'Lab results for sample #1042 from Field A – North are now available.',
     severity: SoilAlertSeverity.info,
