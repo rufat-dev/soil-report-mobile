@@ -9,9 +9,16 @@ import 'package:soilreport/src/routing/app_router.dart';
 import 'package:soilreport/src/utils/app_theme.dart';
 
 class DashboardGroupsSection extends ConsumerWidget {
-  const DashboardGroupsSection({super.key, required this.groups});
+  const DashboardGroupsSection({
+    super.key,
+    required this.groups,
+    required this.devices,
+    required this.attentionDeviceIds,
+  });
 
   final List<DeviceGroupModel> groups;
+  final List<DashboardDeviceModel> devices;
+  final List<String> attentionDeviceIds;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,6 +96,11 @@ class DashboardGroupsSection extends ConsumerWidget {
     final title = group.groupName?.trim().isNotEmpty == true
         ? group.groupName!
         : group.groupId;
+    final deviceCount = devices.where((d) => d.groupId == group.groupId).length;
+    final attentionCount = devices
+        .where((d) => d.groupId == group.groupId)
+        .where((d) => attentionDeviceIds.contains(d.deviceId))
+        .length;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 10),
@@ -101,9 +113,37 @@ class DashboardGroupsSection extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleSmall),
+          Row(
+            children: [
+              Expanded(child: Text(title, style: Theme.of(context).textTheme.titleSmall)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: colorScheme.primary.withAlpha(18),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  '$deviceCount device${deviceCount == 1 ? '' : 's'}',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 4),
           Text(group.groupId, style: Theme.of(context).textTheme.bodySmall),
+          if (attentionCount > 0) ...[
+            const SizedBox(height: 6),
+            Text(
+              '$attentionCount device${attentionCount == 1 ? '' : 's'} need attention',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppTheme().warning,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ],
           if (group.notes?.trim().isNotEmpty == true) ...[
             const SizedBox(height: 4),
             Text(group.notes!, style: Theme.of(context).textTheme.labelSmall),

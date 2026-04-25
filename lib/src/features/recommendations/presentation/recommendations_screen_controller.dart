@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:soilreport/src/core/data/base_state.dart';
 import 'package:soilreport/src/core/data/mockable_controller_mixin.dart';
+import 'package:soilreport/src/features/home/data/dashboard_devices_repository.dart';
 import 'package:soilreport/src/features/recommendations/data/recommendations_repository.dart';
 import 'package:soilreport/src/features/recommendations/domain/soil_recommendation_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,6 +16,8 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
     return const RecommendationsScreenState(
       checkState: null,
       recommendations: [],
+      forecasts: [],
+      hasLoadError: false,
     );
   }
 
@@ -21,6 +25,8 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
   RecommendationsScreenState get mockState => RecommendationsScreenState(
     checkState: const AsyncValue.data(null),
     recommendations: _mockRecommendations,
+    forecasts: const [],
+    hasLoadError: false,
   );
 
   @override
@@ -28,16 +34,32 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
       const RecommendationsScreenState(
         checkState: AsyncValue.loading(),
         recommendations: [],
+        forecasts: [],
+        hasLoadError: false,
       );
 
   Future<void> loadRecommendations() async {
     state = state.copyWith(checkState: const AsyncValue.loading());
     try {
       final repo = ref.read(recommendationsRepositoryProvider);
+      final devicesRepo = ref.read(dashboardDevicesRepositoryProvider);
+      final devices = await devicesRepo.getDevices();
+      final deviceNameById = {
+        for (final d in devices)
+          d.deviceId: (d.deviceName?.trim().isNotEmpty ?? false)
+              ? d.deviceName!.trim()
+              : d.deviceId,
+      };
       final response = await repo.getRecommendations(limit: 50);
+      final forecasts = await repo.getForecasts(limit: 20);
+      final cutoff = DateTime.now().subtract(const Duration(days: 7));
       final recommendations = <SoilRecommendationModel>[];
       for (var i = 0; i < response.items.length; i++) {
         final row = response.items[i];
+        final recommendationAt = row.insightDate ?? row.createdAt ?? DateTime.now();
+        if (recommendationAt.isBefore(cutoff)) {
+          continue;
+        }
         final rowJson = row.toJson();
         recommendations.add(
           SoilRecommendationModel(
@@ -50,19 +72,33 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
                 : (row.recommendation ?? ''),
             category: _categoryFromRow(rowJson),
             priority: _priorityFromRow(row.priority),
-            siteLabel: row.deviceId ?? 'Unknown device',
-            createdAt: row.createdAt ?? row.insightDate ?? DateTime.now(),
+            siteLabel: _formatDeviceLabel(row.deviceId, deviceNameById),
+            // Use insight_date as the advisory timestamp shown in UI recency labels.
+            createdAt: recommendationAt,
           ),
         );
       }
+      recommendations.sort((a, b) {
+        final byPriority = _priorityRank(a.priority).compareTo(
+          _priorityRank(b.priority),
+        );
+        if (byPriority != 0) return byPriority;
+        return b.createdAt.compareTo(a.createdAt);
+      });
       state = RecommendationsScreenState(
         checkState: const AsyncValue.data(null),
         recommendations: recommendations,
+        forecasts: forecasts,
+        hasLoadError: false,
       );
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('Recommendations load failed: $e');
+      debugPrintStack(stackTrace: st);
       state = RecommendationsScreenState(
         checkState: const AsyncValue.data(null),
-        recommendations: _mockRecommendations,
+        recommendations: const [],
+        forecasts: const [],
+        hasLoadError: true,
       );
     }
   }
@@ -77,6 +113,7 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
   RecommendationPriority _priorityFromRow(String? value) {
     switch (value?.toLowerCase()) {
       case 'high':
+      case 'critical':
         return RecommendationPriority.high;
       case 'low':
         return RecommendationPriority.low;
@@ -101,23 +138,56 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
     if (text.contains('pest')) return RecommendationCategory.pestControl;
     return RecommendationCategory.general;
   }
+
+  int _priorityRank(RecommendationPriority p) {
+    return switch (p) {
+      RecommendationPriority.high => 0,
+      RecommendationPriority.medium => 1,
+      RecommendationPriority.low => 2,
+    };
+  }
+
+  String _formatDeviceLabel(
+    String? deviceId,
+    Map<String, String> deviceNameById,
+  ) {
+    if (deviceId == null || deviceId.isEmpty) return 'Unknown device';
+    final name = deviceNameById[deviceId];
+    if (name == null || name == deviceId) {
+      return 'Device ${_shortDeviceId(deviceId)}';
+    }
+    return '$name (${_shortDeviceId(deviceId)})';
+  }
+
+  String _shortDeviceId(String id) {
+    if (id.length <= 8) return id;
+    return '${id.substring(0, 4)}...${id.substring(id.length - 4)}';
+  }
 }
 
 class RecommendationsScreenState extends BaseState {
   final List<SoilRecommendationModel> recommendations;
+  final List<AiForecastItem> forecasts;
+  final bool hasLoadError;
 
   const RecommendationsScreenState({
     super.checkState,
     required this.recommendations,
+    required this.forecasts,
+    required this.hasLoadError,
   });
 
   RecommendationsScreenState copyWith({
     AsyncValue<String?>? checkState,
     List<SoilRecommendationModel>? recommendations,
+    List<AiForecastItem>? forecasts,
+    bool? hasLoadError,
   }) {
     return RecommendationsScreenState(
       checkState: checkState ?? this.checkState,
       recommendations: recommendations ?? this.recommendations,
+      forecasts: forecasts ?? this.forecasts,
+      hasLoadError: hasLoadError ?? this.hasLoadError,
     );
   }
 }

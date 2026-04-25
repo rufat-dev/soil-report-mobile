@@ -23,4 +23,9 @@ class LoginScreenController extends _$LoginScreenController {
     return authRepository.getAccessTokenByTraditionalLogin(email, password);
   }
 
+  Future<void> sendPasswordReset(String email) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.sendPasswordResetEmail(email);
+  }
+
 }

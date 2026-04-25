@@ -1,6 +1,4 @@
 import 'package:soilreport/src/core/services/connectivity_service.dart';
-import 'package:soilreport/src/core/services/connectivity_service.dart';
-import 'package:soilreport/src/exceptions/app_exception.dart';
 import 'package:soilreport/src/features/authentication/data/auth_repository.dart';
 import 'package:soilreport/src/core/services/firebase_service.dart';
 import 'package:riverpod/riverpod.dart';
@@ -21,10 +19,12 @@ Future<void> appInitializer(Ref ref) async {
     if (hasNetwork != ConnectivityStatus.hasServerConnection) {
       ref.read(authRepositoryProvider);
       ref.read(firebaseServiceProvider);
+      ref.read(firebaseServiceInitializerProvider);
       return;
     }
     await ref.read(authInitializerProvider.future);
     ref.read(authStateChangesProvider);
+    await ref.read(firebaseServiceInitializerProvider.future);
     }  catch (e) {
     return;
   }

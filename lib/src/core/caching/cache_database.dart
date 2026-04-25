@@ -39,7 +39,12 @@ class CacheDatabase extends _$CacheDatabase {
       String key,
       dynamic data,
       ) async {
-    final json = data is Map<String, dynamic> ? jsonEncode(data) : data as String ;
+    final json = switch (data) {
+      Map<String, dynamic>() => jsonEncode(data),
+      List() => jsonEncode(data),
+      String() => data,
+      _ => jsonEncode(data),
+    };
 
     await into(cacheTable).insertOnConflictUpdate(
       CacheTableCompanion(  
@@ -76,8 +81,8 @@ class CacheDatabase extends _$CacheDatabase {
 
       if(cacheData != null) return cacheData;
       return null;
-    }catch (ex){
-      final e = ex;
+    } catch (_) {
+      return null;
     }
   }
   Future<String?> rawRead(

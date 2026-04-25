@@ -129,23 +129,39 @@ class DeviceTimeseriesHourlyResponse {
   Map<String, dynamic> toJson() => _$DeviceTimeseriesHourlyResponseToJson(this);
 }
 
-@JsonSerializable()
 class DeviceTimeseriesPointResponse {
-  @JsonKey(name: 'hour_ts')
   final DateTime? hourTs;
-  @JsonKey(name: 'avg_ph_value')
   final double? avgPhValue;
-  @JsonKey(name: 'avg_moisture')
   final double? avgMoisture;
+  final double? avgConductivity;
 
   const DeviceTimeseriesPointResponse({
     this.hourTs,
     this.avgPhValue,
     this.avgMoisture,
+    this.avgConductivity,
   });
 
-  factory DeviceTimeseriesPointResponse.fromJson(Map<String, dynamic> json) =>
-      _$DeviceTimeseriesPointResponseFromJson(json);
+  factory DeviceTimeseriesPointResponse.fromJson(Map<String, dynamic> json) {
+    return DeviceTimeseriesPointResponse(
+      hourTs: DateTime.tryParse((json['hour_ts'] ?? '').toString()),
+      avgPhValue: _toDouble(json['avg_ph_value']),
+      avgMoisture: _toDouble(json['avg_moisture']),
+      avgConductivity: _toDouble(json['avg_conductivity']),
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$DeviceTimeseriesPointResponseToJson(this);
+  Map<String, dynamic> toJson() => {
+    'hour_ts': hourTs?.toIso8601String(),
+    'avg_ph_value': avgPhValue,
+    'avg_moisture': avgMoisture,
+    'avg_conductivity': avgConductivity,
+  };
+}
+
+double? _toDouble(dynamic raw) {
+  if (raw == null) return null;
+  if (raw is num) return raw.toDouble();
+  if (raw is String) return double.tryParse(raw);
+  return double.tryParse(raw.toString());
 }

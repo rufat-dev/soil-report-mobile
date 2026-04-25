@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1050702560039",
-    "project_id": "soil-report-a2ded",
-    "storage_bucket": "soil-report-a2ded.firebasestorage.app"
+    "project_number": "678290165816",
+    "project_id": "soil-report-486813",
+    "storage_bucket": "soil-report-486813.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1050702560039:android:3ba14504bdaf39cb918702",
+        "mobilesdk_app_id": "1:678290165816:android:1fa72a15b46f0d0b7116cd",
         "android_client_info": {
           "package_name": "com.rufatdev.soilreport"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB36AiXHSnognOkFd6xYBO7i6mHeH01UW8"
+          "current_key": "AIzaSyAH1j2c9JXtzUE3LBtEFOmaxgRB6adHD-U"
         }
       ],
       "services": {

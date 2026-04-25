@@ -93,6 +93,24 @@ class AlertsRepository extends AuthorizedService {
     return data;
   }
 
+  Future<AlertItemResponse?> getAlert(String alertId) async {
+    final data = await rawGetDynamic(
+      '${Urls.mainEndpoint}${Urls.alertsPath}/$alertId',
+      headers: const {'content-type': 'application/json'},
+    );
+    return AlertItemResponse.fromJson(Map<String, dynamic>.from(data as Map));
+  }
+
+  Future<AlertItemResponse?> createAlert(AlertCreateRequest payload) async {
+    final data = await postWithPayload<AlertItemResponse>(
+      '${Urls.mainEndpoint}${Urls.alertsPath}',
+      (json) =>
+          AlertItemResponse.fromJson(Map<String, dynamic>.from(json as Map)),
+      payload.toJson(),
+    );
+    return data;
+  }
+
   Future<void> deleteAlert(String alertId) async {
     final url = '${Urls.mainEndpoint}${Urls.alertsPath}/$alertId';
     await rawDelete(url, headers: const {'content-type': 'application/json'});

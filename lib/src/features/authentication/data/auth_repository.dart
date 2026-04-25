@@ -223,6 +223,26 @@ class AuthRepository extends RestService {
     }
   }
 
+  /// Sends Firebase password reset email via Identity Toolkit `accounts:sendOobCode`.
+  Future<void> sendPasswordResetEmail(String email) async {
+    final normalized = email.trim();
+    if (normalized.isNullOrEmpty) {
+      throw SystemErrorException(sysMessage: 'Email is required');
+    }
+    try {
+      final payload = FirebaseSendOobCodeRequest.resetPassword(normalized);
+      await Dio().post(
+        Urls.firebaseSendOobCodeUrl,
+        data: jsonEncode(payload.toJson()),
+        options: Options(contentType: 'application/json'),
+      );
+    } on DioException catch (ex) {
+      throw SystemErrorException(
+        sysMessage: 'Failed to send password reset email: ${ex.message}',
+      );
+    }
+  }
+
   // ════════════════════════════════════════════════════════════════════
   //  Firebase Secure Token: Refresh ID Token
   //  POST securetoken.googleapis.com/v1/token

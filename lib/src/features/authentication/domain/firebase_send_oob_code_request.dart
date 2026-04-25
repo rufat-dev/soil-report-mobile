@@ -6,15 +6,20 @@ part 'firebase_send_oob_code_request.g.dart';
 @JsonSerializable()
 class FirebaseSendOobCodeRequest {
   final String requestType;
-  final String idToken;
+  final String? idToken;
+  final String? email;
 
   const FirebaseSendOobCodeRequest({
     required this.requestType,
-    required this.idToken,
+    this.idToken,
+    this.email,
   });
 
   factory FirebaseSendOobCodeRequest.verifyEmail(String idToken) =>
       FirebaseSendOobCodeRequest(requestType: 'VERIFY_EMAIL', idToken: idToken);
+
+  factory FirebaseSendOobCodeRequest.resetPassword(String email) =>
+      FirebaseSendOobCodeRequest(requestType: 'PASSWORD_RESET', email: email);
 
   factory FirebaseSendOobCodeRequest.fromJson(Map<String, dynamic> json) =>
       _$FirebaseSendOobCodeRequestFromJson(json);

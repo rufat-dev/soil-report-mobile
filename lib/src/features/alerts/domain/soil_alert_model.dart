@@ -99,3 +99,27 @@ class AlertUpdateRequest {
 
   Map<String, dynamic> toJson() => _$AlertUpdateRequestToJson(this);
 }
+
+class AlertCreateRequest {
+  final String userId;
+  final String title;
+  final String message;
+  final String? deviceId;
+  final String? deviceGroupId;
+
+  const AlertCreateRequest({
+    required this.userId,
+    required this.title,
+    required this.message,
+    this.deviceId,
+    this.deviceGroupId,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'user_id': userId,
+    'title': title,
+    'message': message,
+    if (deviceId != null) 'device_id': deviceId,
+    if (deviceGroupId != null) 'device_group_id': deviceGroupId,
+  };
+}

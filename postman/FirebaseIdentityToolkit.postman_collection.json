@@ -1,0 +1,56 @@
+{
+  "info": {
+    "_postman_id": "62f8d38a-firebase-identity-toolkit-password-reset",
+    "name": "Soil Report — Firebase Identity Toolkit",
+    "description": "Direct Firebase Auth API checks (independent from app/backend). Includes PASSWORD_RESET via accounts:sendOobCode.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "firebaseApiKey",
+      "value": "AIzaSyCICw8mcyYflzAQO-HoFOyJNYtFqW33sHg"
+    },
+    {
+      "key": "testEmail",
+      "value": "YOUR_TEST_EMAIL@example.com"
+    }
+  ],
+  "item": [
+    {
+      "name": "PASSWORD_RESET - sendOobCode",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"requestType\": \"PASSWORD_RESET\",\n  \"email\": \"{{testEmail}}\"\n}"
+        },
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={{firebaseApiKey}}",
+          "protocol": "https",
+          "host": [
+            "identitytoolkit",
+            "googleapis",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "accounts:sendOobCode"
+          ],
+          "query": [
+            {
+              "key": "key",
+              "value": "{{firebaseApiKey}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -23,14 +23,20 @@ class _TabbedScreenState extends ConsumerState<TabbedScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.animation?.addListener(() => setState(() {}));
+    _tabController.addListener(() {
+      setState(() {});
+      ref.read(tabIndexProvider.notifier).state = _tabController.index;
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(dashboardScreenControllerProvider.notifier).loadScreen();
-      _tabController.addListener(() {
-        ref.read(tabIndexProvider.notifier).state = _tabController.index;
-      });
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,22 +122,10 @@ class _TabbedScreenState extends ConsumerState<TabbedScreen>
     required IconData icon,
     required String label,
   }) {
-    final anim = _tabController.animation!.value;
     final primary = Theme.of(context).colorScheme.primary;
     final inactive = Theme.of(context).colorScheme.onSurfaceVariant;
-
-    double lerp;
-    if (index == 0) {
-      lerp = anim.clamp(0, 1);
-    } else if (index == _tabController.length - 1) {
-      lerp = ((index - 1) <= anim && anim <= index) ? index - anim : 1.0;
-    } else {
-      final left = (index - 1 <= anim && anim <= index) ? index - anim : 1.0;
-      final right = (index <= anim && anim <= index + 1) ? anim - index : 0.0;
-      lerp = left == 1.0 ? right.clamp(0, 1) : left.clamp(0, 1);
-    }
-
-    final color = Color.lerp(primary, inactive, lerp)!;
+    final isSelected = _tabController.index == index;
+    final color = isSelected ? primary : inactive;
 
     return Tab(
       height: 56,
@@ -141,7 +135,7 @@ class _TabbedScreenState extends ConsumerState<TabbedScreen>
         label,
         style: TextStyle(
           fontSize: 11,
-          fontWeight: lerp < 0.5 ? FontWeight.w600 : FontWeight.w400,
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
           color: color,
         ),
         maxLines: 1,

@@ -15,14 +15,27 @@ class DashboardHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = ref.watch(authStateChangesProvider).value;
     ref.watch(dashboardScreenControllerProvider);
-    final isRealScope = ref
+    final state = ref
         .read(dashboardScreenControllerProvider.notifier)
-        .effectiveState
-        .isRealScope;
+        .effectiveState;
+    final isRealScope = state.isRealScope;
     final l10n = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
+    final displayName = currentUser?.fullName?.trim().isNotEmpty == true
+        ? currentUser!.fullName!.trim()
+        : (currentUser?.name?.trim().isNotEmpty == true
+            ? currentUser!.name!.trim()
+            : null);
+    final initials = _initialsFromUser(currentUser?.fullName, currentUser?.email);
+    final attentionCount = state.attentionDeviceIds.length;
+    final subtitle = attentionCount > 0
+        ? '$attentionCount device${attentionCount == 1 ? '' : 's'} need attention'
+        : (state.devices.isEmpty
+            ? 'No devices yet - start by adding your first sensor'
+            : '${state.devices.length} device${state.devices.length == 1 ? '' : 's'} monitored');
 
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: isRealScope
@@ -41,9 +54,7 @@ class DashboardHeader extends ConsumerWidget {
             ),
             child: Center(
               child: Text(
-                currentUser?.name?.isNotEmpty == true
-                    ? currentUser!.name!.substring(0, 1).toUpperCase()
-                    : '?',
+                initials,
                 style: TextStyle(
                   color: colorScheme.primary,
                   fontSize: 18,
@@ -57,28 +68,25 @@ class DashboardHeader extends ConsumerWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    l10n.dashboardPageHi,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(width: 5),
-                  Flexible(
-                    child: Text(
-                      '${currentUser?.name ?? ''},',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+              Text(
+                displayName != null
+                    ? '${l10n.dashboardPageHi} $displayName,'
+                    : '${l10n.dashboardPageHi},',
+                style: Theme.of(context).textTheme.headlineMedium,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 2),
               Text(
-                l10n.dashboardPageWelcome,
-                style: Theme.of(context).textTheme.bodySmall,
+                subtitle,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: attentionCount > 0
+                          ? AppTheme().warning
+                          : colorScheme.onSurfaceVariant,
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -86,17 +94,26 @@ class DashboardHeader extends ConsumerWidget {
         const SizedBox(width: 8),
         _buildIconButton(
           context,
-          icon: Icons.notifications_outlined,
-          onTap: () => context.pushNamed(AppRoute.notifications.name),
-        ),
-        const SizedBox(width: 4),
-        _buildIconButton(
-          context,
           icon: Icons.menu_rounded,
           onTap: () => context.pushNamed(AppRoute.menu.name),
         ),
       ],
     );
+  }
+
+  String _initialsFromUser(String? fullName, String? email) {
+    final normalized = (fullName ?? '').trim();
+    if (normalized.isNotEmpty) {
+      final parts = normalized.split(' ').where((p) => p.isNotEmpty).toList();
+      if (parts.length == 1) return parts.first.substring(0, 1).toUpperCase();
+      return '${parts.first.substring(0, 1)}${parts.last.substring(0, 1)}'
+          .toUpperCase();
+    }
+    final mail = (email ?? '').trim();
+    if (mail.isNotEmpty) {
+      return mail.substring(0, 1).toUpperCase();
+    }
+    return '?';
   }
 
   Widget _buildIconButton(BuildContext context,

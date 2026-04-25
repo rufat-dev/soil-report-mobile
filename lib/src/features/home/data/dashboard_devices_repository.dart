@@ -32,10 +32,21 @@ class DashboardDevicesRepository extends AuthorizedService {
         return _parseDevicesList(jsonDecode(cached));
       }
     }
-    final data = await get<dynamic>(url, (json) => json);
+    try{
+      
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
     final devices = _parseDevicesList(data);
-    await cache.write(cacheKey, devices.map((e) => e.toJson()).toList());
+    await cache.write(
+      cacheKey,
+      jsonEncode(devices.map((e) => e.toJson()).toList()),
+    );
     return devices;
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<List<DeviceGroupModel>> getGroups({bool useCache = true}) async {
@@ -50,9 +61,15 @@ class DashboardDevicesRepository extends AuthorizedService {
         return _parseGroupsList(jsonDecode(cached));
       }
     }
-    final data = await get<dynamic>(url, (json) => json);
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
     final groups = _parseGroupsList(data);
-    await cache.write(cacheKey, groups.map((e) => e.toJson()).toList());
+    await cache.write(
+      cacheKey,
+      jsonEncode(groups.map((e) => e.toJson()).toList()),
+    );
     return groups;
   }
 
@@ -68,9 +85,15 @@ class DashboardDevicesRepository extends AuthorizedService {
         return _parsePlantsList(jsonDecode(cached));
       }
     }
-    final data = await get<dynamic>(url, (json) => json);
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
     final plants = _parsePlantsList(data);
-    await cache.write(cacheKey, plants.map((e) => e.toJson()).toList());
+    await cache.write(
+      cacheKey,
+      jsonEncode(plants.map((e) => e.toJson()).toList()),
+    );
     return plants;
   }
 
@@ -86,9 +109,15 @@ class DashboardDevicesRepository extends AuthorizedService {
         return _parseSoilsList(jsonDecode(cached));
       }
     }
-    final data = await get<dynamic>(url, (json) => json);
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
     final soils = _parseSoilsList(data);
-    await cache.write(cacheKey, soils.map((e) => e.toJson()).toList());
+    await cache.write(
+      cacheKey,
+      jsonEncode(soils.map((e) => e.toJson()).toList()),
+    );
     return soils;
   }
 
@@ -106,9 +135,15 @@ class DashboardDevicesRepository extends AuthorizedService {
         return _parseOperationStatusesList(jsonDecode(cached));
       }
     }
-    final data = await get<dynamic>(url, (json) => json);
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
     final statuses = _parseOperationStatusesList(data);
-    await cache.write(cacheKey, statuses.map((e) => e.toJson()).toList());
+    await cache.write(
+      cacheKey,
+      jsonEncode(statuses.map((e) => e.toJson()).toList()),
+    );
     return statuses;
   }
 
@@ -123,6 +158,41 @@ class DashboardDevicesRepository extends AuthorizedService {
     return created;
   }
 
+  Future<DashboardDeviceModel> getDeviceByPathId(String deviceId) async {
+    final url =
+        '${Urls.mainEndpoint}${Urls.devicesPath}/${Uri.encodeComponent(deviceId)}';
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
+    return DashboardDeviceModel.fromJson(Map<String, dynamic>.from(data as Map));
+  }
+
+  Future<DashboardDeviceModel> getDeviceByQueryId(String deviceId) async {
+    final url =
+        '${Urls.mainEndpoint}${Urls.devicePath}?deviceId=${Uri.encodeQueryComponent(deviceId)}';
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
+    return DashboardDeviceModel.fromJson(Map<String, dynamic>.from(data as Map));
+  }
+
+  Future<DashboardDeviceModel> updateDevice(
+    String deviceId,
+    Map<String, dynamic> payload,
+  ) async {
+    final url =
+        '${Urls.mainEndpoint}${Urls.devicesPath}/${Uri.encodeComponent(deviceId)}';
+    final updated = await putWithPayload<DashboardDeviceModel>(
+      url,
+      (json) =>
+          DashboardDeviceModel.fromJson(Map<String, dynamic>.from(json as Map)),
+      payload,
+    );
+    return updated;
+  }
+
   Future<DashboardDeviceModel> createDevice(DeviceCreatePayload payload) async {
     final url = '${Urls.mainEndpoint}${Urls.devicesPath}';
     final created = await postWithPayload<DashboardDeviceModel>(
@@ -132,6 +202,31 @@ class DashboardDevicesRepository extends AuthorizedService {
       payload.toJson(),
     );
     return created;
+  }
+
+  Future<DeviceGroupModel> getGroupById(String groupId) async {
+    final url =
+        '${Urls.mainEndpoint}${Urls.groupsPath}/${Uri.encodeComponent(groupId)}';
+    final data = await rawGetDynamic(
+      url,
+      headers: const {"content-type": "application/json"},
+    );
+    return DeviceGroupModel.fromJson(Map<String, dynamic>.from(data as Map));
+  }
+
+  Future<DeviceGroupModel> updateGroup(
+    String groupId,
+    Map<String, dynamic> payload,
+  ) async {
+    final url =
+        '${Urls.mainEndpoint}${Urls.groupsPath}/${Uri.encodeComponent(groupId)}';
+    final updated = await putWithPayload<DeviceGroupModel>(
+      url,
+      (json) =>
+          DeviceGroupModel.fromJson(Map<String, dynamic>.from(json as Map)),
+      payload,
+    );
+    return updated;
   }
 
   List<DashboardDeviceModel> _parseDevicesList(dynamic response) {

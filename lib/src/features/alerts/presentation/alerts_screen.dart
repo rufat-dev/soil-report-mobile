@@ -84,21 +84,54 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
       SoilAlertSeverity.warning => AppTheme().warning,
       SoilAlertSeverity.info => AppTheme().info,
     };
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: severityColor.withAlpha(60), width: 1),
+    return Dismissible(
+      key: ValueKey(alert.id),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) =>
+          ref.read(alertsScreenControllerProvider.notifier).dismissAlert(alert.id),
+      background: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: AppTheme().error,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(alert.title, style: Theme.of(context).textTheme.titleSmall),
-          const SizedBox(height: 4),
-          Text(alert.description, style: Theme.of(context).textTheme.bodySmall),
-        ],
+      child: GestureDetector(
+        onTap: () {
+          if (!alert.isRead) {
+            ref
+                .read(alertsScreenControllerProvider.notifier)
+                .markAsRead(alert.id);
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppTheme().cardSurface(context),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: alert.isRead
+                  ? Theme.of(context).colorScheme.outlineVariant
+                  : severityColor.withAlpha(60),
+              width: alert.isRead ? 1 : 1.5,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(alert.title, style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 4),
+              Text(
+                alert.description,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

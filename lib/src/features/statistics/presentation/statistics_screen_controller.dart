@@ -15,6 +15,10 @@ class StatisticsScreenController extends _$StatisticsScreenController
       checkState: null,
       stats: [],
       recentSamples: [],
+      hourlyPoints: [],
+      trendPoints: [],
+      anomalyCount: 0,
+      outOfRangeCount: 0,
     );
   }
 
@@ -23,6 +27,10 @@ class StatisticsScreenController extends _$StatisticsScreenController
     checkState: const AsyncValue.data(null),
     stats: _mockStats,
     recentSamples: _mockSamples,
+    hourlyPoints: const [],
+    trendPoints: const [],
+    anomalyCount: 0,
+    outOfRangeCount: 0,
   );
 
   @override
@@ -30,6 +38,10 @@ class StatisticsScreenController extends _$StatisticsScreenController
     checkState: AsyncValue.loading(),
     stats: [],
     recentSamples: [],
+    hourlyPoints: [],
+    trendPoints: [],
+    anomalyCount: 0,
+    outOfRangeCount: 0,
   );
 
   Future<void> loadStatistics() async {
@@ -42,6 +54,10 @@ class StatisticsScreenController extends _$StatisticsScreenController
           checkState: AsyncValue.data(null),
           stats: [],
           recentSamples: [],
+          hourlyPoints: [],
+          trendPoints: [],
+          anomalyCount: 0,
+          outOfRangeCount: 0,
         );
         return;
       }
@@ -52,12 +68,19 @@ class StatisticsScreenController extends _$StatisticsScreenController
           checkState: AsyncValue.data(null),
           stats: [],
           recentSamples: [],
+          hourlyPoints: [],
+          trendPoints: [],
+          anomalyCount: 0,
+          outOfRangeCount: 0,
         );
         return;
       }
 
       final latest = await repo.getDeviceStateLatest(deviceId);
-      final hourly = await repo.getDeviceTimeseriesHourly(deviceId, limit: 12);
+      final hourly = await repo.getDeviceTimeseriesHourly(deviceId, limit: 24 * 35);
+      final trends = await repo.getDeviceTrendsDaily(deviceId, limit: 35);
+      final anomalies = await repo.getDeviceAnomalies(deviceId);
+      final outOfRange = await repo.getOutOfRangeEvents(deviceId, limit: 100);
       final points = hourly?.points ?? const <DeviceTimeseriesPointResponse>[];
 
       final stats = <SoilStatisticModel>[
@@ -119,12 +142,20 @@ class StatisticsScreenController extends _$StatisticsScreenController
         checkState: const AsyncValue.data(null),
         stats: stats,
         recentSamples: recentSamples,
+        hourlyPoints: points,
+        trendPoints: trends?.points ?? const [],
+        anomalyCount: anomalies.length,
+        outOfRangeCount: outOfRange.length,
       );
     } catch (_) {
-      state = StatisticsScreenState(
-        checkState: const AsyncValue.data(null),
-        stats: _mockStats,
-        recentSamples: _mockSamples,
+      state = const StatisticsScreenState(
+        checkState: AsyncValue.data(null),
+        stats: [],
+        recentSamples: [],
+        hourlyPoints: [],
+        trendPoints: [],
+        anomalyCount: 0,
+        outOfRangeCount: 0,
       );
     }
   }
@@ -146,22 +177,38 @@ class StatisticsScreenController extends _$StatisticsScreenController
 class StatisticsScreenState extends BaseState {
   final List<SoilStatisticModel> stats;
   final List<SoilSampleModel> recentSamples;
+  final List<DeviceTimeseriesPointResponse> hourlyPoints;
+  final List<DeviceTrendsDailyPoint> trendPoints;
+  final int anomalyCount;
+  final int outOfRangeCount;
 
   const StatisticsScreenState({
     super.checkState,
     required this.stats,
     required this.recentSamples,
+    required this.hourlyPoints,
+    required this.trendPoints,
+    required this.anomalyCount,
+    required this.outOfRangeCount,
   });
 
   StatisticsScreenState copyWith({
     AsyncValue<String?>? checkState,
     List<SoilStatisticModel>? stats,
     List<SoilSampleModel>? recentSamples,
+    List<DeviceTimeseriesPointResponse>? hourlyPoints,
+    List<DeviceTrendsDailyPoint>? trendPoints,
+    int? anomalyCount,
+    int? outOfRangeCount,
   }) {
     return StatisticsScreenState(
       checkState: checkState ?? this.checkState,
       stats: stats ?? this.stats,
       recentSamples: recentSamples ?? this.recentSamples,
+      hourlyPoints: hourlyPoints ?? this.hourlyPoints,
+      trendPoints: trendPoints ?? this.trendPoints,
+      anomalyCount: anomalyCount ?? this.anomalyCount,
+      outOfRangeCount: outOfRangeCount ?? this.outOfRangeCount,
     );
   }
 }

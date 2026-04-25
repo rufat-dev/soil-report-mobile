@@ -17,13 +17,22 @@ FirebaseService firebaseService(Ref ref) {
 
 @Riverpod()
 Future<void> firebaseServiceInitializer(Ref ref) async {
-  final pin = ref.read(authStateChangesProvider).value?.pin;
   final auth = ref.read(authRepositoryProvider);
+  final service = ref.read(firebaseServiceProvider);
+  final pin = ref.read(authStateChangesProvider).value?.pin;
   try {
-    await ref.read(firebaseServiceProvider).init(
+    await service.init(
           pin,
           onFcmTokenRegistered: auth.registerFcmToken,
         );
+    ref.listen(authStateChangesProvider, (previous, next) {
+      final prevPin = previous?.valueOrNull?.pin;
+      final nextPin = next.valueOrNull?.pin;
+      if (nextPin == prevPin) {
+        return;
+      }
+      unawaited(service.onUserChanged(nextPin));
+    });
   } catch (e) {
     debugPrint(e.toString());
   }
@@ -53,6 +62,16 @@ class FirebaseService{
     } catch (ex) {
       debugPrint(ex.toString());
     }
+  }
+
+  /// Called when authenticated user changes (e.g. right after login).
+  /// Reuses already-initialized messaging and pushes the current token for that user.
+  Future<void> onUserChanged(String? pin) async {
+    _currentPin = pin;
+    if (pin == null || pin.isEmpty) {
+      return;
+    }
+    await _postCurrentDeviceInfo();
   }
 
   Future<void> _registerTokenRefreshListener() async {

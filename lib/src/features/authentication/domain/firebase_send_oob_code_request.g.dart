@@ -10,7 +10,8 @@ FirebaseSendOobCodeRequest _$FirebaseSendOobCodeRequestFromJson(
   Map<String, dynamic> json,
 ) => FirebaseSendOobCodeRequest(
   requestType: json['requestType'] as String,
-  idToken: json['idToken'] as String,
+  idToken: json['idToken'] as String?,
+  email: json['email'] as String?,
 );
 
 Map<String, dynamic> _$FirebaseSendOobCodeRequestToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$FirebaseSendOobCodeRequestToJson(
 ) => <String, dynamic>{
   'requestType': instance.requestType,
   'idToken': instance.idToken,
+  'email': instance.email,
 };
