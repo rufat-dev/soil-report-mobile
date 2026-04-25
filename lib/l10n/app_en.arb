@@ -259,5 +259,161 @@
   "sosTransport": "Transport",
   "sosTravel": "Travel",
   "sosProperty": "Property",
-  "sosCallCenter": "Call Center"
+  "sosCallCenter": "Call Center",
+  "commonGoHome": "Go Home",
+  "notFoundPageMessage": "404 - Page not found!",
+  "authAuthorizationFailedTryAgain": "Authorization failed. Please try again.",
+  "loginEmailLabel": "Email",
+  "loginResetPasswordTitle": "Reset password",
+  "loginEmailRequired": "Email is required",
+  "loginEmailHint": "Email",
+  "loginResetPasswordSend": "Send",
+  "recommendationsHeaderSubtitle": "Prioritized advisory feed showing what needs attention now and what may become risky next.",
+  "recommendationsEmptyStableSubtitle": "No advisory items right now. Your setup looks stable.",
+  "recommendationsNeedsAttentionTitle": "Needs Attention",
+  "recommendationsNeedsAttentionSubtitle": "High-priority items to handle first.",
+  "recommendationsSuggestedActionsTitle": "Suggested Actions",
+  "recommendationsSuggestedActionsSubtitle": "Follow-up checks and optimization recommendations.",
+  "recommendationsForecastOutlookTitle": "Forecast Outlook",
+  "recommendationsForecastOutlookSubtitle": "Predicted conditions and possible risk signals.",
+  "recommendationsDeviceLabel": "Device: {siteLabel}",
+  "@recommendationsDeviceLabel": {
+    "placeholders": {
+      "siteLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsNoForecastHorizon": "No forecast horizon",
+  "recommendationsUnknownDevice": "Unknown device",
+  "recommendationsDeviceShort": "Device {id}",
+  "@recommendationsDeviceShort": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsPredictedMetric": "Predicted metric",
+  "recommendationsCategoryFertilization": "Fertilization",
+  "recommendationsCategoryIrrigation": "Irrigation",
+  "recommendationsCategorySoil": "Soil",
+  "recommendationsCategoryPest": "Pest",
+  "recommendationsCategoryGeneral": "General",
+  "recommendationsRecencyMinutesAgo": "{count}m ago",
+  "@recommendationsRecencyMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyHoursAgo": "{count}h ago",
+  "@recommendationsRecencyHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyDaysAgo": "{count}d ago",
+  "@recommendationsRecencyDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRiskMonitor": "Monitor",
+  "recommendationsRiskWatch": "Watch",
+  "recommendationsRiskRisk": "Risk",
+  "recommendationsRiskStable": "Stable",
+  "recommendationsSummaryUrgent": "{count} urgent",
+  "@recommendationsSummaryUrgent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummarySuggested": "{count} suggested",
+  "@recommendationsSummarySuggested": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummaryForecasts": "{count} forecasts",
+  "@recommendationsSummaryForecasts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsLoadErrorTitle": "Could not load recommendations",
+  "recommendationsLoadErrorSubtitle": "Session may have expired. Pull to refresh or retry now.",
+  "otpEmailVerificationTitle": "Email Verification",
+  "otpPhoneVerificationTitle": "Phone Verification",
+  "otpEnterCodeSentTo": "Enter the 6-digit code sent to your {channel}",
+  "@otpEnterCodeSentTo": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "otpEmailChannel": "email",
+  "otpPhoneChannel": "phone",
+  "otpCodeHint": "------",
+  "otpCodeExpiresInSeconds": "Code expires in: {seconds} seconds",
+  "@otpCodeExpiresInSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "otpResendEmail": "Resend Email",
+  "otpResendSms": "Resend SMS",
+  "otpCancel": "Cancel",
+  "profileVerificationSuccessful": "Verification successful!",
+  "changeAccountAddNewAccountTapped": "Add New Account tapped",
+  "sosCallLaunchError": "Could not launch phone call to {phoneNumber}",
+  "@sosCallLaunchError": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "sosGettingLocation": "Getting your location...",
+  "sosLocationRequiredTitle": "Location Required",
+  "sosLocationRequiredBody": "Location access is required for SOS services. Please enable location services in your device settings.",
+  "sosLocationCancel": "Cancel",
+  "sosLocationOpenSettings": "Open Settings",
+  "exceptionPasswordNotMatch": "Passwords don't match",
+  "exceptionPasswordInvalid": "Password is not valid",
+  "exceptionCouldNotSetPassword": "Couldn't set password",
+  "exceptionWrongPhoneNumber": "Wrong phone number",
+  "exceptionWrongOtp": "Wrong OTP code",
+  "exceptionClientStatsFetchFailed": "Couldn't fetch client stats",
+  "exceptionUserNotFound": "User not found",
+  "exceptionNetworkIssue": "Network issue",
+  "exceptionSystemError": "System error",
+  "exceptionBiometricAuthenticationFailed": "Biometric authentication failed",
+  "exceptionBiometricAuthenticationNotSupported": "Biometric authentication is not supported",
+  "exceptionJsonParse": "Couldn't parse server response",
+  "exceptionApiIssue": "Didn't get proper response from API",
+  "exceptionUnauthorizedUser": "User unauthorized",
+  "exceptionEmptyEmail": "Email cannot be empty",
+  "exceptionEmptyFullName": "Full name cannot be empty",
+  "exceptionInvalidFullName": "Please enter your full name",
+  "exceptionInvalidEmailFormat": "Please enter a valid email address",
+  "exceptionEmailVerificationFailed": "Failed to send verification email. Please try again.",
+  "exceptionEmptyPhoneNumber": "Phone number cannot be empty",
+  "exceptionInvalidPhoneNumberFormat": "Please enter a valid phone number",
+  "exceptionSmsVerificationFailed": "Failed to send verification SMS. Please try again.",
+  "exceptionProfileUpdateError": "An error occurred while updating profile"
 }

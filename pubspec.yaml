@@ -7,7 +7,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # Version: name is the marketing version (e.g. 2.3.367); number after + is the build number.
 # Increment the build number (after +) for each store upload; version name can stay until you bump it.
 # Override at build: flutter build ios --build-name=2.3.367 --build-number=368
-version: 2.3.370+2.3.370
+version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
@@ -55,7 +55,6 @@ dependencies:
   package_info_plus: ^8.3.1
   image_picker: ^1.1.2
   file_picker: ^8.1.2
-  camerawesome: ^2.5.0
   flutter_image_compress: ^2.4.0
   json_annotation: ^4.9.0
   geolocator: ^13.0.1

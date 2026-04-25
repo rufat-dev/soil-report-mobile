@@ -1461,6 +1461,480 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call Center'**
   String get sosCallCenter;
+
+  /// No description provided for @commonGoHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Home'**
+  String get commonGoHome;
+
+  /// No description provided for @notFoundPageMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'404 - Page not found!'**
+  String get notFoundPageMessage;
+
+  /// No description provided for @authAuthorizationFailedTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorization failed. Please try again.'**
+  String get authAuthorizationFailedTryAgain;
+
+  /// No description provided for @loginEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// No description provided for @loginResetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get loginResetPasswordTitle;
+
+  /// No description provided for @loginEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get loginEmailRequired;
+
+  /// No description provided for @loginEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailHint;
+
+  /// No description provided for @loginResetPasswordSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get loginResetPasswordSend;
+
+  /// No description provided for @recommendationsHeaderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prioritized advisory feed showing what needs attention now and what may become risky next.'**
+  String get recommendationsHeaderSubtitle;
+
+  /// No description provided for @recommendationsEmptyStableSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No advisory items right now. Your setup looks stable.'**
+  String get recommendationsEmptyStableSubtitle;
+
+  /// No description provided for @recommendationsNeedsAttentionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Attention'**
+  String get recommendationsNeedsAttentionTitle;
+
+  /// No description provided for @recommendationsNeedsAttentionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'High-priority items to handle first.'**
+  String get recommendationsNeedsAttentionSubtitle;
+
+  /// No description provided for @recommendationsSuggestedActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Actions'**
+  String get recommendationsSuggestedActionsTitle;
+
+  /// No description provided for @recommendationsSuggestedActionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up checks and optimization recommendations.'**
+  String get recommendationsSuggestedActionsSubtitle;
+
+  /// No description provided for @recommendationsForecastOutlookTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forecast Outlook'**
+  String get recommendationsForecastOutlookTitle;
+
+  /// No description provided for @recommendationsForecastOutlookSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Predicted conditions and possible risk signals.'**
+  String get recommendationsForecastOutlookSubtitle;
+
+  /// No description provided for @recommendationsDeviceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Device: {siteLabel}'**
+  String recommendationsDeviceLabel(String siteLabel);
+
+  /// No description provided for @recommendationsNoForecastHorizon.
+  ///
+  /// In en, this message translates to:
+  /// **'No forecast horizon'**
+  String get recommendationsNoForecastHorizon;
+
+  /// No description provided for @recommendationsUnknownDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown device'**
+  String get recommendationsUnknownDevice;
+
+  /// No description provided for @recommendationsDeviceShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Device {id}'**
+  String recommendationsDeviceShort(String id);
+
+  /// No description provided for @recommendationsPredictedMetric.
+  ///
+  /// In en, this message translates to:
+  /// **'Predicted metric'**
+  String get recommendationsPredictedMetric;
+
+  /// No description provided for @recommendationsCategoryFertilization.
+  ///
+  /// In en, this message translates to:
+  /// **'Fertilization'**
+  String get recommendationsCategoryFertilization;
+
+  /// No description provided for @recommendationsCategoryIrrigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Irrigation'**
+  String get recommendationsCategoryIrrigation;
+
+  /// No description provided for @recommendationsCategorySoil.
+  ///
+  /// In en, this message translates to:
+  /// **'Soil'**
+  String get recommendationsCategorySoil;
+
+  /// No description provided for @recommendationsCategoryPest.
+  ///
+  /// In en, this message translates to:
+  /// **'Pest'**
+  String get recommendationsCategoryPest;
+
+  /// No description provided for @recommendationsCategoryGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get recommendationsCategoryGeneral;
+
+  /// No description provided for @recommendationsRecencyMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String recommendationsRecencyMinutesAgo(int count);
+
+  /// No description provided for @recommendationsRecencyHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String recommendationsRecencyHoursAgo(int count);
+
+  /// No description provided for @recommendationsRecencyDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String recommendationsRecencyDaysAgo(int count);
+
+  /// No description provided for @recommendationsRiskMonitor.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor'**
+  String get recommendationsRiskMonitor;
+
+  /// No description provided for @recommendationsRiskWatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get recommendationsRiskWatch;
+
+  /// No description provided for @recommendationsRiskRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk'**
+  String get recommendationsRiskRisk;
+
+  /// No description provided for @recommendationsRiskStable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get recommendationsRiskStable;
+
+  /// No description provided for @recommendationsSummaryUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} urgent'**
+  String recommendationsSummaryUrgent(int count);
+
+  /// No description provided for @recommendationsSummarySuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} suggested'**
+  String recommendationsSummarySuggested(int count);
+
+  /// No description provided for @recommendationsSummaryForecasts.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} forecasts'**
+  String recommendationsSummaryForecasts(int count);
+
+  /// No description provided for @recommendationsLoadErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load recommendations'**
+  String get recommendationsLoadErrorTitle;
+
+  /// No description provided for @recommendationsLoadErrorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Session may have expired. Pull to refresh or retry now.'**
+  String get recommendationsLoadErrorSubtitle;
+
+  /// No description provided for @otpEmailVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verification'**
+  String get otpEmailVerificationTitle;
+
+  /// No description provided for @otpPhoneVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Verification'**
+  String get otpPhoneVerificationTitle;
+
+  /// No description provided for @otpEnterCodeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to your {channel}'**
+  String otpEnterCodeSentTo(String channel);
+
+  /// No description provided for @otpEmailChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'email'**
+  String get otpEmailChannel;
+
+  /// No description provided for @otpPhoneChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'phone'**
+  String get otpPhoneChannel;
+
+  /// No description provided for @otpCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'------'**
+  String get otpCodeHint;
+
+  /// No description provided for @otpCodeExpiresInSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in: {seconds} seconds'**
+  String otpCodeExpiresInSeconds(int seconds);
+
+  /// No description provided for @otpResendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Email'**
+  String get otpResendEmail;
+
+  /// No description provided for @otpResendSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend SMS'**
+  String get otpResendSms;
+
+  /// No description provided for @otpCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get otpCancel;
+
+  /// No description provided for @profileVerificationSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification successful!'**
+  String get profileVerificationSuccessful;
+
+  /// No description provided for @changeAccountAddNewAccountTapped.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Account tapped'**
+  String get changeAccountAddNewAccountTapped;
+
+  /// No description provided for @sosCallLaunchError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch phone call to {phoneNumber}'**
+  String sosCallLaunchError(String phoneNumber);
+
+  /// No description provided for @sosGettingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your location...'**
+  String get sosGettingLocation;
+
+  /// No description provided for @sosLocationRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Required'**
+  String get sosLocationRequiredTitle;
+
+  /// No description provided for @sosLocationRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access is required for SOS services. Please enable location services in your device settings.'**
+  String get sosLocationRequiredBody;
+
+  /// No description provided for @sosLocationCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get sosLocationCancel;
+
+  /// No description provided for @sosLocationOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get sosLocationOpenSettings;
+
+  /// No description provided for @exceptionPasswordNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords don\'t match'**
+  String get exceptionPasswordNotMatch;
+
+  /// No description provided for @exceptionPasswordInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is not valid'**
+  String get exceptionPasswordInvalid;
+
+  /// No description provided for @exceptionCouldNotSetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t set password'**
+  String get exceptionCouldNotSetPassword;
+
+  /// No description provided for @exceptionWrongPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong phone number'**
+  String get exceptionWrongPhoneNumber;
+
+  /// No description provided for @exceptionWrongOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong OTP code'**
+  String get exceptionWrongOtp;
+
+  /// No description provided for @exceptionClientStatsFetchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t fetch client stats'**
+  String get exceptionClientStatsFetchFailed;
+
+  /// No description provided for @exceptionUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User not found'**
+  String get exceptionUserNotFound;
+
+  /// No description provided for @exceptionNetworkIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Network issue'**
+  String get exceptionNetworkIssue;
+
+  /// No description provided for @exceptionSystemError.
+  ///
+  /// In en, this message translates to:
+  /// **'System error'**
+  String get exceptionSystemError;
+
+  /// No description provided for @exceptionBiometricAuthenticationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication failed'**
+  String get exceptionBiometricAuthenticationFailed;
+
+  /// No description provided for @exceptionBiometricAuthenticationNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric authentication is not supported'**
+  String get exceptionBiometricAuthenticationNotSupported;
+
+  /// No description provided for @exceptionJsonParse.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t parse server response'**
+  String get exceptionJsonParse;
+
+  /// No description provided for @exceptionApiIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t get proper response from API'**
+  String get exceptionApiIssue;
+
+  /// No description provided for @exceptionUnauthorizedUser.
+  ///
+  /// In en, this message translates to:
+  /// **'User unauthorized'**
+  String get exceptionUnauthorizedUser;
+
+  /// No description provided for @exceptionEmptyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email cannot be empty'**
+  String get exceptionEmptyEmail;
+
+  /// No description provided for @exceptionEmptyFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name cannot be empty'**
+  String get exceptionEmptyFullName;
+
+  /// No description provided for @exceptionInvalidFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your full name'**
+  String get exceptionInvalidFullName;
+
+  /// No description provided for @exceptionInvalidEmailFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get exceptionInvalidEmailFormat;
+
+  /// No description provided for @exceptionEmailVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send verification email. Please try again.'**
+  String get exceptionEmailVerificationFailed;
+
+  /// No description provided for @exceptionEmptyPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number cannot be empty'**
+  String get exceptionEmptyPhoneNumber;
+
+  /// No description provided for @exceptionInvalidPhoneNumberFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get exceptionInvalidPhoneNumberFormat;
+
+  /// No description provided for @exceptionSmsVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send verification SMS. Please try again.'**
+  String get exceptionSmsVerificationFailed;
+
+  /// No description provided for @exceptionProfileUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while updating profile'**
+  String get exceptionProfileUpdateError;
 }
 
 class _AppLocalizationsDelegate

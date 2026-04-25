@@ -259,5 +259,161 @@
   "sosTransport": "Транспорт",
   "sosTravel": "Путешествия",
   "sosProperty": "Имущество",
-  "sosCallCenter": "Колл-центр"
+  "sosCallCenter": "Колл-центр",
+  "commonGoHome": "На главную",
+  "notFoundPageMessage": "404 - Страница не найдена!",
+  "authAuthorizationFailedTryAgain": "Ошибка авторизации. Попробуйте снова.",
+  "loginEmailLabel": "Эл. почта",
+  "loginResetPasswordTitle": "Сброс пароля",
+  "loginEmailRequired": "Email обязателен",
+  "loginEmailHint": "Email",
+  "loginResetPasswordSend": "Отправить",
+  "recommendationsHeaderSubtitle": "Лента приоритетных советов: что требует внимания сейчас и что может стать риском дальше.",
+  "recommendationsEmptyStableSubtitle": "Сейчас нет рекомендаций. Показатели выглядят стабильно.",
+  "recommendationsNeedsAttentionTitle": "Требует внимания",
+  "recommendationsNeedsAttentionSubtitle": "Сначала выполните задачи с высоким приоритетом.",
+  "recommendationsSuggestedActionsTitle": "Рекомендуемые действия",
+  "recommendationsSuggestedActionsSubtitle": "Повторные проверки и рекомендации по оптимизации.",
+  "recommendationsForecastOutlookTitle": "Прогноз",
+  "recommendationsForecastOutlookSubtitle": "Ожидаемые условия и возможные сигналы риска.",
+  "recommendationsDeviceLabel": "Устройство: {siteLabel}",
+  "@recommendationsDeviceLabel": {
+    "placeholders": {
+      "siteLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsNoForecastHorizon": "Нет горизонта прогноза",
+  "recommendationsUnknownDevice": "Неизвестное устройство",
+  "recommendationsDeviceShort": "Устройство {id}",
+  "@recommendationsDeviceShort": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsPredictedMetric": "Прогнозируемый показатель",
+  "recommendationsCategoryFertilization": "Удобрение",
+  "recommendationsCategoryIrrigation": "Орошение",
+  "recommendationsCategorySoil": "Почва",
+  "recommendationsCategoryPest": "Вредители",
+  "recommendationsCategoryGeneral": "Общее",
+  "recommendationsRecencyMinutesAgo": "{count} мин назад",
+  "@recommendationsRecencyMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyHoursAgo": "{count} ч назад",
+  "@recommendationsRecencyHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyDaysAgo": "{count} д назад",
+  "@recommendationsRecencyDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRiskMonitor": "Мониторинг",
+  "recommendationsRiskWatch": "Наблюдать",
+  "recommendationsRiskRisk": "Риск",
+  "recommendationsRiskStable": "Стабильно",
+  "recommendationsSummaryUrgent": "{count} срочно",
+  "@recommendationsSummaryUrgent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummarySuggested": "{count} рекомендовано",
+  "@recommendationsSummarySuggested": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummaryForecasts": "{count} прогнозов",
+  "@recommendationsSummaryForecasts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsLoadErrorTitle": "Не удалось загрузить рекомендации",
+  "recommendationsLoadErrorSubtitle": "Сессия могла истечь. Обновите экран или попробуйте снова.",
+  "otpEmailVerificationTitle": "Подтверждение email",
+  "otpPhoneVerificationTitle": "Подтверждение телефона",
+  "otpEnterCodeSentTo": "Введите 6-значный код, отправленный на {channel}",
+  "@otpEnterCodeSentTo": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "otpEmailChannel": "email",
+  "otpPhoneChannel": "телефон",
+  "otpCodeHint": "------",
+  "otpCodeExpiresInSeconds": "Срок действия кода: {seconds} сек",
+  "@otpCodeExpiresInSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "otpResendEmail": "Отправить email повторно",
+  "otpResendSms": "Отправить SMS повторно",
+  "otpCancel": "Отмена",
+  "profileVerificationSuccessful": "Подтверждение успешно!",
+  "changeAccountAddNewAccountTapped": "Нажато «Добавить новый аккаунт»",
+  "sosCallLaunchError": "Не удалось начать звонок на номер {phoneNumber}",
+  "@sosCallLaunchError": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "sosGettingLocation": "Определяем ваше местоположение...",
+  "sosLocationRequiredTitle": "Требуется геолокация",
+  "sosLocationRequiredBody": "Для SOS-сервисов нужен доступ к местоположению. Включите геолокацию в настройках устройства.",
+  "sosLocationCancel": "Отмена",
+  "sosLocationOpenSettings": "Открыть настройки",
+  "exceptionPasswordNotMatch": "Пароли не совпадают",
+  "exceptionPasswordInvalid": "Некорректный пароль",
+  "exceptionCouldNotSetPassword": "Не удалось установить пароль",
+  "exceptionWrongPhoneNumber": "Неверный номер телефона",
+  "exceptionWrongOtp": "Неверный OTP-код",
+  "exceptionClientStatsFetchFailed": "Не удалось получить статистику клиента",
+  "exceptionUserNotFound": "Пользователь не найден",
+  "exceptionNetworkIssue": "Проблема с сетью",
+  "exceptionSystemError": "Системная ошибка",
+  "exceptionBiometricAuthenticationFailed": "Сбой биометрической аутентификации",
+  "exceptionBiometricAuthenticationNotSupported": "Биометрическая аутентификация не поддерживается",
+  "exceptionJsonParse": "Не удалось обработать ответ сервера",
+  "exceptionApiIssue": "Не получен корректный ответ от API",
+  "exceptionUnauthorizedUser": "Пользователь не авторизован",
+  "exceptionEmptyEmail": "Email не может быть пустым",
+  "exceptionEmptyFullName": "Полное имя не может быть пустым",
+  "exceptionInvalidFullName": "Пожалуйста, введите полное имя",
+  "exceptionInvalidEmailFormat": "Введите корректный адрес электронной почты",
+  "exceptionEmailVerificationFailed": "Не удалось отправить письмо подтверждения. Попробуйте снова.",
+  "exceptionEmptyPhoneNumber": "Номер телефона не может быть пустым",
+  "exceptionInvalidPhoneNumberFormat": "Введите корректный номер телефона",
+  "exceptionSmsVerificationFailed": "Не удалось отправить SMS подтверждения. Попробуйте снова.",
+  "exceptionProfileUpdateError": "Произошла ошибка при обновлении профиля"
 }

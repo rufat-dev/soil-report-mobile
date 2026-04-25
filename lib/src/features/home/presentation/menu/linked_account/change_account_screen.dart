@@ -1,6 +1,7 @@
 import 'package:soilreport/src/common_widgets/page_widget.dart';
 import 'package:soilreport/src/core/utils/string_extension.dart';
 import 'package:soilreport/src/core/utils/theme_extensions.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/localization/localization_extension.dart';
 import 'package:soilreport/src/routing/app_router.dart';
 import 'package:soilreport/src/utils/app_theme.dart';
@@ -86,8 +87,9 @@ class _ChangeAccountScreenState extends ConsumerState<ChangeAccountScreen> {
                   height: 56,
                   child: ElevatedButton(
                     onPressed: () {
+                      final l10n = AppLocalizations.of(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('ChangeProfilePage.AddNewAccountButton'.translate(context))),
+                        SnackBar(content: Text(l10n.changeAccountAddNewAccountTapped)),
                       );
                     },
                     style: ElevatedButton.styleFrom(

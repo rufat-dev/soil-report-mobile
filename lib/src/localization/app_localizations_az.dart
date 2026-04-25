@@ -749,4 +749,280 @@ class AppLocalizationsAz extends AppLocalizations {
 
   @override
   String get sosCallCenter => 'Əlaqə Mərkəzi';
+
+  @override
+  String get commonGoHome => 'Ana səhifəyə keç';
+
+  @override
+  String get notFoundPageMessage => '404 - Səhifə tapılmadı!';
+
+  @override
+  String get authAuthorizationFailedTryAgain =>
+      'Avtorizasiya uğursuz oldu. Yenidən cəhd edin.';
+
+  @override
+  String get loginEmailLabel => 'E-poçt';
+
+  @override
+  String get loginResetPasswordTitle => 'Şifrəni sıfırla';
+
+  @override
+  String get loginEmailRequired => 'E-poçt məcburidir';
+
+  @override
+  String get loginEmailHint => 'E-poçt';
+
+  @override
+  String get loginResetPasswordSend => 'Göndər';
+
+  @override
+  String get recommendationsHeaderSubtitle =>
+      'Hazırda diqqət tələb edən və yaxın zamanda risk yarada biləcək məsələlər üçün prioritetli tövsiyələr axını.';
+
+  @override
+  String get recommendationsEmptyStableSubtitle =>
+      'Hazırda tövsiyə yoxdur. Quruluşunuz stabil görünür.';
+
+  @override
+  String get recommendationsNeedsAttentionTitle => 'Diqqət tələb edir';
+
+  @override
+  String get recommendationsNeedsAttentionSubtitle =>
+      'İlk növbədə icra edilməli yüksək prioritetli addımlar.';
+
+  @override
+  String get recommendationsSuggestedActionsTitle => 'Təklif olunan addımlar';
+
+  @override
+  String get recommendationsSuggestedActionsSubtitle =>
+      'Növbəti yoxlamalar və optimizasiya tövsiyələri.';
+
+  @override
+  String get recommendationsForecastOutlookTitle => 'Proqnoz görünüşü';
+
+  @override
+  String get recommendationsForecastOutlookSubtitle =>
+      'Proqnozlaşdırılan şərait və mümkün risk siqnalları.';
+
+  @override
+  String recommendationsDeviceLabel(String siteLabel) {
+    return 'Cihaz: $siteLabel';
+  }
+
+  @override
+  String get recommendationsNoForecastHorizon => 'Proqnoz müddəti yoxdur';
+
+  @override
+  String get recommendationsUnknownDevice => 'Naməlum cihaz';
+
+  @override
+  String recommendationsDeviceShort(String id) {
+    return 'Cihaz $id';
+  }
+
+  @override
+  String get recommendationsPredictedMetric => 'Proqnoz göstəricisi';
+
+  @override
+  String get recommendationsCategoryFertilization => 'Gübrələmə';
+
+  @override
+  String get recommendationsCategoryIrrigation => 'Suvarma';
+
+  @override
+  String get recommendationsCategorySoil => 'Torpaq';
+
+  @override
+  String get recommendationsCategoryPest => 'Zərərverici';
+
+  @override
+  String get recommendationsCategoryGeneral => 'Ümumi';
+
+  @override
+  String recommendationsRecencyMinutesAgo(int count) {
+    return '$count dəq əvvəl';
+  }
+
+  @override
+  String recommendationsRecencyHoursAgo(int count) {
+    return '$count saat əvvəl';
+  }
+
+  @override
+  String recommendationsRecencyDaysAgo(int count) {
+    return '$count gün əvvəl';
+  }
+
+  @override
+  String get recommendationsRiskMonitor => 'İzlə';
+
+  @override
+  String get recommendationsRiskWatch => 'Nəzarətdə saxla';
+
+  @override
+  String get recommendationsRiskRisk => 'Risk';
+
+  @override
+  String get recommendationsRiskStable => 'Stabil';
+
+  @override
+  String recommendationsSummaryUrgent(int count) {
+    return '$count təcili';
+  }
+
+  @override
+  String recommendationsSummarySuggested(int count) {
+    return '$count təklif';
+  }
+
+  @override
+  String recommendationsSummaryForecasts(int count) {
+    return '$count proqnoz';
+  }
+
+  @override
+  String get recommendationsLoadErrorTitle => 'Tövsiyələr yüklənə bilmədi';
+
+  @override
+  String get recommendationsLoadErrorSubtitle =>
+      'Sessiyanın vaxtı bitmiş ola bilər. Yeniləyin və ya yenidən cəhd edin.';
+
+  @override
+  String get otpEmailVerificationTitle => 'E-poçt təsdiqi';
+
+  @override
+  String get otpPhoneVerificationTitle => 'Telefon təsdiqi';
+
+  @override
+  String otpEnterCodeSentTo(String channel) {
+    return '$channel ünvanına göndərilmiş 6 rəqəmli kodu daxil edin';
+  }
+
+  @override
+  String get otpEmailChannel => 'e-poçt';
+
+  @override
+  String get otpPhoneChannel => 'telefon';
+
+  @override
+  String get otpCodeHint => '------';
+
+  @override
+  String otpCodeExpiresInSeconds(int seconds) {
+    return 'Kodun vaxtı: $seconds saniyə';
+  }
+
+  @override
+  String get otpResendEmail => 'E-poçtu yenidən göndər';
+
+  @override
+  String get otpResendSms => 'SMS-i yenidən göndər';
+
+  @override
+  String get otpCancel => 'Ləğv et';
+
+  @override
+  String get profileVerificationSuccessful => 'Təsdiq uğurludur!';
+
+  @override
+  String get changeAccountAddNewAccountTapped => 'Yeni hesab əlavə et seçildi';
+
+  @override
+  String sosCallLaunchError(String phoneNumber) {
+    return '$phoneNumber nömrəsinə zəng etmək mümkün olmadı';
+  }
+
+  @override
+  String get sosGettingLocation => 'Məkanınız alınır...';
+
+  @override
+  String get sosLocationRequiredTitle => 'Məkan tələb olunur';
+
+  @override
+  String get sosLocationRequiredBody =>
+      'SOS xidmətləri üçün məkan girişi tələb olunur. Zəhmət olmasa cihaz ayarlarında məkan xidmətlərini aktiv edin.';
+
+  @override
+  String get sosLocationCancel => 'Ləğv et';
+
+  @override
+  String get sosLocationOpenSettings => 'Ayarları aç';
+
+  @override
+  String get exceptionPasswordNotMatch => 'Şifrələr uyğun gəlmir';
+
+  @override
+  String get exceptionPasswordInvalid => 'Şifrə düzgün deyil';
+
+  @override
+  String get exceptionCouldNotSetPassword => 'Şifrə təyin edilə bilmədi';
+
+  @override
+  String get exceptionWrongPhoneNumber => 'Yanlış telefon nömrəsi';
+
+  @override
+  String get exceptionWrongOtp => 'Yanlış OTP kodu';
+
+  @override
+  String get exceptionClientStatsFetchFailed =>
+      'Müştəri statistikası alına bilmədi';
+
+  @override
+  String get exceptionUserNotFound => 'İstifadəçi tapılmadı';
+
+  @override
+  String get exceptionNetworkIssue => 'Şəbəkə problemi';
+
+  @override
+  String get exceptionSystemError => 'Sistem xətası';
+
+  @override
+  String get exceptionBiometricAuthenticationFailed =>
+      'Biometrik doğrulama uğursuz oldu';
+
+  @override
+  String get exceptionBiometricAuthenticationNotSupported =>
+      'Biometrik doğrulama dəstəklənmir';
+
+  @override
+  String get exceptionJsonParse => 'Server cavabı emal edilə bilmədi';
+
+  @override
+  String get exceptionApiIssue => 'API-dən düzgün cavab alınmadı';
+
+  @override
+  String get exceptionUnauthorizedUser => 'İstifadəçi səlahiyyətli deyil';
+
+  @override
+  String get exceptionEmptyEmail => 'E-poçt boş ola bilməz';
+
+  @override
+  String get exceptionEmptyFullName => 'Ad soyad boş ola bilməz';
+
+  @override
+  String get exceptionInvalidFullName =>
+      'Zəhmət olmasa ad soyadı tam daxil edin';
+
+  @override
+  String get exceptionInvalidEmailFormat =>
+      'Zəhmət olmasa düzgün e-poçt ünvanı daxil edin';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'Təsdiq e-poçtu göndərilə bilmədi. Yenidən cəhd edin.';
+
+  @override
+  String get exceptionEmptyPhoneNumber => 'Telefon nömrəsi boş ola bilməz';
+
+  @override
+  String get exceptionInvalidPhoneNumberFormat =>
+      'Zəhmət olmasa düzgün telefon nömrəsi daxil edin';
+
+  @override
+  String get exceptionSmsVerificationFailed =>
+      'Təsdiq SMS-i göndərilə bilmədi. Yenidən cəhd edin.';
+
+  @override
+  String get exceptionProfileUpdateError =>
+      'Profil yenilənərkən xəta baş verdi';
 }

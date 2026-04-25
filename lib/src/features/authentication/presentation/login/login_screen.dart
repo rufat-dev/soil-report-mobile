@@ -1,6 +1,7 @@
 import 'package:soilreport/src/common_widgets/page_widget.dart';
 import 'package:soilreport/src/common_widgets/text_input_widget.dart';
 import 'package:soilreport/src/core/utils/size_extension.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/localization/localization_extension.dart';
 import 'package:soilreport/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +115,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     ref.listen<AsyncValue>(
       loginScreenControllerProvider,
       (_, state) {
@@ -158,7 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
             Text(
-              "EMAIL",
+              l10n.loginEmailLabel.toUpperCase(),
               style: Theme.of(context).textTheme.displaySmall!.merge(
                 const TextStyle(inherit: true, fontSize: 11),
               ),
@@ -311,7 +313,7 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
   Future<void> _submit() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      setState(() => _error = 'Email is required');
+      setState(() => _error = AppLocalizations.of(context).loginEmailRequired);
       return;
     }
 
@@ -336,8 +338,9 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Reset password'),
+      title: Text(l10n.loginResetPasswordTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,9 +350,9 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
             keyboardType: TextInputType.emailAddress,
             autofocus: true,
             enabled: !_isSubmitting,
-            decoration: const InputDecoration(
-              hintText: 'Email',
-              prefixIcon: Icon(Icons.email_outlined),
+            decoration: InputDecoration(
+              hintText: l10n.loginEmailHint,
+              prefixIcon: const Icon(Icons.email_outlined),
             ),
             onSubmitted: (_) => _submit(),
           ),
@@ -373,11 +376,11 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
       actions: [
         TextButton(
           onPressed: _isSubmitting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: Text(l10n.commonClose),
         ),
         FilledButton(
           onPressed: _isSubmitting ? null : _submit,
-          child: const Text('Send'),
+          child: Text(l10n.loginResetPasswordSend),
         ),
       ],
     );

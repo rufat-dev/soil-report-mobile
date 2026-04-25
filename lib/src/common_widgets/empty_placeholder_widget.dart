@@ -1,4 +1,4 @@
-import 'package:soilreport/src/localization/string_hardcoded.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:soilreport/src/common_widgets/primary_button.dart';
@@ -12,6 +12,7 @@ class EmptyPlaceholderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.all(Sizes.p16),
       child: Center(
@@ -27,7 +28,7 @@ class EmptyPlaceholderWidget extends StatelessWidget {
             gapH32,
             PrimaryButton(
               onPressed: () => context.goNamed(AppRoute.home.name),
-              text: 'Go Home'.hardcoded,
+              text: l10n.commonGoHome,
             ),
           ],
         ),

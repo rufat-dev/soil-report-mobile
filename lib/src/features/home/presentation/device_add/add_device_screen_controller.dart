@@ -34,8 +34,9 @@ class AddDeviceScreenController extends _$AddDeviceScreenController
       final results = await Future.wait([
         repo.getDevices(useCache: useCache),
         repo.getGroups(useCache: useCache),
-        repo.getPlants(useCache: useCache),
-        repo.getSoils(useCache: useCache),
+        // Always refresh classifiers so newly added plant/soil types are visible immediately.
+        repo.getPlants(useCache: false),
+        repo.getSoils(useCache: false),
       ]);
       state = state.copyWith(
         checkState: const AsyncValue.data(null),

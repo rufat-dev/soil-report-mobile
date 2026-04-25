@@ -105,40 +105,56 @@ class _AddDeviceScreenState extends ConsumerState<AddDeviceScreen> {
               ),
               if (_selectedGroupId == null) ...[
                 const SizedBox(height: 12),
-                DropdownButtonFormField<int>(
+                DropdownButtonFormField<int?>(
                   value: _selectedPlantType,
                   decoration: InputDecoration(
                     labelText: l10n.addDevicePlantDropdownLabel,
                   ),
-                  items: activeState.plants
-                      .map(
-                        (plant) => DropdownMenuItem<int>(
-                          value: plant.plantType,
-                          child: Text(
-                            '${plant.plantName ?? l10n.addDevicePlantFallbackName} (${plant.plantType})',
+                  items: activeState.plants.isEmpty
+                      ? [
+                          const DropdownMenuItem<int?>(
+                            enabled: false,
+                            value: null,
+                            child: Text('No plant types available'),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        ]
+                      : activeState.plants
+                          .map(
+                            (plant) => DropdownMenuItem<int?>(
+                              value: plant.plantType,
+                              child: Text(
+                                '${plant.plantName ?? l10n.addDevicePlantFallbackName} (${plant.plantType})',
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (value) =>
                       setState(() => _selectedPlantType = value),
                 ),
                 const SizedBox(height: 12),
-                DropdownButtonFormField<int>(
+                DropdownButtonFormField<int?>(
                   value: _selectedSoilType,
                   decoration: InputDecoration(
                     labelText: l10n.addDeviceSoilDropdownLabel,
                   ),
-                  items: activeState.soils
-                      .map(
-                        (soil) => DropdownMenuItem<int>(
-                          value: soil.soilType,
-                          child: Text(
-                            '${soil.name ?? l10n.addDeviceSoilFallbackName} (${soil.soilType})',
+                  items: activeState.soils.isEmpty
+                      ? [
+                          const DropdownMenuItem<int?>(
+                            enabled: false,
+                            value: null,
+                            child: Text('No soil types available'),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        ]
+                      : activeState.soils
+                          .map(
+                            (soil) => DropdownMenuItem<int?>(
+                              value: soil.soilType,
+                              child: Text(
+                                '${soil.name ?? l10n.addDeviceSoilFallbackName} (${soil.soilType})',
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (value) =>
                       setState(() => _selectedSoilType = value),
                 ),

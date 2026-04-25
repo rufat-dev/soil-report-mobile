@@ -225,4 +225,29 @@ final Map<String, _L10nGetter> _keyMap = {
 
   // Stories
   'StoryPage.SeeMore': (l) => l.storyPageSeeMore,
+
+  // Exceptions
+  'Exception.PasswordNotMatch': (l) => l.exceptionPasswordNotMatch,
+  'Exception.PasswordInvalid': (l) => l.exceptionPasswordInvalid,
+  'Exception.CouldNotSetPassword': (l) => l.exceptionCouldNotSetPassword,
+  'Exception.WrongPhoneNumber': (l) => l.exceptionWrongPhoneNumber,
+  'Exception.WrongOtp': (l) => l.exceptionWrongOtp,
+  'Exception.ClientStatsFetchFailed': (l) => l.exceptionClientStatsFetchFailed,
+  'Exception.UserNotFound': (l) => l.exceptionUserNotFound,
+  'Exception.NetworkIssue': (l) => l.exceptionNetworkIssue,
+  'Exception.SystemError': (l) => l.exceptionSystemError,
+  'Exception.BiometricAuthenticationFailed': (l) => l.exceptionBiometricAuthenticationFailed,
+  'Exception.BiometricAuthenticationNotSupported': (l) => l.exceptionBiometricAuthenticationNotSupported,
+  'Exception.JsonParse': (l) => l.exceptionJsonParse,
+  'Exception.ApiIssue': (l) => l.exceptionApiIssue,
+  'Exception.UnauthorizedUser': (l) => l.exceptionUnauthorizedUser,
+  'Exception.EmptyEmail': (l) => l.exceptionEmptyEmail,
+  'Exception.EmptyFullName': (l) => l.exceptionEmptyFullName,
+  'Exception.InvalidFullName': (l) => l.exceptionInvalidFullName,
+  'Exception.InvalidEmailFormat': (l) => l.exceptionInvalidEmailFormat,
+  'Exception.EmailVerificationFailed': (l) => l.exceptionEmailVerificationFailed,
+  'Exception.EmptyPhoneNumber': (l) => l.exceptionEmptyPhoneNumber,
+  'Exception.InvalidPhoneNumberFormat': (l) => l.exceptionInvalidPhoneNumberFormat,
+  'Exception.SmsVerificationFailed': (l) => l.exceptionSmsVerificationFailed,
+  'Exception.ProfileUpdateError': (l) => l.exceptionProfileUpdateError,
 };

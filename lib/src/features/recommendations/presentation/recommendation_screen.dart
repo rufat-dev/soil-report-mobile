@@ -58,7 +58,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
         color: colorScheme.primary,
         onRefresh: () => ref
             .read(recommendationsScreenControllerProvider.notifier)
-            .loadRecommendations(),
+            .loadRecommendations(forceRemote: true),
         child: Skeletonizer(
           enabled: isLoading,
           effect: PulseEffect(
@@ -76,8 +76,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
             children: [
               _RecommendationsHeader(
                 title: l10n.tab3Title,
-                subtitle:
-                    'Prioritized advisory feed showing what needs attention now and what may become risky next.',
+                subtitle: l10n.recommendationsHeaderSubtitle,
               ),
               const SizedBox(height: 16),
               _RecommendationsSummaryStrip(
@@ -93,43 +92,41 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
                 _ErrorStateCard(
                   onRetry: () => ref
                       .read(recommendationsScreenControllerProvider.notifier)
-                      .loadRecommendations(),
+                      .loadRecommendations(forceRemote: true),
                 )
               else if (recommendations.isEmpty &&
                   forecasts.isEmpty &&
                   !isLoading)
                 StandardEmptyView(
                   title: l10n.emptyRecommendationsTitle,
-                  subtitle:
-                      'No advisory items right now. Your setup looks stable.',
+                  subtitle: l10n.recommendationsEmptyStableSubtitle,
                   icon: Icons.lightbulb_outline,
                 ),
               if (isLoading) ...[
                 _SectionHeader(
-                  title: 'Needs Attention',
-                  subtitle: 'High-priority items to handle first.',
+                  title: l10n.recommendationsNeedsAttentionTitle,
+                  subtitle: l10n.recommendationsNeedsAttentionSubtitle,
                 ),
                 ...List.generate(2, (_) => _buildRecommendationSkeleton(context)),
                 const SizedBox(height: 10),
                 _SectionHeader(
-                  title: 'Suggested Actions',
-                  subtitle: 'Important but not urgent guidance.',
+                  title: l10n.recommendationsSuggestedActionsTitle,
+                  subtitle: l10n.recommendationsSuggestedActionsSubtitle,
                 ),
                 ...List.generate(2, (_) => _buildRecommendationSkeleton(context)),
               ] else ...[
                 if (highPriority.isNotEmpty) ...[
                   _SectionHeader(
-                    title: 'Needs Attention',
-                    subtitle: 'High-priority items to handle first.',
+                    title: l10n.recommendationsNeedsAttentionTitle,
+                    subtitle: l10n.recommendationsNeedsAttentionSubtitle,
                   ),
                   ...highPriority.map((r) => _buildRecommendationCard(context, r)),
                 ],
                 if (supportive.isNotEmpty) ...[
                   const SizedBox(height: 10),
                   _SectionHeader(
-                    title: 'Suggested Actions',
-                    subtitle:
-                        'Follow-up checks and optimization recommendations.',
+                    title: l10n.recommendationsSuggestedActionsTitle,
+                    subtitle: l10n.recommendationsSuggestedActionsSubtitle,
                   ),
                   ...supportive.map((r) => _buildRecommendationCard(context, r)),
                 ],
@@ -137,8 +134,8 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
               if (forecasts.isNotEmpty) ...[
                 const SizedBox(height: 18),
                 _SectionHeader(
-                  title: 'Forecast Outlook',
-                  subtitle: 'Predicted conditions and possible risk signals.',
+                  title: l10n.recommendationsForecastOutlookTitle,
+                  subtitle: l10n.recommendationsForecastOutlookSubtitle,
                 ),
                 ...forecasts.take(6).map((f) => _buildForecastCard(context, f)),
               ],
@@ -242,7 +239,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Device: ${rec.siteLabel}',
+                  l10n.recommendationsDeviceLabel(rec.siteLabel),
                   style: Theme.of(context).textTheme.labelSmall,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -273,16 +270,17 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
   }
 
   Widget _buildForecastCard(BuildContext context, AiForecastItem forecast) {
+    final l10n = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
     final risk = _forecastRisk(forecast);
     final riskColor = _riskColor(context, risk);
     final when = forecast.forecastFor;
     final subtitle = when == null
-        ? (forecast.confidence ?? 'No forecast horizon')
+        ? (forecast.confidence ?? l10n.recommendationsNoForecastHorizon)
         : '${when.day.toString().padLeft(2, '0')}.${when.month.toString().padLeft(2, '0')} ${when.hour.toString().padLeft(2, '0')}:${when.minute.toString().padLeft(2, '0')}';
     final deviceLabel = forecast.deviceId == null || forecast.deviceId!.isEmpty
-        ? 'Unknown device'
-        : 'Device ${_shortDeviceId(forecast.deviceId!)}';
+        ? l10n.recommendationsUnknownDevice
+        : l10n.recommendationsDeviceShort(_shortDeviceId(forecast.deviceId!));
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -301,7 +299,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  forecast.metric ?? 'Predicted metric',
+                  forecast.metric ?? l10n.recommendationsPredictedMetric,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 2),
@@ -343,21 +341,23 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
   }
 
   String _categoryLabel(RecommendationCategory category) {
+    final l10n = AppLocalizations.of(context);
     return switch (category) {
-      RecommendationCategory.fertilization => 'Fertilization',
-      RecommendationCategory.irrigation => 'Irrigation',
-      RecommendationCategory.soilAmendment => 'Soil',
-      RecommendationCategory.pestControl => 'Pest',
-      RecommendationCategory.general => 'General',
+      RecommendationCategory.fertilization => l10n.recommendationsCategoryFertilization,
+      RecommendationCategory.irrigation => l10n.recommendationsCategoryIrrigation,
+      RecommendationCategory.soilAmendment => l10n.recommendationsCategorySoil,
+      RecommendationCategory.pestControl => l10n.recommendationsCategoryPest,
+      RecommendationCategory.general => l10n.recommendationsCategoryGeneral,
     };
   }
 
   String _recencyText(DateTime createdAt) {
+    final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
     final diff = now.difference(createdAt);
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
+    if (diff.inMinutes < 60) return l10n.recommendationsRecencyMinutesAgo(diff.inMinutes);
+    if (diff.inHours < 24) return l10n.recommendationsRecencyHoursAgo(diff.inHours);
+    return l10n.recommendationsRecencyDaysAgo(diff.inDays);
   }
 
   String _shortDeviceId(String id) {
@@ -366,32 +366,34 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
   }
 
   String _forecastRisk(AiForecastItem f) {
+    final l10n = AppLocalizations.of(context);
     final metric = (f.metric ?? '').toLowerCase();
     final v = f.predictedValue;
-    if (v == null) return 'Monitor';
+    if (v == null) return l10n.recommendationsRiskMonitor;
     if (metric.contains('moisture')) {
-      if (v < 25 || v > 75) return 'Risk';
-      if (v < 30 || v > 65) return 'Watch';
-      return 'Stable';
+      if (v < 25 || v > 75) return l10n.recommendationsRiskRisk;
+      if (v < 30 || v > 65) return l10n.recommendationsRiskWatch;
+      return l10n.recommendationsRiskStable;
     }
     if (metric.contains('ph')) {
-      if (v < 5.5 || v > 8.0) return 'Risk';
-      if (v < 6.0 || v > 7.5) return 'Watch';
-      return 'Stable';
+      if (v < 5.5 || v > 8.0) return l10n.recommendationsRiskRisk;
+      if (v < 6.0 || v > 7.5) return l10n.recommendationsRiskWatch;
+      return l10n.recommendationsRiskStable;
     }
     if (metric.contains('conduct')) {
-      if (v < 300 || v > 2600) return 'Risk';
-      if (v < 500 || v > 2200) return 'Watch';
-      return 'Stable';
+      if (v < 300 || v > 2600) return l10n.recommendationsRiskRisk;
+      if (v < 500 || v > 2200) return l10n.recommendationsRiskWatch;
+      return l10n.recommendationsRiskStable;
     }
-    return 'Monitor';
+    return l10n.recommendationsRiskMonitor;
   }
 
   Color _riskColor(BuildContext context, String risk) {
+    final l10n = AppLocalizations.of(context);
     return switch (risk) {
-      'Risk' => AppTheme().error,
-      'Watch' => AppTheme().warning,
-      'Stable' => AppTheme().success,
+      final r when r == l10n.recommendationsRiskRisk => AppTheme().error,
+      final r when r == l10n.recommendationsRiskWatch => AppTheme().warning,
+      final r when r == l10n.recommendationsRiskStable => AppTheme().success,
       _ => Theme.of(context).colorScheme.secondary,
     };
   }
@@ -433,6 +435,7 @@ class _RecommendationsSummaryStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -445,15 +448,15 @@ class _RecommendationsSummaryStrip extends StatelessWidget {
         runSpacing: 8,
         children: [
           _InlineBadge(
-            text: '$highCount urgent',
+            text: l10n.recommendationsSummaryUrgent(highCount),
             color: highCount > 0 ? AppTheme().error : AppTheme().success,
           ),
           _InlineBadge(
-            text: '$supportCount suggested',
+            text: l10n.recommendationsSummarySuggested(supportCount),
             color: scheme.secondary,
           ),
           _InlineBadge(
-            text: '$forecastCount forecasts',
+            text: l10n.recommendationsSummaryForecasts(forecastCount),
             color: scheme.primary,
           ),
         ],
@@ -518,6 +521,7 @@ class _ErrorStateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -529,19 +533,19 @@ class _ErrorStateCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Could not load recommendations',
+            l10n.recommendationsLoadErrorTitle,
             style: Theme.of(context).textTheme.titleSmall,
           ),
           const SizedBox(height: 4),
           Text(
-            'Session may have expired. Pull to refresh or retry now.',
+            l10n.recommendationsLoadErrorSubtitle,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 10),
           FilledButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh_rounded),
-            label: const Text('Retry'),
+            label: Text(l10n.authRetry),
           ),
         ],
       ),

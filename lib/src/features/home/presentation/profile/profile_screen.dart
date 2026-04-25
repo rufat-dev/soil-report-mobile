@@ -428,9 +428,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       isEmailVerifyOtp: isEmailVerifyOtp,
       onOtpVerified: () {
         ref.read(profileControllerProvider.notifier).loadUserData();
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Verification successful!'),
+          SnackBar(
+            content: Text(l10n.profileVerificationSuccessful),
             backgroundColor: Colors.green,
           ),
         );

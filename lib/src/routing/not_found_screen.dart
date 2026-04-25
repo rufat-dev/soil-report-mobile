@@ -1,5 +1,5 @@
-import 'package:soilreport/src/localization/string_hardcoded.dart';
 import 'package:soilreport/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// Simple not found screen used for 404 errors (page not found on web)
@@ -8,10 +8,11 @@ class NotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: EmptyPlaceholderWidget(
-        message: '404 - Page not found!'.hardcoded,
+        message: l10n.notFoundPageMessage,
       ),
     );
   }

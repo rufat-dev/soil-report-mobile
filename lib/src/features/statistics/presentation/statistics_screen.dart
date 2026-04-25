@@ -49,7 +49,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
         color: colorScheme.primary,
         onRefresh: () => ref
             .read(statisticsScreenControllerProvider.notifier)
-            .loadStatistics(),
+            .loadStatistics(forceRemote: true),
         child: Skeletonizer(
           enabled: isLoading,
           effect: PulseEffect(
@@ -691,6 +691,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   int _healthScore(StatisticsScreenState state) {
+    if (_hasNoStatisticsData(state)) {
+      return 0;
+    }
     final statsMap = {for (final s in state.stats) s.label: s.value};
     final ph = _scoreByRange(statsMap['Avg pH'] ?? 0, 6.0, 7.4);
     final moisture = _scoreByRange(statsMap['Avg Moisture'] ?? 0, 30, 60);
@@ -717,6 +720,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   String _healthStatusText(StatisticsScreenState state) {
+    if (_hasNoStatisticsData(state)) {
+      return 'No data yet';
+    }
     final score = _healthScore(state);
     if (score >= 80) return 'Healthy and stable';
     if (score >= 60) return 'Needs attention';
@@ -724,6 +730,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   String _healthDetails(StatisticsScreenState state) {
+    if (_hasNoStatisticsData(state)) {
+      return 'Connect a device and wait for first readings to generate a health score.';
+    }
     if (state.anomalyCount > 0) {
       return 'Detected ${state.anomalyCount} anomaly signals. Review trend cards below.';
     }
@@ -798,6 +807,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   String _insightHeadline(StatisticsScreenState state) {
+    if (_hasNoStatisticsData(state)) {
+      return 'Waiting for first sensor readings';
+    }
     if (state.anomalyCount > 0) {
       return 'Moisture volatility detected';
     }
@@ -812,6 +824,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   String _insightBody(StatisticsScreenState state) {
+    if (_hasNoStatisticsData(state)) {
+      return 'After your device sends data, this section will highlight trends and actionable insights.';
+    }
     if (state.anomalyCount > 0) {
       return 'Sensor signals show unusual movement. Consider checking irrigation schedule and device placement.';
     }
@@ -819,6 +834,13 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
       return 'Some values are outside expected ranges. Prioritize fields with repeated out-of-range events.';
     }
     return 'Current trend is stable. Continue monitoring daily moisture and weekly nutrient drift.';
+  }
+
+  bool _hasNoStatisticsData(StatisticsScreenState state) {
+    return state.stats.isEmpty &&
+        state.recentSamples.isEmpty &&
+        state.hourlyPoints.isEmpty &&
+        state.trendPoints.isEmpty;
   }
 
   String _dayLabelForIndex(List<DeviceTrendsDailyPoint> points, int index) {

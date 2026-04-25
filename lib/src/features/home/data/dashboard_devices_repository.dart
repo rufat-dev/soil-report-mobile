@@ -82,7 +82,11 @@ class DashboardDevicesRepository extends AuthorizedService {
         maxAge: const Duration(hours: 12),
       );
       if (cached != null) {
-        return _parsePlantsList(jsonDecode(cached));
+        final cachedPlants = _parsePlantsList(jsonDecode(cached));
+        // Avoid keeping an empty stale cache when classifiers were added later.
+        if (cachedPlants.isNotEmpty) {
+          return cachedPlants;
+        }
       }
     }
     final data = await rawGetDynamic(
@@ -106,7 +110,11 @@ class DashboardDevicesRepository extends AuthorizedService {
         maxAge: const Duration(hours: 12),
       );
       if (cached != null) {
-        return _parseSoilsList(jsonDecode(cached));
+        final cachedSoils = _parseSoilsList(jsonDecode(cached));
+        // Avoid keeping an empty stale cache when classifiers were added later.
+        if (cachedSoils.isNotEmpty) {
+          return cachedSoils;
+        }
       }
     }
     final data = await rawGetDynamic(

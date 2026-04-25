@@ -1,7 +1,7 @@
 import 'package:soilreport/src/core/utils/size_extension.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/core/utils/theme_extensions.dart';
 import 'package:soilreport/src/localization/localization_extension.dart';
-import 'package:soilreport/src/localization/string_hardcoded.dart';
 import 'package:soilreport/src/utils/context_shortcuts.dart';
 import 'package:soilreport/src/utils/themed_snackbars.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +49,10 @@ class _LandingScreenState extends ConsumerState<LandingScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.showAuthError && mounted) {
+        final l10n = AppLocalizations.of(context);
         context.showSnackBar(
           ErrorSnackBar(
-            message: "Authorization failed. Please try again.".hardcoded,
+            message: l10n.authAuthorizationFailedTryAgain,
           ),
         );
       }

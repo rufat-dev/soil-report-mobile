@@ -3,8 +3,10 @@ import 'package:soilreport/src/localization/localization_extension.dart';
 import 'package:soilreport/src/routing/app_router.dart';
 import 'package:soilreport/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:soilreport/src/common_widgets/page_widget.dart';
 import 'package:soilreport/src/common_widgets/text_input_widget.dart';
 import 'register_screen_controller.dart';
@@ -18,6 +20,11 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  final _azPhoneMaskFormatter = MaskTextInputFormatter(
+    mask: '+994 (##) ###-##-##',
+    filter: {'#': RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
 
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -49,6 +56,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _passwordFocusNode.dispose();
     _phoneNumberFocusNode.dispose();
     super.dispose();
+  }
+
+  void _submit() {
+    FocusScope.of(context).unfocus();
+    ref.read(registerScreenControllerProvider.notifier).tryRegister(
+          _fullNameTextController.text.trim(),
+          _emailTextController.text.trim(),
+          _passwordTextController.text,
+          _phoneNumberTextController.text,
+        );
   }
 
   @override
@@ -146,16 +163,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               focusNode: _phoneNumberFocusNode,
               autofocus: false,
               maxLength: 24,
-              hintText: "Phone Number".translate(context),
+              hintText: "+994 (__) ___-__-__",
               textAlign: TextAlign.start,
               keyboardType: TextInputType.phone,
               autofillHints: const [AutofillHints.telephoneNumber],
+              inputFormatters: <TextInputFormatter>[_azPhoneMaskFormatter],
               trailing: TextInputLucideIcons.icon(context, 'phone.png'),
               onSubmitted: (_){
-                FocusManager.instance.primaryFocus?.unfocus();
-                ref
-                    .read(registerScreenControllerProvider.notifier)
-                    .tryRegister(_fullNameTextController.text, _emailTextController.text, _passwordTextController.text, _phoneNumberTextController.text);
+                _submit();
               },
             ),
             const SizedBox(height: 20),
@@ -165,9 +180,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () => ref
-                  .read(registerScreenControllerProvider.notifier)
-                  .tryRegister(_fullNameTextController.text, _emailTextController.text, _passwordTextController.text, _phoneNumberTextController.text),
+              onTap: _submit,
               child: Container(
                 width: double.maxFinite,
                 height: 45,

@@ -1,10 +1,8 @@
 import 'package:soilreport/src/features/home/presentation/dashboard_screen/dashboard_screen_controller.dart';
 import 'package:soilreport/src/utils/app_theme.dart';
-import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 import 'package:soilreport/src/utils/extensions/uri_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class DashboardBanner extends ConsumerWidget {
   const DashboardBanner({super.key});
@@ -14,15 +12,10 @@ class DashboardBanner extends ConsumerWidget {
     ref.watch(dashboardScreenControllerProvider);
     final activeState = ref.read(dashboardScreenControllerProvider.notifier).effectiveState;
 
-    return Skeletonizer(
-      enabled: activeState.checkState?.isNullOrLoading ?? false,
-      effect: PulseEffect(
-        from: AppTheme().gray900Theme(context).withAlpha(90),
-        to: AppTheme().gray900Theme(context).withAlpha(240),
-        duration: const Duration(milliseconds: 800),
-      ),
-      child: _buildBannerContent(context, activeState),
-    );
+    // Shimmer is handled by [DashboardScreen]'s root Skeletonizer; the old
+    // enabled flag used [effectiveState].checkState and stayed off while real
+    // checkState was still null (mockState reports data, not loading).
+    return _buildBannerContent(context, activeState);
   }
 
   Widget _buildBannerContent(BuildContext context, DashboardScreenState activeState) {
@@ -51,34 +44,32 @@ class DashboardBanner extends ConsumerWidget {
               }
             }
           },
-          child: Skeleton.leaf(
-            child: Image.network(
-              activeState.bannerImage!,
-              fit: BoxFit.cover, // Aspect="Fill" equivalent
-              width: double.infinity,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  color: AppTheme().gray900Theme(context),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+          child: Image.network(
+            activeState.bannerImage!,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                color: AppTheme().gray900Theme(context),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 200,
+                color: AppTheme().gray900Theme(context),
+                child: const Center(
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.white,
+                    size: 50,
                   ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 200,
-                  color: AppTheme().gray900Theme(context),
-                  child: const Center(
-                    child: Icon(
-                      Icons.error,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-                  ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

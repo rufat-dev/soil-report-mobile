@@ -44,11 +44,14 @@ class StatisticsScreenController extends _$StatisticsScreenController
     outOfRangeCount: 0,
   );
 
-  Future<void> loadStatistics() async {
+  /// When [forceRemote] is true (pull-to-refresh), skips repository read-through
+  /// cache so each endpoint is fetched again.
+  Future<void> loadStatistics({bool forceRemote = false}) async {
     state = state.copyWith(checkState: const AsyncValue.loading());
+    final useCache = !forceRemote;
     try {
       final repo = ref.read(statisticsRepositoryProvider);
-      final devices = await repo.getDevices();
+      final devices = await repo.getDevices(useCache: useCache);
       if (devices.items.isEmpty) {
         state = const StatisticsScreenState(
           checkState: AsyncValue.data(null),
@@ -76,11 +79,25 @@ class StatisticsScreenController extends _$StatisticsScreenController
         return;
       }
 
-      final latest = await repo.getDeviceStateLatest(deviceId);
-      final hourly = await repo.getDeviceTimeseriesHourly(deviceId, limit: 24 * 35);
-      final trends = await repo.getDeviceTrendsDaily(deviceId, limit: 35);
-      final anomalies = await repo.getDeviceAnomalies(deviceId);
-      final outOfRange = await repo.getOutOfRangeEvents(deviceId, limit: 100);
+      final latest =
+          await repo.getDeviceStateLatest(deviceId, useCache: useCache);
+      final hourly = await repo.getDeviceTimeseriesHourly(
+        deviceId,
+        limit: 24 * 35,
+        useCache: useCache,
+      );
+      final trends = await repo.getDeviceTrendsDaily(
+        deviceId,
+        limit: 35,
+        useCache: useCache,
+      );
+      final anomalies =
+          await repo.getDeviceAnomalies(deviceId, useCache: useCache);
+      final outOfRange = await repo.getOutOfRangeEvents(
+        deviceId,
+        limit: 100,
+        useCache: useCache,
+      );
       final points = hourly?.points ?? const <DeviceTimeseriesPointResponse>[];
 
       final stats = <SoilStatisticModel>[

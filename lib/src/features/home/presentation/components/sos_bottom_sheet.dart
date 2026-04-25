@@ -106,6 +106,7 @@ class SosBottomSheet extends ConsumerWidget {
   }
 
   Future<void> _launchPhoneCall(BuildContext context, String phoneNumber) async {
+    final l10n = AppLocalizations.of(context);
     final phoneUri = Uri(scheme: 'tel', path: phoneNumber);
     try {
       await phoneUri.launchCall();
@@ -113,7 +114,7 @@ class SosBottomSheet extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Could not launch phone call to $phoneNumber'),
+            content: Text(l10n.sosCallLaunchError(phoneNumber)),
             backgroundColor: AppTheme().red,
           ),
         );
@@ -122,11 +123,12 @@ class SosBottomSheet extends ConsumerWidget {
   }
 
   Future<void> _handleLocationSos(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Row(
+        content: Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 20,
               height: 20,
               child: CircularProgressIndicator(
@@ -134,8 +136,8 @@ class SosBottomSheet extends ConsumerWidget {
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             ),
-            SizedBox(width: 16),
-            Text('Getting your location...'),
+            const SizedBox(width: 16),
+            Text(l10n.sosGettingLocation),
           ],
         ),
         backgroundColor: AppTheme().orange,
@@ -177,24 +179,23 @@ class SosBottomSheet extends ConsumerWidget {
   }
 
   void _showLocationErrorDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Location Required'),
-        content: const Text(
-          'Location access is required for SOS services. Please enable location services in your device settings.',
-        ),
+        title: Text(l10n.sosLocationRequiredTitle),
+        content: Text(l10n.sosLocationRequiredBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(l10n.sosLocationCancel),
           ),
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
               await Geolocator.openAppSettings();
             },
-            child: const Text('Open Settings'),
+            child: Text(l10n.sosLocationOpenSettings),
           ),
         ],
       ),

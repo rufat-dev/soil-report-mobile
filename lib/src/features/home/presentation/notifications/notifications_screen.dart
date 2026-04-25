@@ -55,8 +55,16 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             enabled: isLoading,
             child: SizedBox(
               width: 100.sw(context),
-              child: CustomScrollView(
-                slivers: [
+              child: RefreshIndicator(
+                color: Theme.of(context).colorScheme.primary,
+                onRefresh: () => ref
+                    .read(notificationsControllerProvider.notifier)
+                    .refreshNotifications(),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
+                  ),
+                  slivers: [
                   SliverToBoxAdapter(
                     child: SizedBox(height: 100.devicePaddingTop(context)),
                   ),
@@ -76,6 +84,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                       child: _buildEmptyState(context, l10n),
                     ),
                 ],
+                ),
               ),
             ),
           ),

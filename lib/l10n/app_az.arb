@@ -259,5 +259,161 @@
   "sosTransport": "Nəqliyyat",
   "sosTravel": "Səyahət",
   "sosProperty": "Əmlak",
-  "sosCallCenter": "Əlaqə Mərkəzi"
+  "sosCallCenter": "Əlaqə Mərkəzi",
+  "commonGoHome": "Ana səhifəyə keç",
+  "notFoundPageMessage": "404 - Səhifə tapılmadı!",
+  "authAuthorizationFailedTryAgain": "Avtorizasiya uğursuz oldu. Yenidən cəhd edin.",
+  "loginEmailLabel": "E-poçt",
+  "loginResetPasswordTitle": "Şifrəni sıfırla",
+  "loginEmailRequired": "E-poçt məcburidir",
+  "loginEmailHint": "E-poçt",
+  "loginResetPasswordSend": "Göndər",
+  "recommendationsHeaderSubtitle": "Hazırda diqqət tələb edən və yaxın zamanda risk yarada biləcək məsələlər üçün prioritetli tövsiyələr axını.",
+  "recommendationsEmptyStableSubtitle": "Hazırda tövsiyə yoxdur. Quruluşunuz stabil görünür.",
+  "recommendationsNeedsAttentionTitle": "Diqqət tələb edir",
+  "recommendationsNeedsAttentionSubtitle": "İlk növbədə icra edilməli yüksək prioritetli addımlar.",
+  "recommendationsSuggestedActionsTitle": "Təklif olunan addımlar",
+  "recommendationsSuggestedActionsSubtitle": "Növbəti yoxlamalar və optimizasiya tövsiyələri.",
+  "recommendationsForecastOutlookTitle": "Proqnoz görünüşü",
+  "recommendationsForecastOutlookSubtitle": "Proqnozlaşdırılan şərait və mümkün risk siqnalları.",
+  "recommendationsDeviceLabel": "Cihaz: {siteLabel}",
+  "@recommendationsDeviceLabel": {
+    "placeholders": {
+      "siteLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsNoForecastHorizon": "Proqnoz müddəti yoxdur",
+  "recommendationsUnknownDevice": "Naməlum cihaz",
+  "recommendationsDeviceShort": "Cihaz {id}",
+  "@recommendationsDeviceShort": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendationsPredictedMetric": "Proqnoz göstəricisi",
+  "recommendationsCategoryFertilization": "Gübrələmə",
+  "recommendationsCategoryIrrigation": "Suvarma",
+  "recommendationsCategorySoil": "Torpaq",
+  "recommendationsCategoryPest": "Zərərverici",
+  "recommendationsCategoryGeneral": "Ümumi",
+  "recommendationsRecencyMinutesAgo": "{count} dəq əvvəl",
+  "@recommendationsRecencyMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyHoursAgo": "{count} saat əvvəl",
+  "@recommendationsRecencyHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRecencyDaysAgo": "{count} gün əvvəl",
+  "@recommendationsRecencyDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsRiskMonitor": "İzlə",
+  "recommendationsRiskWatch": "Nəzarətdə saxla",
+  "recommendationsRiskRisk": "Risk",
+  "recommendationsRiskStable": "Stabil",
+  "recommendationsSummaryUrgent": "{count} təcili",
+  "@recommendationsSummaryUrgent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummarySuggested": "{count} təklif",
+  "@recommendationsSummarySuggested": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsSummaryForecasts": "{count} proqnoz",
+  "@recommendationsSummaryForecasts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recommendationsLoadErrorTitle": "Tövsiyələr yüklənə bilmədi",
+  "recommendationsLoadErrorSubtitle": "Sessiyanın vaxtı bitmiş ola bilər. Yeniləyin və ya yenidən cəhd edin.",
+  "otpEmailVerificationTitle": "E-poçt təsdiqi",
+  "otpPhoneVerificationTitle": "Telefon təsdiqi",
+  "otpEnterCodeSentTo": "{channel} ünvanına göndərilmiş 6 rəqəmli kodu daxil edin",
+  "@otpEnterCodeSentTo": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "otpEmailChannel": "e-poçt",
+  "otpPhoneChannel": "telefon",
+  "otpCodeHint": "------",
+  "otpCodeExpiresInSeconds": "Kodun vaxtı: {seconds} saniyə",
+  "@otpCodeExpiresInSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "otpResendEmail": "E-poçtu yenidən göndər",
+  "otpResendSms": "SMS-i yenidən göndər",
+  "otpCancel": "Ləğv et",
+  "profileVerificationSuccessful": "Təsdiq uğurludur!",
+  "changeAccountAddNewAccountTapped": "Yeni hesab əlavə et seçildi",
+  "sosCallLaunchError": "{phoneNumber} nömrəsinə zəng etmək mümkün olmadı",
+  "@sosCallLaunchError": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "sosGettingLocation": "Məkanınız alınır...",
+  "sosLocationRequiredTitle": "Məkan tələb olunur",
+  "sosLocationRequiredBody": "SOS xidmətləri üçün məkan girişi tələb olunur. Zəhmət olmasa cihaz ayarlarında məkan xidmətlərini aktiv edin.",
+  "sosLocationCancel": "Ləğv et",
+  "sosLocationOpenSettings": "Ayarları aç",
+  "exceptionPasswordNotMatch": "Şifrələr uyğun gəlmir",
+  "exceptionPasswordInvalid": "Şifrə düzgün deyil",
+  "exceptionCouldNotSetPassword": "Şifrə təyin edilə bilmədi",
+  "exceptionWrongPhoneNumber": "Yanlış telefon nömrəsi",
+  "exceptionWrongOtp": "Yanlış OTP kodu",
+  "exceptionClientStatsFetchFailed": "Müştəri statistikası alına bilmədi",
+  "exceptionUserNotFound": "İstifadəçi tapılmadı",
+  "exceptionNetworkIssue": "Şəbəkə problemi",
+  "exceptionSystemError": "Sistem xətası",
+  "exceptionBiometricAuthenticationFailed": "Biometrik doğrulama uğursuz oldu",
+  "exceptionBiometricAuthenticationNotSupported": "Biometrik doğrulama dəstəklənmir",
+  "exceptionJsonParse": "Server cavabı emal edilə bilmədi",
+  "exceptionApiIssue": "API-dən düzgün cavab alınmadı",
+  "exceptionUnauthorizedUser": "İstifadəçi səlahiyyətli deyil",
+  "exceptionEmptyEmail": "E-poçt boş ola bilməz",
+  "exceptionEmptyFullName": "Ad soyad boş ola bilməz",
+  "exceptionInvalidFullName": "Zəhmət olmasa ad soyadı tam daxil edin",
+  "exceptionInvalidEmailFormat": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+  "exceptionEmailVerificationFailed": "Təsdiq e-poçtu göndərilə bilmədi. Yenidən cəhd edin.",
+  "exceptionEmptyPhoneNumber": "Telefon nömrəsi boş ola bilməz",
+  "exceptionInvalidPhoneNumberFormat": "Zəhmət olmasa düzgün telefon nömrəsi daxil edin",
+  "exceptionSmsVerificationFailed": "Təsdiq SMS-i göndərilə bilmədi. Yenidən cəhd edin.",
+  "exceptionProfileUpdateError": "Profil yenilənərkən xəta baş verdi"
 }

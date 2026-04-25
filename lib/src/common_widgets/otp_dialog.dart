@@ -1,4 +1,5 @@
 import 'package:soilreport/src/utils/app_theme.dart';
+import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
@@ -70,6 +71,7 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
@@ -80,8 +82,8 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
           children: [
             Text(
               widget.isEmailVerifyOtp
-                  ? 'Email Verification'
-                  : 'Phone Verification',
+                  ? l10n.otpEmailVerificationTitle
+                  : l10n.otpPhoneVerificationTitle,
               style: Theme.of(
                 context,
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -97,7 +99,9 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Enter the 6-digit code sent to your ${widget.isEmailVerifyOtp ? 'email' : 'phone'}',
+              l10n.otpEnterCodeSentTo(
+                widget.isEmailVerifyOtp ? l10n.otpEmailChannel : l10n.otpPhoneChannel,
+              ),
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -114,7 +118,7 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
                   context,
                 ).textTheme.headlineMedium?.copyWith(letterSpacing: 10),
                 decoration: InputDecoration(
-                  hintText: '------',
+                  hintText: l10n.otpCodeHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -128,7 +132,7 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Code expires in: $_counter seconds',
+              l10n.otpCodeExpiresInSeconds(_counter),
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
@@ -146,7 +150,9 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
                   ),
                 ),
                 child: Text(
-                  widget.isEmailVerifyOtp ? 'Resend Email' : 'Resend SMS',
+                  widget.isEmailVerifyOtp
+                      ? l10n.otpResendEmail
+                      : l10n.otpResendSms,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -157,7 +163,7 @@ class _OtpDialogState extends ConsumerState<OtpDialog> {
             const SizedBox(height: 20),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel', style: TextStyle(fontSize: 16)),
+              child: Text(l10n.otpCancel, style: const TextStyle(fontSize: 16)),
             ),
           ],
         ),

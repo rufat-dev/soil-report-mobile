@@ -38,20 +38,24 @@ class RecommendationsScreenController extends _$RecommendationsScreenController
         hasLoadError: false,
       );
 
-  Future<void> loadRecommendations() async {
+  /// When [forceRemote] is true (pull-to-refresh / retry), skips cache on devices
+  /// and AI recommendation/forecast endpoints.
+  Future<void> loadRecommendations({bool forceRemote = false}) async {
     state = state.copyWith(checkState: const AsyncValue.loading());
+    final useCache = !forceRemote;
     try {
       final repo = ref.read(recommendationsRepositoryProvider);
       final devicesRepo = ref.read(dashboardDevicesRepositoryProvider);
-      final devices = await devicesRepo.getDevices();
+      final devices = await devicesRepo.getDevices(useCache: useCache);
       final deviceNameById = {
         for (final d in devices)
           d.deviceId: (d.deviceName?.trim().isNotEmpty ?? false)
               ? d.deviceName!.trim()
               : d.deviceId,
       };
-      final response = await repo.getRecommendations(limit: 50);
-      final forecasts = await repo.getForecasts(limit: 20);
+      final response =
+          await repo.getRecommendations(limit: 50, useCache: useCache);
+      final forecasts = await repo.getForecasts(limit: 20, useCache: useCache);
       final cutoff = DateTime.now().subtract(const Duration(days: 7));
       final recommendations = <SoilRecommendationModel>[];
       for (var i = 0; i < response.items.length; i++) {

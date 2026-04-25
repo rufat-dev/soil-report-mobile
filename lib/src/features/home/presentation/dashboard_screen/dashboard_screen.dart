@@ -2,8 +2,10 @@ import 'package:soilreport/src/core/utils/size_extension.dart';
 import 'package:soilreport/src/features/home/presentation/components/dashboard_banner.dart';
 import 'package:soilreport/src/features/home/presentation/components/dashboard_devices_section.dart';
 import 'package:soilreport/src/features/home/presentation/components/dashboard_groups_section.dart';
+import 'package:soilreport/src/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../components/dashboard_header.dart';
 import '../components/dashboard_stats.dart';
 import 'dashboard_screen_controller.dart';
@@ -27,9 +29,9 @@ class _DashboardPageState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     ref.watch(dashboardScreenControllerProvider);
-    final activeState = ref
-        .read(dashboardScreenControllerProvider.notifier)
-        .effectiveState;
+    final notifier = ref.read(dashboardScreenControllerProvider.notifier);
+    final activeState = notifier.effectiveState;
+    final showSkeleton = notifier.isEffectiveLoading;
     return Container(
       width: 100.sw(context),
       color: Theme.of(context).colorScheme.surface,
@@ -39,65 +41,71 @@ class _DashboardPageState extends ConsumerState<DashboardScreen> {
               .read(dashboardScreenControllerProvider.notifier)
               .loadScreen(useCache: false);
         },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
+        child: Skeletonizer(
+          enabled: showSkeleton,
+          ignorePointers: showSkeleton,
+          effect: PulseEffect(
+            from: AppTheme().elevatedSurface(context).withAlpha(100),
+            to: AppTheme().elevatedSurface(context).withAlpha(240),
+            duration: const Duration(milliseconds: 800),
           ),
-          child: Column(
-            children: [
-              SizedBox(height: 100.devicePaddingTop(context)),
-              const SizedBox(height: 15),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: const DashboardHeader(),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                width: double.maxFinite,
-                child: const DashboardStats(),
-              ),
-              // const SizedBox(height: 15),
-              // Container(
-              //   padding: EdgeInsets.only(left: 15),
-              //   height: 107,
-              //   width: double.maxFinite,
-              //   child: const DashboardStories(),
-              // ),
-              const SizedBox(height: 15),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                width: double.maxFinite,
-                child: DashboardDevicesSection(
-                  devices: activeState.devices,
-                  groups: activeState.groups,
-                  latestStateByDeviceId: activeState.latestStateByDeviceId,
-                  attentionDeviceIds: activeState.attentionDeviceIds,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics(),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 100.devicePaddingTop(context)),
+                const SizedBox(height: 15),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: const DashboardHeader(),
                 ),
-              ),
-              const SizedBox(height: 15),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                width: double.maxFinite,
-                child: DashboardGroupsSection(
-                  groups: activeState.groups,
-                  devices: activeState.devices,
-                  attentionDeviceIds: activeState.attentionDeviceIds,
+                const SizedBox(height: 15),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  width: double.maxFinite,
+                  child: const DashboardStats(),
                 ),
-              ),
-              const SizedBox(height: 10),
-              const SizedBox(height: 15),
-              const SizedBox(height: 15),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 15,
+                // const SizedBox(height: 15),
+                // Container(
+                //   padding: EdgeInsets.only(left: 15),
+                //   height: 107,
+                //   width: double.maxFinite,
+                //   child: const DashboardStories(),
+                // ),
+                const SizedBox(height: 15),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  width: double.maxFinite,
+                  child: DashboardDevicesSection(
+                    devices: activeState.devices,
+                    groups: activeState.groups,
+                    latestStateByDeviceId: activeState.latestStateByDeviceId,
+                    attentionDeviceIds: activeState.attentionDeviceIds,
+                  ),
                 ),
-                alignment: Alignment.centerLeft,
-                width: 100.sw(context),
-                child: DashboardBanner(),
-              ),
-            ],
+                const SizedBox(height: 15),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  width: double.maxFinite,
+                  child: DashboardGroupsSection(
+                    groups: activeState.groups,
+                    devices: activeState.devices,
+                    attentionDeviceIds: activeState.attentionDeviceIds,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const SizedBox(height: 15),
+                const SizedBox(height: 15),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  alignment: Alignment.centerLeft,
+                  width: 100.sw(context),
+                  child: DashboardBanner(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

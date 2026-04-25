@@ -747,4 +747,278 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sosCallCenter => 'Call Center';
+
+  @override
+  String get commonGoHome => 'Go Home';
+
+  @override
+  String get notFoundPageMessage => '404 - Page not found!';
+
+  @override
+  String get authAuthorizationFailedTryAgain =>
+      'Authorization failed. Please try again.';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginResetPasswordTitle => 'Reset password';
+
+  @override
+  String get loginEmailRequired => 'Email is required';
+
+  @override
+  String get loginEmailHint => 'Email';
+
+  @override
+  String get loginResetPasswordSend => 'Send';
+
+  @override
+  String get recommendationsHeaderSubtitle =>
+      'Prioritized advisory feed showing what needs attention now and what may become risky next.';
+
+  @override
+  String get recommendationsEmptyStableSubtitle =>
+      'No advisory items right now. Your setup looks stable.';
+
+  @override
+  String get recommendationsNeedsAttentionTitle => 'Needs Attention';
+
+  @override
+  String get recommendationsNeedsAttentionSubtitle =>
+      'High-priority items to handle first.';
+
+  @override
+  String get recommendationsSuggestedActionsTitle => 'Suggested Actions';
+
+  @override
+  String get recommendationsSuggestedActionsSubtitle =>
+      'Follow-up checks and optimization recommendations.';
+
+  @override
+  String get recommendationsForecastOutlookTitle => 'Forecast Outlook';
+
+  @override
+  String get recommendationsForecastOutlookSubtitle =>
+      'Predicted conditions and possible risk signals.';
+
+  @override
+  String recommendationsDeviceLabel(String siteLabel) {
+    return 'Device: $siteLabel';
+  }
+
+  @override
+  String get recommendationsNoForecastHorizon => 'No forecast horizon';
+
+  @override
+  String get recommendationsUnknownDevice => 'Unknown device';
+
+  @override
+  String recommendationsDeviceShort(String id) {
+    return 'Device $id';
+  }
+
+  @override
+  String get recommendationsPredictedMetric => 'Predicted metric';
+
+  @override
+  String get recommendationsCategoryFertilization => 'Fertilization';
+
+  @override
+  String get recommendationsCategoryIrrigation => 'Irrigation';
+
+  @override
+  String get recommendationsCategorySoil => 'Soil';
+
+  @override
+  String get recommendationsCategoryPest => 'Pest';
+
+  @override
+  String get recommendationsCategoryGeneral => 'General';
+
+  @override
+  String recommendationsRecencyMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String recommendationsRecencyHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String recommendationsRecencyDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String get recommendationsRiskMonitor => 'Monitor';
+
+  @override
+  String get recommendationsRiskWatch => 'Watch';
+
+  @override
+  String get recommendationsRiskRisk => 'Risk';
+
+  @override
+  String get recommendationsRiskStable => 'Stable';
+
+  @override
+  String recommendationsSummaryUrgent(int count) {
+    return '$count urgent';
+  }
+
+  @override
+  String recommendationsSummarySuggested(int count) {
+    return '$count suggested';
+  }
+
+  @override
+  String recommendationsSummaryForecasts(int count) {
+    return '$count forecasts';
+  }
+
+  @override
+  String get recommendationsLoadErrorTitle => 'Could not load recommendations';
+
+  @override
+  String get recommendationsLoadErrorSubtitle =>
+      'Session may have expired. Pull to refresh or retry now.';
+
+  @override
+  String get otpEmailVerificationTitle => 'Email Verification';
+
+  @override
+  String get otpPhoneVerificationTitle => 'Phone Verification';
+
+  @override
+  String otpEnterCodeSentTo(String channel) {
+    return 'Enter the 6-digit code sent to your $channel';
+  }
+
+  @override
+  String get otpEmailChannel => 'email';
+
+  @override
+  String get otpPhoneChannel => 'phone';
+
+  @override
+  String get otpCodeHint => '------';
+
+  @override
+  String otpCodeExpiresInSeconds(int seconds) {
+    return 'Code expires in: $seconds seconds';
+  }
+
+  @override
+  String get otpResendEmail => 'Resend Email';
+
+  @override
+  String get otpResendSms => 'Resend SMS';
+
+  @override
+  String get otpCancel => 'Cancel';
+
+  @override
+  String get profileVerificationSuccessful => 'Verification successful!';
+
+  @override
+  String get changeAccountAddNewAccountTapped => 'Add New Account tapped';
+
+  @override
+  String sosCallLaunchError(String phoneNumber) {
+    return 'Could not launch phone call to $phoneNumber';
+  }
+
+  @override
+  String get sosGettingLocation => 'Getting your location...';
+
+  @override
+  String get sosLocationRequiredTitle => 'Location Required';
+
+  @override
+  String get sosLocationRequiredBody =>
+      'Location access is required for SOS services. Please enable location services in your device settings.';
+
+  @override
+  String get sosLocationCancel => 'Cancel';
+
+  @override
+  String get sosLocationOpenSettings => 'Open Settings';
+
+  @override
+  String get exceptionPasswordNotMatch => 'Passwords don\'t match';
+
+  @override
+  String get exceptionPasswordInvalid => 'Password is not valid';
+
+  @override
+  String get exceptionCouldNotSetPassword => 'Couldn\'t set password';
+
+  @override
+  String get exceptionWrongPhoneNumber => 'Wrong phone number';
+
+  @override
+  String get exceptionWrongOtp => 'Wrong OTP code';
+
+  @override
+  String get exceptionClientStatsFetchFailed => 'Couldn\'t fetch client stats';
+
+  @override
+  String get exceptionUserNotFound => 'User not found';
+
+  @override
+  String get exceptionNetworkIssue => 'Network issue';
+
+  @override
+  String get exceptionSystemError => 'System error';
+
+  @override
+  String get exceptionBiometricAuthenticationFailed =>
+      'Biometric authentication failed';
+
+  @override
+  String get exceptionBiometricAuthenticationNotSupported =>
+      'Biometric authentication is not supported';
+
+  @override
+  String get exceptionJsonParse => 'Couldn\'t parse server response';
+
+  @override
+  String get exceptionApiIssue => 'Didn\'t get proper response from API';
+
+  @override
+  String get exceptionUnauthorizedUser => 'User unauthorized';
+
+  @override
+  String get exceptionEmptyEmail => 'Email cannot be empty';
+
+  @override
+  String get exceptionEmptyFullName => 'Full name cannot be empty';
+
+  @override
+  String get exceptionInvalidFullName => 'Please enter your full name';
+
+  @override
+  String get exceptionInvalidEmailFormat =>
+      'Please enter a valid email address';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'Failed to send verification email. Please try again.';
+
+  @override
+  String get exceptionEmptyPhoneNumber => 'Phone number cannot be empty';
+
+  @override
+  String get exceptionInvalidPhoneNumberFormat =>
+      'Please enter a valid phone number';
+
+  @override
+  String get exceptionSmsVerificationFailed =>
+      'Failed to send verification SMS. Please try again.';
+
+  @override
+  String get exceptionProfileUpdateError =>
+      'An error occurred while updating profile';
 }

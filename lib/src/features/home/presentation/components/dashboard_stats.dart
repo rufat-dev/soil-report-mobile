@@ -1,7 +1,6 @@
 import 'package:soilreport/src/features/home/presentation/dashboard_screen/dashboard_screen_controller.dart';
 import 'package:soilreport/src/localization/app_localizations.dart';
 import 'package:soilreport/src/utils/app_theme.dart';
-import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,12 +10,13 @@ class DashboardStats extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(dashboardScreenControllerProvider);
-    final activeState = ref
-        .read(dashboardScreenControllerProvider.notifier)
-        .effectiveState;
+    final notifier = ref.read(dashboardScreenControllerProvider.notifier);
+    final activeState = notifier.effectiveState;
     final l10n = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
-    final isLoading = activeState.checkState.isNullOrLoading;
+    // Use notifier loading flag: [effectiveState] swaps in mockState when real
+    // checkState is null, and that mock state uses data(null) so it looks "loaded".
+    final isLoading = notifier.isEffectiveLoading;
     final deviceCount = activeState.devices.length;
     final groupCount = activeState.groups.length;
     final attentionCount = activeState.attentionDeviceIds.length;

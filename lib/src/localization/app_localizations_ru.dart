@@ -747,4 +747,281 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sosCallCenter => 'Колл-центр';
+
+  @override
+  String get commonGoHome => 'На главную';
+
+  @override
+  String get notFoundPageMessage => '404 - Страница не найдена!';
+
+  @override
+  String get authAuthorizationFailedTryAgain =>
+      'Ошибка авторизации. Попробуйте снова.';
+
+  @override
+  String get loginEmailLabel => 'Эл. почта';
+
+  @override
+  String get loginResetPasswordTitle => 'Сброс пароля';
+
+  @override
+  String get loginEmailRequired => 'Email обязателен';
+
+  @override
+  String get loginEmailHint => 'Email';
+
+  @override
+  String get loginResetPasswordSend => 'Отправить';
+
+  @override
+  String get recommendationsHeaderSubtitle =>
+      'Лента приоритетных советов: что требует внимания сейчас и что может стать риском дальше.';
+
+  @override
+  String get recommendationsEmptyStableSubtitle =>
+      'Сейчас нет рекомендаций. Показатели выглядят стабильно.';
+
+  @override
+  String get recommendationsNeedsAttentionTitle => 'Требует внимания';
+
+  @override
+  String get recommendationsNeedsAttentionSubtitle =>
+      'Сначала выполните задачи с высоким приоритетом.';
+
+  @override
+  String get recommendationsSuggestedActionsTitle => 'Рекомендуемые действия';
+
+  @override
+  String get recommendationsSuggestedActionsSubtitle =>
+      'Повторные проверки и рекомендации по оптимизации.';
+
+  @override
+  String get recommendationsForecastOutlookTitle => 'Прогноз';
+
+  @override
+  String get recommendationsForecastOutlookSubtitle =>
+      'Ожидаемые условия и возможные сигналы риска.';
+
+  @override
+  String recommendationsDeviceLabel(String siteLabel) {
+    return 'Устройство: $siteLabel';
+  }
+
+  @override
+  String get recommendationsNoForecastHorizon => 'Нет горизонта прогноза';
+
+  @override
+  String get recommendationsUnknownDevice => 'Неизвестное устройство';
+
+  @override
+  String recommendationsDeviceShort(String id) {
+    return 'Устройство $id';
+  }
+
+  @override
+  String get recommendationsPredictedMetric => 'Прогнозируемый показатель';
+
+  @override
+  String get recommendationsCategoryFertilization => 'Удобрение';
+
+  @override
+  String get recommendationsCategoryIrrigation => 'Орошение';
+
+  @override
+  String get recommendationsCategorySoil => 'Почва';
+
+  @override
+  String get recommendationsCategoryPest => 'Вредители';
+
+  @override
+  String get recommendationsCategoryGeneral => 'Общее';
+
+  @override
+  String recommendationsRecencyMinutesAgo(int count) {
+    return '$count мин назад';
+  }
+
+  @override
+  String recommendationsRecencyHoursAgo(int count) {
+    return '$count ч назад';
+  }
+
+  @override
+  String recommendationsRecencyDaysAgo(int count) {
+    return '$count д назад';
+  }
+
+  @override
+  String get recommendationsRiskMonitor => 'Мониторинг';
+
+  @override
+  String get recommendationsRiskWatch => 'Наблюдать';
+
+  @override
+  String get recommendationsRiskRisk => 'Риск';
+
+  @override
+  String get recommendationsRiskStable => 'Стабильно';
+
+  @override
+  String recommendationsSummaryUrgent(int count) {
+    return '$count срочно';
+  }
+
+  @override
+  String recommendationsSummarySuggested(int count) {
+    return '$count рекомендовано';
+  }
+
+  @override
+  String recommendationsSummaryForecasts(int count) {
+    return '$count прогнозов';
+  }
+
+  @override
+  String get recommendationsLoadErrorTitle =>
+      'Не удалось загрузить рекомендации';
+
+  @override
+  String get recommendationsLoadErrorSubtitle =>
+      'Сессия могла истечь. Обновите экран или попробуйте снова.';
+
+  @override
+  String get otpEmailVerificationTitle => 'Подтверждение email';
+
+  @override
+  String get otpPhoneVerificationTitle => 'Подтверждение телефона';
+
+  @override
+  String otpEnterCodeSentTo(String channel) {
+    return 'Введите 6-значный код, отправленный на $channel';
+  }
+
+  @override
+  String get otpEmailChannel => 'email';
+
+  @override
+  String get otpPhoneChannel => 'телефон';
+
+  @override
+  String get otpCodeHint => '------';
+
+  @override
+  String otpCodeExpiresInSeconds(int seconds) {
+    return 'Срок действия кода: $seconds сек';
+  }
+
+  @override
+  String get otpResendEmail => 'Отправить email повторно';
+
+  @override
+  String get otpResendSms => 'Отправить SMS повторно';
+
+  @override
+  String get otpCancel => 'Отмена';
+
+  @override
+  String get profileVerificationSuccessful => 'Подтверждение успешно!';
+
+  @override
+  String get changeAccountAddNewAccountTapped =>
+      'Нажато «Добавить новый аккаунт»';
+
+  @override
+  String sosCallLaunchError(String phoneNumber) {
+    return 'Не удалось начать звонок на номер $phoneNumber';
+  }
+
+  @override
+  String get sosGettingLocation => 'Определяем ваше местоположение...';
+
+  @override
+  String get sosLocationRequiredTitle => 'Требуется геолокация';
+
+  @override
+  String get sosLocationRequiredBody =>
+      'Для SOS-сервисов нужен доступ к местоположению. Включите геолокацию в настройках устройства.';
+
+  @override
+  String get sosLocationCancel => 'Отмена';
+
+  @override
+  String get sosLocationOpenSettings => 'Открыть настройки';
+
+  @override
+  String get exceptionPasswordNotMatch => 'Пароли не совпадают';
+
+  @override
+  String get exceptionPasswordInvalid => 'Некорректный пароль';
+
+  @override
+  String get exceptionCouldNotSetPassword => 'Не удалось установить пароль';
+
+  @override
+  String get exceptionWrongPhoneNumber => 'Неверный номер телефона';
+
+  @override
+  String get exceptionWrongOtp => 'Неверный OTP-код';
+
+  @override
+  String get exceptionClientStatsFetchFailed =>
+      'Не удалось получить статистику клиента';
+
+  @override
+  String get exceptionUserNotFound => 'Пользователь не найден';
+
+  @override
+  String get exceptionNetworkIssue => 'Проблема с сетью';
+
+  @override
+  String get exceptionSystemError => 'Системная ошибка';
+
+  @override
+  String get exceptionBiometricAuthenticationFailed =>
+      'Сбой биометрической аутентификации';
+
+  @override
+  String get exceptionBiometricAuthenticationNotSupported =>
+      'Биометрическая аутентификация не поддерживается';
+
+  @override
+  String get exceptionJsonParse => 'Не удалось обработать ответ сервера';
+
+  @override
+  String get exceptionApiIssue => 'Не получен корректный ответ от API';
+
+  @override
+  String get exceptionUnauthorizedUser => 'Пользователь не авторизован';
+
+  @override
+  String get exceptionEmptyEmail => 'Email не может быть пустым';
+
+  @override
+  String get exceptionEmptyFullName => 'Полное имя не может быть пустым';
+
+  @override
+  String get exceptionInvalidFullName => 'Пожалуйста, введите полное имя';
+
+  @override
+  String get exceptionInvalidEmailFormat =>
+      'Введите корректный адрес электронной почты';
+
+  @override
+  String get exceptionEmailVerificationFailed =>
+      'Не удалось отправить письмо подтверждения. Попробуйте снова.';
+
+  @override
+  String get exceptionEmptyPhoneNumber => 'Номер телефона не может быть пустым';
+
+  @override
+  String get exceptionInvalidPhoneNumberFormat =>
+      'Введите корректный номер телефона';
+
+  @override
+  String get exceptionSmsVerificationFailed =>
+      'Не удалось отправить SMS подтверждения. Попробуйте снова.';
+
+  @override
+  String get exceptionProfileUpdateError =>
+      'Произошла ошибка при обновлении профиля';
 }
