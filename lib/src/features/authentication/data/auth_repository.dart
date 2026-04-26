@@ -38,11 +38,8 @@ part 'auth_repository.g.dart';
 
 class AuthRepository extends RestService {
   final SecureStorage _secureStorage;
-  AuthRepository(
-    this._secureStorage,
-    CacheDatabase cache,
-    Dio dio,
-  ) : super(cache, dio);
+  AuthRepository(this._secureStorage, CacheDatabase cache, Dio dio)
+    : super(cache, dio);
 
   final _authState = InMemoryStore<UserModel?>(null);
   Stream<UserModel?> authStateChanges() => _authState.stream;
@@ -52,7 +49,10 @@ class AuthRepository extends RestService {
   //  Firebase Identity Toolkit: Sign In with Email & Password
   //  POST identitytoolkit.googleapis.com/v1/accounts:signInWithPassword
   // ════════════════════════════════════════════════════════════════════
-  Future<void> getAccessTokenByTraditionalLogin(String email, String password) async {
+  Future<void> getAccessTokenByTraditionalLogin(
+    String email,
+    String password,
+  ) async {
     try {
       final payload = FirebaseEmailPasswordAuthRequest(
         email: email,
@@ -64,10 +64,12 @@ class AuthRepository extends RestService {
         options: Options(contentType: 'application/json'),
       );
 
-      if (response.data == null || response.statusCode != 200) throw UserNotFoundException();
+      if (response.data == null || response.statusCode != 200)
+        throw UserNotFoundException();
       final authResponse = FirebaseAuthResponse.fromJson(response.data!);
 
-      if (authResponse.idToken.isNullOrEmpty || authResponse.refreshToken.isNullOrEmpty) {
+      if (authResponse.idToken.isNullOrEmpty ||
+          authResponse.refreshToken.isNullOrEmpty) {
         throw SystemErrorException();
       }
 
@@ -85,7 +87,10 @@ class AuthRepository extends RestService {
   //  Firebase Identity Toolkit: Register with Email & Password
   //  POST identitytoolkit.googleapis.com/v1/accounts:signUp
   // ════════════════════════════════════════════════════════════════════
-  Future<FirebaseAuthResponse> registerWithEmailPassword(String email, String password) async {
+  Future<FirebaseAuthResponse> registerWithEmailPassword(
+    String email,
+    String password,
+  ) async {
     try {
       final payload = FirebaseEmailPasswordAuthRequest(
         email: email,
@@ -102,8 +107,11 @@ class AuthRepository extends RestService {
       }
       final authResponse = FirebaseAuthResponse.fromJson(response.data!);
 
-      if (authResponse.idToken.isNullOrEmpty || authResponse.refreshToken.isNullOrEmpty) {
-        throw SystemErrorException(sysMessage: 'Registration returned empty tokens');
+      if (authResponse.idToken.isNullOrEmpty ||
+          authResponse.refreshToken.isNullOrEmpty) {
+        throw SystemErrorException(
+          sysMessage: 'Registration returned empty tokens',
+        );
       }
 
       final scopedAccess = AccessModel(
@@ -153,9 +161,7 @@ class AuthRepository extends RestService {
       }
       return BootstrapResponseModel.fromJson(response.data!);
     } on DioException catch (ex) {
-      throw SystemErrorException(
-        sysMessage: 'Bootstrap failed: ${ex.message}',
-      );
+      throw SystemErrorException(sysMessage: 'Bootstrap failed: ${ex.message}');
     }
   }
 
@@ -288,8 +294,11 @@ class AuthRepository extends RestService {
   // ════════════════════════════════════════════════════════════════════
   //  Get User Model via Firebase Lookup
   // ════════════════════════════════════════════════════════════════════
-  Future<UserModel?> getUserModelByAccessTokenAsync({AccessModel? access}) async {
-    final idToken = access?.accessToken ?? _secureStorage.currentTokens.accessToken;
+  Future<UserModel?> getUserModelByAccessTokenAsync({
+    AccessModel? access,
+  }) async {
+    final idToken =
+        access?.accessToken ?? _secureStorage.currentTokens.accessToken;
     if (idToken.isNullOrEmpty) return null;
 
     final userRecord = await lookupUser(idToken!);
@@ -334,17 +343,17 @@ class AuthRepository extends RestService {
 
   Future<void> getAccessTokenByGuidAsync(String guid) async {
     AccessModel access = AccessModel();
-    String url = "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/tokenbyguid";
+    String url =
+        "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/tokenbyguid";
 
-    final response = await rawPostResponse(
-      url,
-      payload: guid,
-    );
+    final response = await rawPostResponse(url, payload: guid);
     if (response.data != null && response.statusCode == 200) {
       TokenResultModel tokenResult = TokenResultModel.fromJson(response.data!);
       access.accessToken = tokenResult.accessToken;
-      access.refreshToken =
-          getCookieValue(response.headers["set-cookie"], "refreshToken");
+      access.refreshToken = getCookieValue(
+        response.headers["set-cookie"],
+        "refreshToken",
+      );
       if (access.accessToken.isNullOrEmpty ||
           access.refreshToken.isNullOrEmpty) {
         throw SystemErrorException();
@@ -357,17 +366,19 @@ class AuthRepository extends RestService {
   }
 
   Future<bool> checkPinAsync(String pin) async {
-    String url =
-        "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/pin";
+    String url = "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/pin";
     var model = LoginModel(pin: pin);
-    Map<String, dynamic>? response =
-        await rawPostWithPayload(url, model.toJson());
+    Map<String, dynamic>? response = await rawPostWithPayload(
+      url,
+      model.toJson(),
+    );
     if (response != null) {
       OperationResultModel<AuthenticationModel> responseModel =
           OperationResultModel<AuthenticationModel>.fromJson(
-              response,
-              (Object? json) =>
-                  AuthenticationModel.fromJson(json as Map<String, dynamic>));
+            response,
+            (Object? json) =>
+                AuthenticationModel.fromJson(json as Map<String, dynamic>),
+          );
       return responseModel.success;
     }
     return false;
@@ -379,13 +390,18 @@ class AuthRepository extends RestService {
   ) async {
     final url =
         "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/loginasguest";
-    final response =
-        await postWithPayload<T>(url, fromJson, loginAsGuest.toJson());
+    final response = await postWithPayload<T>(
+      url,
+      fromJson,
+      loginAsGuest.toJson(),
+    );
     if (!response.token.isNullOrEmpty) {
       if (_secureStorage.currentTokens.refreshToken.isNullOrEmpty) {
         _secureStorage.currentTokens.accessToken = response.token;
         final accessModel = AccessModel(
-            accessToken: response.token, refreshToken: null);
+          accessToken: response.token,
+          refreshToken: null,
+        );
         await _secureStorage.writeTokens(accessModel);
       }
       return response;
@@ -396,9 +412,7 @@ class AuthRepository extends RestService {
   Future<bool> loginAsGuestForSurveyUpload(String accessKey) async {
     try {
       final loginAsGuestModel = LoginAsGuestModel(
-        parameters: <String, dynamic>{
-          "encrypedAccessKey": accessKey,
-        },
+        parameters: <String, dynamic>{"encrypedAccessKey": accessKey},
         reason: LoginAsGuestType.surveyPictureUpload,
         source: RequestSourceType.mobile,
       );
@@ -413,16 +427,16 @@ class AuthRepository extends RestService {
   }
 
   Future<void> verifyPhoneAsync(String pin, String phoneNumber) async {
-    String url =
-        "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/phone";
+    String url = "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/phone";
     final model = SmsPayloadModel(pin, phoneNumber);
     var response = await rawPostWithPayload(url, model.toJson());
     if (response != null) {
       OperationResultModel<AuthenticationModel> responseModel =
           OperationResultModel<AuthenticationModel>.fromJson(
-              response,
-              (Object? json) =>
-                  AuthenticationModel.fromJson(json as Map<String, dynamic>));
+            response,
+            (Object? json) =>
+                AuthenticationModel.fromJson(json as Map<String, dynamic>),
+          );
       if (responseModel.success) {
         return;
       } else {
@@ -433,21 +447,25 @@ class AuthRepository extends RestService {
   }
 
   Future<LoginModel?> checkPhoneVerificationAsync(
-      String otpCode, String phoneNumber, String pin) async {
-    String url =
-        "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/verify";
+    String otpCode,
+    String phoneNumber,
+    String pin,
+  ) async {
+    String url = "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/verify";
     var model = VerificationModel(
-        code: pin,
-        verificationType: VerificationType.sms,
-        phoneNumber: phoneNumber,
-        smsVerificationCode: otpCode,
-        emailVerificationCode: null);
+      code: pin,
+      verificationType: VerificationType.sms,
+      phoneNumber: phoneNumber,
+      smsVerificationCode: otpCode,
+      emailVerificationCode: null,
+    );
     var response = await rawPostWithPayload(url, model.toJson());
     if (response != null) {
       OperationResultModel<LoginModel> responseModel =
-          OperationResultModel<LoginModel>.fromJson(response,
-              (Object? json) =>
-                  LoginModel.fromJson(json as Map<String, dynamic>));
+          OperationResultModel<LoginModel>.fromJson(
+            response,
+            (Object? json) => LoginModel.fromJson(json as Map<String, dynamic>),
+          );
       if (responseModel.success) {
         return responseModel.model;
       }
@@ -456,22 +474,26 @@ class AuthRepository extends RestService {
   }
 
   Future<PasswordRecoveryModel?> setPasswordAsync(
-      String pin, String password) async {
+    String pin,
+    String password,
+  ) async {
     String url =
         "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/setpassword";
     var model = PasswordRecoveryModel(
-        pin: pin,
-        password: password,
-        rePassword: password,
-        language: DefaultValues.defaultLanguage,
-        referalCode: "");
+      pin: pin,
+      password: password,
+      rePassword: password,
+      language: DefaultValues.defaultLanguage,
+      referalCode: "",
+    );
     var response = await rawPostWithPayload(url, model.toJson());
     if (response != null) {
       OperationResultModel<PasswordRecoveryModel> responseModel =
           OperationResultModel<PasswordRecoveryModel>.fromJson(
-              response,
-              (Object? json) =>
-                  PasswordRecoveryModel.fromJson(json as Map<String, dynamic>));
+            response,
+            (Object? json) =>
+                PasswordRecoveryModel.fromJson(json as Map<String, dynamic>),
+          );
       if (responseModel.success) {
         return responseModel.model;
       }
@@ -485,7 +507,9 @@ class AuthRepository extends RestService {
     var response = await rawGet(url);
     OperationResultModel<String> responseModel =
         OperationResultModel<String>.fromJson(
-            response, (Object? json) => (json as String));
+          response,
+          (Object? json) => (json as String),
+        );
     if (responseModel.success) {
       return responseModel.model;
     }
@@ -518,8 +542,9 @@ Future<void> authInitializer(Ref ref) async {
   final accessModel = await secureStorage.readTokens();
   if (accessModel.hasAccess) {
     try {
-      final renewedAccessModel =
-          await auth.renewAccessTokenAsync(accessModel.refreshToken!);
+      final renewedAccessModel = await auth.renewAccessTokenAsync(
+        accessModel.refreshToken!,
+      );
       if (!renewedAccessModel.accessToken.isNullOrEmpty) {
         await auth.getUserModelByAccessTokenAsync(access: renewedAccessModel);
       } else {
