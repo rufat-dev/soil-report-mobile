@@ -1,0 +1,43 @@
+direction: right
+title: "Soil Report Mobile - Clean Architecture (Slide Friendly)"
+
+# Keep everything wide and shallow for 16:9 slides.
+app: "Flutter App"
+
+ui: "UI Layer\n- Screens / Widgets\n- Riverpod Controllers" {
+  style.fill: "#E8F5E9"
+  style.stroke: "#2E7D32"
+}
+
+logic: "Logic Layer\n- Feature Logic\n- Repository API\n- Domain Models" {
+  style.fill: "#E3F2FD"
+  style.stroke: "#1565C0"
+}
+
+data: "Network/Data Layer\n- Repositories\n- AuthorizedService\n- Dio Client\n- Cache + SecureStorage\n- Drift DB\n- Cloud Run API" {
+  style.fill: "#FFF3E0"
+  style.stroke: "#EF6C00"
+}
+
+core: "Core Packages\n- Riverpod (DI + State)\n- Dio (HTTP)\n- Drift (Local DB)" {
+  style.fill: "#F3E5F5"
+  style.stroke: "#6A1B9A"
+}
+
+rules: "Rules\n1) UI does not call Dio directly\n2) Controllers use logic + repositories\n3) Repositories map API <-> domain" {
+  style.fill: "#FAFAFA"
+  style.stroke: "#9E9E9E"
+}
+
+# Main architecture flow (single horizontal lane)
+app -> ui
+ui -> logic
+logic -> data
+
+# Core packages integration
+core -> ui: "Riverpod"
+core -> data: "Dio / Drift"
+
+# Rules as side annotation
+rules -> ui: ""
+rules -> data: ""

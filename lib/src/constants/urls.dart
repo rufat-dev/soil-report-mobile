@@ -1,7 +1,6 @@
 class Urls {
   static const mainEndpoint =
       'https://soil-repo-gcp-git-678290165816.europe-west1.run.app/';
-  static const clientPortalApiUrl = 'api/';
   static const websiteUrl = 'https://soilreport.com/';
 
   // Firebase Identity Toolkit REST API
