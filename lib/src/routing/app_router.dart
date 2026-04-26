@@ -3,7 +3,6 @@ import 'package:soilreport/src/exceptions/app_exception.dart';
 import 'package:soilreport/src/features/authentication/data/auth_repository.dart';
 import 'package:soilreport/src/features/authentication/presentation/landing/landing_screen.dart';
 import 'package:soilreport/src/features/authentication/presentation/loading/loading_page.dart';
-import 'package:soilreport/src/features/authentication/presentation/passcode/passcode_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/change_account_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/linked_account_otp_screen.dart';
 import 'package:soilreport/src/features/home/presentation/menu/linked_account/linked_account_success_screen.dart';
@@ -35,7 +34,6 @@ enum AppRoute {
   login,
   register,
   widgetBuild,
-  passcode,
   home,
   menu,
   profile,
@@ -92,7 +90,7 @@ GoRouter goRouter(Ref ref) {
               return '/auth/alert?alertType=unknown';
           }
           final isLoggedIn = authRepository.currentUser != null;
-          if (isLoggedIn) return '/auth/passcode';
+          if (isLoggedIn) return '/home';
           return '/auth/landing';
         },
       ),
@@ -125,11 +123,6 @@ GoRouter goRouter(Ref ref) {
             path: '/register',
             name: AppRoute.register.name,
             builder: (context, state) => RegisterScreen(),
-          ),
-          GoRoute(
-            path: '/passcode',
-            name: AppRoute.passcode.name,
-            builder: (context, state) => const PasscodeScreen(),
           ),
           GoRoute(
             path: '/alert',

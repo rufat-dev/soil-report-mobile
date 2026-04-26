@@ -4,5 +4,5 @@ class AccessModel{
 
   AccessModel({this.refreshToken, this.accessToken});
 
-  bool get hasAccess => refreshToken != null;
+  bool get hasAccess => (refreshToken ?? '').trim().isNotEmpty;
 }

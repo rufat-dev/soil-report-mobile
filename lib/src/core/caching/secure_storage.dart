@@ -1,5 +1,4 @@
 import 'package:soilreport/src/constants/cache_key.dart';
-import 'package:soilreport/src/core/data/scoped_access_model.dart';
 import 'package:soilreport/src/utils/in_memory_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,9 +9,9 @@ part 'secure_storage.g.dart';
 
 class SecureStorage {
 
-  final _scopeState = InMemoryStore<ScopedAccessModel>(ScopedAccessModel());
-  Stream<ScopedAccessModel> scopeStateChanges() => _scopeState.stream;
-  ScopedAccessModel get currentScope => _scopeState.value;
+  final _tokenState = InMemoryStore<AccessModel>(AccessModel());
+  Stream<AccessModel> tokenStateChanges() => _tokenState.stream;
+  AccessModel get currentTokens => _tokenState.value;
 
   AndroidOptions _getAndroidOptions() =>
       const AndroidOptions(encryptedSharedPreferences: true);
@@ -23,49 +22,35 @@ class SecureStorage {
   AccessModel adminPanelAccessModel = AccessModel();
   IOSOptions _getIOSOptions() => const IOSOptions();
 
-  Future<ScopedAccessModel> updateStateWithScopedTokens(String scope) async {
+  Future<AccessModel> readTokens() async {
     final all = await _storage.readAll(
       iOptions: _getIOSOptions(),
       aOptions: _getAndroidOptions(),
     );
-    final scopedAccess = ScopedAccessModel(
-      scope: scope,
-      accessToken: all["accessToken-$scope"], 
-      refreshToken: all["refreshToken-$scope"],
+    final model = AccessModel(
+      accessToken: all["accessToken"],
+      refreshToken: all["refreshToken"],
     );
-    return scopedAccess;
+    _tokenState.value = model;
+    return model;
   }
-  Future<ScopedAccessModel> readTokens(String scope) async {
-    final all = await _storage.readAll(
+
+  bool get hasRefreshToken => (currentTokens.refreshToken ?? '').trim().isNotEmpty;
+
+  Future writeTokens(AccessModel model) async {
+    await _storage.write(
+      key: "refreshToken",
+      value: model.refreshToken,
       iOptions: _getIOSOptions(),
       aOptions: _getAndroidOptions(),
     );
-    return ScopedAccessModel(
-      scope: scope,
-      accessToken: all["accessToken-$scope"],
-      refreshToken: all["refreshToken-$scope"],
-    );
-  }
-
-  Future<bool> isRealScope() async => currentScope.scope == await getRealScope()
-  ;
-
-  Future writeTokens(ScopedAccessModel model) async {
-    await _storage.write(key: "refreshToken-${model.scope}", value: model.refreshToken);
-    await _storage.write(key: "accessToken-${model.scope}", value: model.accessToken);
-    _scopeState.value = model;
-  }
-
-  Future<String?> readPasscode() async {
-    final all = await _storage.readAll(
+    await _storage.write(
+      key: "accessToken",
+      value: model.accessToken,
       iOptions: _getIOSOptions(),
       aOptions: _getAndroidOptions(),
     );
-    return all["passcode"];
-  }
-
-  Future writePasscode(String passcode) async {
-    await _storage.write(key: "passcode", value: passcode);
+    _tokenState.value = model;
   }
 
   Future<String?> readAdminPanelAccessToken() async {
@@ -88,17 +73,6 @@ class SecureStorage {
     );
   }
   
-
-  Future<String?> getRealScope() async =>
-      await readSensitiveData(CacheKey.realScope);
-  Future<String?> getActualScope() async =>
-      await readSensitiveData(CacheKey.actualScope);
-  Future setRealScope(String newRealScope) async =>
-      await writeSensitiveData(CacheKey.realScope, newRealScope);
-  Future setActualScope(String newScope) async {
-    await writeSensitiveData(CacheKey.actualScope, newScope);
-    await updateStateWithScopedTokens(newScope);
-    }
 
   Future writeSensitiveData(String key, String value) async {
     await _storage.write(
@@ -123,7 +97,7 @@ class SecureStorage {
       iOptions: _getIOSOptions(),
       aOptions: _getAndroidOptions(),
     );
-    _scopeState.value = ScopedAccessModel();
+    _tokenState.value = AccessModel();
   }
 }
 

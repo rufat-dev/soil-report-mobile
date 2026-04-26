@@ -1,7 +1,7 @@
 import 'package:soilreport/src/core/caching/cache_database.dart';
 import 'package:soilreport/src/core/caching/secure_storage.dart';
-import 'package:soilreport/src/core/data/scoped_access_model.dart';
 import 'package:soilreport/src/features/authentication/data/auth_repository.dart';
+import 'package:soilreport/src/features/authentication/domain/access_model.dart';
 import '../../../core/data/rest_service.dart';
 import 'package:soilreport/src/core/data/dio_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,7 @@ class AuthorizedService extends RestService {
   }
 
   Future getRefreshToken() async {
-    ScopedAccessModel oldAccessModel = secureStorage.currentScope;
+    AccessModel oldAccessModel = secureStorage.currentTokens;
     if (oldAccessModel.hasAccess) {
       await auth.renewAccessTokenAsync(oldAccessModel.refreshToken!);
       return;
@@ -25,7 +25,7 @@ class AuthorizedService extends RestService {
     await auth.signOut();
   }
 
-  String? getBearerToken() => secureStorage.currentScope.accessToken;
+  String? getBearerToken() => secureStorage.currentTokens.accessToken;
 }
 
 final authorizedServiceProvider = Provider<AuthorizedService>((ref) {

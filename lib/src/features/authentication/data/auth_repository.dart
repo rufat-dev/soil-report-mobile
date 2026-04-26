@@ -1,7 +1,5 @@
 import 'dart:convert';
-
-import 'package:soilreport/src/core/data/scoped_access_model.dart';
-import 'package:soilreport/src/features/authentication/data/mobile_admin_panel_service.dart';
+import 'package:soilreport/src/features/authentication/domain/access_model.dart';
 import 'package:soilreport/src/features/authentication/domain/bootstrap_response_model.dart';
 import 'package:soilreport/src/features/authentication/domain/bootstrap_user_request.dart';
 import 'package:soilreport/src/features/authentication/domain/firebase_auth_response.dart';
@@ -23,12 +21,10 @@ import 'package:soilreport/src/core/utils/string_extension.dart';
 import 'package:soilreport/src/exceptions/app_exception.dart';
 import 'package:soilreport/src/features/authentication/domain/token_result_model.dart';
 import 'package:soilreport/src/utils/in_memory_store.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../constants/urls.dart';
 import '../../../core/api_domain/operation_result_model.dart';
-import '../domain/access_model.dart';
 import '../domain/authentication_model.dart';
 import '../domain/enums/client_type.dart';
 import '../domain/enums/verification_type.dart';
@@ -75,11 +71,11 @@ class AuthRepository extends RestService {
         throw SystemErrorException();
       }
 
-      final scopedAccess = ScopedAccessModel(
+      final scopedAccess = AccessModel(
         accessToken: authResponse.idToken,
         refreshToken: authResponse.refreshToken,
       );
-      await _setFirebaseLoginScope(scopedAccess, authResponse);
+      await _completeLogin(scopedAccess);
     } on DioException catch (_) {
       throw UserNotFoundException();
     }
@@ -110,11 +106,11 @@ class AuthRepository extends RestService {
         throw SystemErrorException(sysMessage: 'Registration returned empty tokens');
       }
 
-      final scopedAccess = ScopedAccessModel(
+      final scopedAccess = AccessModel(
         accessToken: authResponse.idToken,
         refreshToken: authResponse.refreshToken,
       );
-      await _setFirebaseLoginScope(scopedAccess, authResponse);
+      await _completeLogin(scopedAccess);
 
       return authResponse;
     } on DioException catch (ex) {
@@ -135,7 +131,7 @@ class AuthRepository extends RestService {
     required String fullName,
     required String phoneNumber,
   }) async {
-    final idToken = _secureStorage.currentScope.accessToken;
+    final idToken = _secureStorage.currentTokens.accessToken;
     if (idToken.isNullOrEmpty) throw UnauthorizedUserException();
 
     try {
@@ -165,7 +161,7 @@ class AuthRepository extends RestService {
 
   /// Best-effort: registers the device FCM token on the API (BigQuery `users.fcm_token`).
   Future<void> registerFcmToken(String fcmToken) async {
-    final idToken = _secureStorage.currentScope.accessToken;
+    final idToken = _secureStorage.currentTokens.accessToken;
     if (idToken.isNullOrEmpty || fcmToken.trim().isEmpty) {
       return;
     }
@@ -248,7 +244,7 @@ class AuthRepository extends RestService {
   //  POST securetoken.googleapis.com/v1/token
   //  Content-Type: application/x-www-form-urlencoded
   // ════════════════════════════════════════════════════════════════════
-  Future<ScopedAccessModel> renewAccessTokenAsync(String refreshToken) async {
+  Future<AccessModel> renewAccessTokenAsync(String refreshToken) async {
     try {
       final response = await Dio().post<Map<String, dynamic>>(
         Urls.firebaseRefreshTokenUrl,
@@ -256,19 +252,18 @@ class AuthRepository extends RestService {
         options: Options(contentType: 'application/x-www-form-urlencoded'),
       );
 
-      if (response.data == null) return ScopedAccessModel();
+      if (response.data == null) return AccessModel();
       final refreshResponse = FirebaseRefreshResponse.fromJson(response.data!);
 
       if (!refreshResponse.idToken.isNullOrEmpty) {
-        final scopedAccess = ScopedAccessModel(
-          scope: refreshResponse.userId,
+        final scopedAccess = AccessModel(
           accessToken: refreshResponse.idToken,
           refreshToken: refreshResponse.refreshToken,
         );
         await _secureStorage.writeTokens(scopedAccess);
         return scopedAccess;
       }
-      return ScopedAccessModel();
+      return AccessModel();
     } on DioException catch (ex) {
       throw SystemErrorException(
         sysMessage: 'Token refresh failed: ${ex.message}',
@@ -277,28 +272,15 @@ class AuthRepository extends RestService {
   }
 
   // ════════════════════════════════════════════════════════════════════
-  //  Internal: set scope from Firebase sign-in/register response
+  //  Internal: complete login and hydrate session user
   // ════════════════════════════════════════════════════════════════════
-  Future<void> _setFirebaseLoginScope(
-    ScopedAccessModel access,
-    FirebaseAuthResponse authResponse,
-  ) async {
+  Future<void> _completeLogin(AccessModel access) async {
     try {
-      final decodedToken = JwtDecoder.decode(access.accessToken!);
-      final userId = decodedToken['user_id'] ?? decodedToken['sub'] ?? authResponse.localId;
-
-      await _secureStorage.setRealScope(userId);
-      await _secureStorage.setActualScope(userId);
-      await _secureStorage.writeTokens(ScopedAccessModel(
-        scope: userId,
-        accessToken: access.accessToken,
-        refreshToken: access.refreshToken,
-      ));
-
+      await _secureStorage.writeTokens(access);
       await getUserModelByAccessTokenAsync(access: access);
     } catch (e) {
       throw SystemErrorException(
-        sysMessage: 'Exception during setFirebaseLoginScope: ${e.toString()}',
+        sysMessage: 'Exception during completeLogin: ${e.toString()}',
       );
     }
   }
@@ -306,8 +288,8 @@ class AuthRepository extends RestService {
   // ════════════════════════════════════════════════════════════════════
   //  Get User Model via Firebase Lookup
   // ════════════════════════════════════════════════════════════════════
-  Future<UserModel?> getUserModelByAccessTokenAsync({ScopedAccessModel? access}) async {
-    final idToken = access?.accessToken ?? _secureStorage.currentScope.accessToken;
+  Future<UserModel?> getUserModelByAccessTokenAsync({AccessModel? access}) async {
+    final idToken = access?.accessToken ?? _secureStorage.currentTokens.accessToken;
     if (idToken.isNullOrEmpty) return null;
 
     final userRecord = await lookupUser(idToken!);
@@ -340,27 +322,18 @@ class AuthRepository extends RestService {
   //  Legacy: kept for existing auth flow compatibility
   // ════════════════════════════════════════════════════════════════════
 
-  Future<void> setLoginScope(ScopedAccessModel access) async {
+  Future<void> persistLoginTokens(AccessModel access) async {
     try {
-      final decodedToken = JwtDecoder.decode(access.accessToken!);
-      final pin = decodedToken['user_id'] ?? decodedToken['code'];
-      await _secureStorage.setRealScope(pin);
-      await _secureStorage.setActualScope(pin);
-      await _secureStorage.writeTokens(ScopedAccessModel(
-        scope: pin,
-        accessToken: access.accessToken,
-        refreshToken: access.refreshToken,
-      ));
-      await getUserModelByAccessTokenAsync(access: access);
+      await _completeLogin(access);
     } catch (e) {
       throw SystemErrorException(
-        sysMessage: 'Exception during setLoginScope: ${e.toString()}',
+        sysMessage: 'Exception during persistLoginTokens: ${e.toString()}',
       );
     }
   }
 
   Future<void> getAccessTokenByGuidAsync(String guid) async {
-    ScopedAccessModel access = ScopedAccessModel();
+    AccessModel access = AccessModel();
     String url = "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/tokenbyguid";
 
     final response = await rawPostResponse(
@@ -373,8 +346,10 @@ class AuthRepository extends RestService {
       access.refreshToken =
           getCookieValue(response.headers["set-cookie"], "refreshToken");
       if (access.accessToken.isNullOrEmpty ||
-          access.refreshToken.isNullOrEmpty) throw SystemErrorException();
-      await setLoginScope(access);
+          access.refreshToken.isNullOrEmpty) {
+        throw SystemErrorException();
+      }
+      await persistLoginTokens(access);
       return;
     } else {
       throw UserNotFoundException();
@@ -406,11 +381,11 @@ class AuthRepository extends RestService {
         "${Urls.mainEndpoint}${Urls.clientPortalApiUrl}auth/loginasguest";
     final response =
         await postWithPayload<T>(url, fromJson, loginAsGuest.toJson());
-    if (response != null && !response.token.isNullOrEmpty) {
-      if (_secureStorage.currentScope.refreshToken.isNullOrEmpty) {
-        _secureStorage.currentScope.accessToken = response.token;
-        final accessModel = ScopedAccessModel(
-            scope: "guest", accessToken: response.token, refreshToken: null);
+    if (!response.token.isNullOrEmpty) {
+      if (_secureStorage.currentTokens.refreshToken.isNullOrEmpty) {
+        _secureStorage.currentTokens.accessToken = response.token;
+        final accessModel = AccessModel(
+            accessToken: response.token, refreshToken: null);
         await _secureStorage.writeTokens(accessModel);
       }
       return response;
@@ -540,16 +515,13 @@ AuthRepository authRepository(Ref ref) {
 Future<void> authInitializer(Ref ref) async {
   final auth = ref.read(authRepositoryProvider);
   final secureStorage = ref.read(secureStorageProvider);
-  final initActualScope = await secureStorage.getActualScope();
-  if (initActualScope == null) return;
-  final scopedAccessModel = await secureStorage.readTokens(initActualScope);
-  if (scopedAccessModel.hasAccess) {
+  final accessModel = await secureStorage.readTokens();
+  if (accessModel.hasAccess) {
     try {
       final renewedAccessModel =
-          await auth.renewAccessTokenAsync(scopedAccessModel.refreshToken!);
+          await auth.renewAccessTokenAsync(accessModel.refreshToken!);
       if (!renewedAccessModel.accessToken.isNullOrEmpty) {
-        // await auth.getUserModelByAccessTokenAsync(access: renewedAccessModel);
-        // await ref.read(mobileAdminPanelAuthInitializerProvider.future);
+        await auth.getUserModelByAccessTokenAsync(access: renewedAccessModel);
       } else {
         await auth.signOut();
       }

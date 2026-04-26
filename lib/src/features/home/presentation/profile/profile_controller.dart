@@ -61,7 +61,7 @@ class ProfileController extends _$ProfileController
       final secureStorage = ref.read(secureStorageProvider);
       final purchasesRepo = ref.read(purchasesRepositoryProvider);
       final user = auth.currentUser ?? UserModel.empty;
-      final token = secureStorage.currentScope.accessToken;
+      final token = secureStorage.currentTokens.accessToken;
       final firebaseUser =
           token == null ? null : await auth.lookupUser(token);
       List<PurchaseRecordModel> purchases = const [];
@@ -88,7 +88,7 @@ class ProfileController extends _$ProfileController
   Future<void> sendEmailVerification() async {
     final auth = ref.read(authRepositoryProvider);
     final secureStorage = ref.read(secureStorageProvider);
-    final token = secureStorage.currentScope.accessToken;
+    final token = secureStorage.currentTokens.accessToken;
     if (token == null || token.trim().isEmpty) {
       state = state.copyWith(
         checkState: AsyncValue.error('missing_token', StackTrace.current),
@@ -107,7 +107,7 @@ class ProfileController extends _$ProfileController
   Future<void> refreshVerificationStatus() async {
     final auth = ref.read(authRepositoryProvider);
     final secureStorage = ref.read(secureStorageProvider);
-    final token = secureStorage.currentScope.accessToken;
+    final token = secureStorage.currentTokens.accessToken;
     if (token == null || token.trim().isEmpty) {
       return;
     }

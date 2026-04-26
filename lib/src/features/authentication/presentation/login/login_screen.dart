@@ -121,7 +121,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       (_, state) {
         if (!_hasLoggedIn) return;
         state.when(
-          data: (_) => context.goNamed(AppRoute.passcode.name),
+          data: (_) => context.goNamed(AppRoute.home.name),
           error: (err, _) => state.showAlertOnError(context),
           loading: () {},
         );

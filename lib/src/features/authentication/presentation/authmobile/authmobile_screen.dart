@@ -35,9 +35,9 @@ class _AuthMobileScreenState extends ConsumerState<AuthMobileScreen> {
       final authRepository = ref.read(authRepositoryProvider);
       await authRepository.getAccessTokenByGuidAsync(widget.guid);
       
-      // Success - navigate to passcode
+      // Success - navigate directly to home
       if (mounted) {
-        context.go('/auth/passcode');
+        context.go('/home');
       }
     } catch (e) {
       // Failure - navigate to landing with error parameter

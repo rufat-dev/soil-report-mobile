@@ -6,6 +6,6 @@ final versionAndLanguageProvider = FutureProvider.autoDispose<(String,bool)>
   ((ref) async {
   final info = await PackageInfo.fromPlatform();
 
-  final isRealScope = await ref.watch(secureStorageProvider).isRealScope();
+  final isRealScope = ref.watch(secureStorageProvider).hasRefreshToken;
   return ("v${info.version}", isRealScope);
 });
