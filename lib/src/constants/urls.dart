@@ -27,6 +27,7 @@ class Urls {
 
   /// POST Bearer; JSON body `fcm_token` string — persists token for AI worker push.
   static String get usersFcmTokenUrl => '${mainEndpoint}users/fcm-token';
+  static String get usersMeUrl => '${mainEndpoint}users/me';
   static const devicesPath = 'devices';
   static const devicePath = 'device';
   static const groupsPath = 'groups';

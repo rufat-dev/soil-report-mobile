@@ -1,4 +1,5 @@
 import 'package:soilreport/src/common_widgets/lucide_themed_icon.dart';
+import 'package:soilreport/src/common_widgets/destructive_confirmation_dialog.dart';
 import 'package:soilreport/src/constants/urls.dart';
 import 'package:soilreport/src/core/utils/size_extension.dart';
 import 'package:soilreport/src/core/utils/theme_extensions.dart';
@@ -13,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:soilreport/src/routing/app_router.dart';
 import '../../../../utils/app_theme.dart';
 import '../../../authentication/data/auth_repository.dart';
+import 'package:soilreport/src/common_widgets/alert_dialogs.dart';
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});
@@ -210,24 +212,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     );
   }
 
-  Widget _buildSettingsTitle(AppLocalizations l10n) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          l10n.menuSettingsTitle,
-          style: const TextStyle(
-            color: _pageText,
-            fontSize: 28,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.5,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildMenuCard(
     BuildContext context, {
     required String title,
@@ -369,49 +353,30 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     context.goNamed(AppRoute.landing.name);
   }
 
-  void _showDeleteAccountDialog(BuildContext context, AppLocalizations l10n) {
-    showDialog(
+  Future<void> _showDeleteAccountDialog(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
+    final shouldDelete = await showDestructiveConfirmationDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog.adaptive(
-        title: Text(
-          l10n.menuPageWarning,
-          style: Theme.of(dialogContext).textTheme.displayLarge,
-        ),
-        content: Text(
-          l10n.menuPageDeleteAccount,
-          style: Theme.of(dialogContext).textTheme.displayMedium,
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () async {
-              Navigator.of(dialogContext).pop();
-              await ref.read(authRepositoryProvider).signOut();
-              if (!context.mounted) return;
-              context.goNamed(AppRoute.landing.name);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Text(
-                l10n.menuPageAcceptDelete,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.red, fontSize: 20),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => Navigator.of(dialogContext).pop(),
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Text(
-                l10n.menuPageRejectDelete,
-                style:
-                    const TextStyle(color: Colors.blueAccent, fontSize: 20),
-              ),
-            ),
-          ),
-        ],
-      ),
+      title: l10n.menuPageRemoveAccount,
+      message: l10n.menuPageDeleteAccount,
+      confirmText: l10n.menuPageRemoveAccount,
+      cancelText: l10n.menuPageRejectDelete,
     );
+    if (!shouldDelete || !mounted) return;
+    try {
+      await ref.read(authRepositoryProvider).deleteAccount();
+      if (!context.mounted) return;
+      context.goNamed(AppRoute.landing.name);
+    } catch (e) {
+      if (!context.mounted) return;
+      await showExceptionAlert(
+        context: context,
+        title: l10n.menuPageWarning,
+        exception: e,
+      );
+    }
   }
 
   String _resolvedLanguageCode(Locale? locale) {

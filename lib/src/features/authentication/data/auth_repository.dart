@@ -64,8 +64,9 @@ class AuthRepository extends RestService {
         options: Options(contentType: 'application/json'),
       );
 
-      if (response.data == null || response.statusCode != 200)
+      if (response.data == null || response.statusCode != 200) {
         throw UserNotFoundException();
+      }
       final authResponse = FirebaseAuthResponse.fromJson(response.data!);
 
       if (authResponse.idToken.isNullOrEmpty ||
@@ -182,6 +183,25 @@ class AuthRepository extends RestService {
       );
     } catch (_) {
       // Token sync is non-fatal; next app launch or refresh will retry.
+    }
+  }
+
+  /// Soft-deletes current authenticated account on backend and signs out locally.
+  Future<void> deleteAccount() async {
+    final idToken = _secureStorage.currentTokens.accessToken;
+    if (idToken.isNullOrEmpty) {
+      throw UnauthorizedUserException();
+    }
+    try {
+      await rawDelete(
+        Urls.usersMeUrl,
+        headers: {'Authorization': 'Bearer $idToken'},
+      );
+      await signOut();
+    } on DioException catch (ex) {
+      throw SystemErrorException(
+        sysMessage: 'Delete account failed: ${ex.message}',
+      );
     }
   }
 
