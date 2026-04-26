@@ -21,6 +21,7 @@ class StatisticsScreen extends ConsumerStatefulWidget {
 class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   _ChartRange _selectedRange = _ChartRange.week;
   _MetricWindow _metricWindow = _MetricWindow.week;
+  String _langCode = 'en';
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _langCode = Localizations.localeOf(context).languageCode;
     ref.watch(statisticsScreenControllerProvider);
     final activeState = ref
         .read(statisticsScreenControllerProvider.notifier)
@@ -52,11 +54,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
             .loadStatistics(forceRemote: true),
         child: Skeletonizer(
           enabled: isLoading,
-          effect: PulseEffect(
-            from: AppTheme().elevatedSurface(context).withAlpha(100),
-            to: AppTheme().elevatedSurface(context).withAlpha(240),
-            duration: const Duration(milliseconds: 800),
-          ),
+          effect: AppTheme().skeletonPulseEffect(context),
           child: ListView(
             padding: EdgeInsets.only(
               top: 100.devicePaddingTop(context) + 15,
@@ -68,7 +66,9 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               _StatisticsHeader(
                 title: l10n.tab1Title,
                 subtitle:
-                    'Track soil balance, nutrient health, and risk signals at a glance.',
+                    _t('Track soil balance, nutrient health, and risk signals at a glance.',
+                        'Torpaq balansını, qida sağlamlığını və risk siqnallarını bir baxışda izləyin.',
+                        'Следите за балансом почвы, питанием и рисковыми сигналами с первого взгляда.'),
               ),
               const SizedBox(height: 16),
               _SoilHealthOverviewCard(
@@ -80,9 +80,12 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               ),
               const SizedBox(height: 18),
               _SectionTitle(
-                title: 'Key Metrics',
+                title: _t('Key Metrics', 'Əsas göstəricilər', 'Ключевые показатели'),
                 subtitle:
-                    'Latest sensor averages with trend and ideal-range context.',
+                    _t(
+                        'Latest sensor averages with trend and ideal-range context.',
+                        'Trend və ideal aralıq kontekstində son sensor ortalamaları.',
+                        'Последние средние значения сенсоров с трендом и целевым диапазоном.'),
               ),
               const SizedBox(height: 10),
               _MetricWindowChips(
@@ -100,9 +103,12 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                 _buildStatGrid(context, activeState),
               const SizedBox(height: 18),
               _SectionTitle(
-                title: 'Trend Visualizations',
+                title: _t('Trend Visualizations', 'Trend vizuallaşdırmaları', 'Визуализация трендов'),
                 subtitle:
-                    'Understand movement over time with clear axis and range selection.',
+                    _t(
+                        'Understand movement over time with clear axis and range selection.',
+                        'Aydın ox və aralıq seçimi ilə zaman üzrə dəyişimi anlayın.',
+                        'Понимайте динамику во времени с понятными осями и выбором периода.'),
               ),
               const SizedBox(height: 8),
               _TimeRangeChips(
@@ -112,10 +118,13 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               if (filteredSamples.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 _AnalyticsChartCard(
-                  title: 'Moisture & pH Trend',
+                  title: _t('Moisture & pH Trend', 'Nəmlik və pH trendi', 'Тренд влажности и pH'),
                   subtitle:
-                      'Compares short-term moisture (%) and pH changes for the selected period.',
-                  yAxisTitle: 'Value (% / pH)',
+                      _t(
+                          'Compares short-term moisture (%) and pH changes for the selected period.',
+                          'Seçilmiş dövr üçün qısa müddətli nəmlik (%) və pH dəyişimini müqayisə edir.',
+                          'Сравнивает краткосрочные изменения влажности (%) и pH за выбранный период.'),
+                  yAxisTitle: _t('Value (% / pH)', 'Dəyər (% / pH)', 'Значение (% / pH)'),
                   xAxisTitle: _xAxisTitleForRange(_selectedRange),
                   child: _buildHourlyChart(context, filteredSamples),
                 ),
@@ -123,15 +132,18 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               if (filteredTrendPoints.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 _AnalyticsChartCard(
-                  title: 'Daily Moisture Signal',
+                  title: _t('Daily Moisture Signal', 'Gündəlik nəmlik siqnalı', 'Ежедневный сигнал влажности'),
                   subtitle:
-                      'Daily moisture trend slope from backend trend table (positive = rising, negative = falling).',
-                  yAxisTitle: 'Moisture slope',
-                  xAxisTitle: 'Day',
-                  legendItems: const [
+                      _t(
+                          'Daily moisture trend slope from backend trend table (positive = rising, negative = falling).',
+                          'Backend trend cədvəlindən gündəlik nəmlik meyl əmsalı (müsbət = artım, mənfi = azalma).',
+                          'Ежедневный наклон тренда влажности из backend-таблицы (положительный = рост, отрицательный = падение).'),
+                  yAxisTitle: _t('Moisture slope', 'Nəmlik meyli', 'Наклон влажности'),
+                  xAxisTitle: _t('Day', 'Gün', 'День'),
+                  legendItems: [
                     _LegendItemData(
                       color: Color(0xFFB7791F),
-                      label: 'Moisture slope',
+                      label: _t('Moisture slope', 'Nəmlik meyli', 'Наклон влажности'),
                     ),
                   ],
                   child: _buildDailyTrendChart(context, filteredTrendPoints),
@@ -139,9 +151,12 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               ],
               const SizedBox(height: 18),
               _SectionTitle(
-                title: 'Nutrient Insights',
+                title: _t('Nutrient Insights', 'Qida analitikası', 'Аналитика питательных веществ'),
                 subtitle:
-                    'Nitrogen, phosphorus, and potassium compared to practical targets.',
+                    _t(
+                        'Nitrogen, phosphorus, and potassium compared to practical targets.',
+                        'Azot, fosfor və kalium praktik hədəflərlə müqayisə edilir.',
+                        'Азот, фосфор и калий сравниваются с практическими целями.'),
               ),
               const SizedBox(height: 10),
               _NutrientSection(stats: activeState.stats),
@@ -188,18 +203,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 11, 12, 9),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outlineVariant, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.shadow.withAlpha(18),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -350,7 +354,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: colorScheme.primary,
                       ),
-                  labelResolver: (_) => 'Moisture target',
+                  labelResolver: (_) => _tr(context, 'Moisture target', 'Nəmlik hədəfi', 'Цель по влажности'),
                 ),
               ),
             ],
@@ -430,7 +434,12 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               getTooltipItems: (spots) => spots
                   .map(
                     (e) => LineTooltipItem(
-                      'Moisture slope ${e.y.toStringAsFixed(3)}',
+                      _tr(
+                        context,
+                        'Moisture slope ${e.y.toStringAsFixed(3)}',
+                        'Nəmlik meyli ${e.y.toStringAsFixed(3)}',
+                        'Наклон влажности ${e.y.toStringAsFixed(3)}',
+                      ),
                       TextStyle(color: colorScheme.surface, fontSize: 11),
                     ),
                   )
@@ -478,7 +487,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
-                  labelResolver: (_) => 'Stable (0)',
+                  labelResolver: (_) => _tr(context, 'Stable (0)', 'Sabit (0)', 'Стабильно (0)'),
                 ),
               ),
             ],
@@ -502,21 +511,16 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
   }
 
   Widget _buildHealthSummary(BuildContext context, StatisticsScreenState state) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant, width: 1),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: Row(
         children: [
           Expanded(
             child: _buildCounterTile(
               context,
               icon: Icons.warning_amber_rounded,
-              label: 'Anomalies detected',
+              label: _tr(context, 'Anomalies detected', 'Aşkar edilmiş anomaliyalar', 'Обнаруженные аномалии'),
               value: state.anomalyCount.toString(),
             ),
           ),
@@ -525,7 +529,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
             child: _buildCounterTile(
               context,
               icon: Icons.notification_important_outlined,
-              label: 'Out-of-range events',
+              label: _tr(context, 'Out-of-range events', 'Aralıqdan kənar hadisələr', 'События вне диапазона'),
               value: state.outOfRangeCount.toString(),
             ),
           ),
@@ -543,7 +547,7 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: AppTheme().elevatedSurface(context),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -683,11 +687,21 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
       _MetricWindow.week => '7d',
       _MetricWindow.month => '30d',
     };
-    if (slope == null) return 'Slope ($windowLabel): unavailable';
+    if (slope == null) {
+      return _t(
+        'Slope ($windowLabel): unavailable',
+        'Meyl ($windowLabel): əlçatan deyil',
+        'Наклон ($windowLabel): недоступно',
+      );
+    }
     final sign = slope > 0 ? '+' : '';
     final precision = stat.label == 'Avg pH' ? 3 : 2;
     final unit = stat.unit.isEmpty ? '' : ' ${stat.unit}';
-    return 'Slope ($windowLabel): $sign${slope.toStringAsFixed(precision)}$unit /hr';
+    return _t(
+      'Slope ($windowLabel): $sign${slope.toStringAsFixed(precision)}$unit /hr',
+      'Meyl ($windowLabel): $sign${slope.toStringAsFixed(precision)}$unit /saat',
+      'Наклон ($windowLabel): $sign${slope.toStringAsFixed(precision)}$unit /ч',
+    );
   }
 
   int _healthScore(StatisticsScreenState state) {
@@ -721,34 +735,50 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
 
   String _healthStatusText(StatisticsScreenState state) {
     if (_hasNoStatisticsData(state)) {
-      return 'No data yet';
+      return _t('No data yet', 'Hələ məlumat yoxdur', 'Пока нет данных');
     }
     final score = _healthScore(state);
-    if (score >= 80) return 'Healthy and stable';
-    if (score >= 60) return 'Needs attention';
-    return 'Action recommended';
+    if (score >= 80) return _t('Healthy and stable', 'Sağlam və sabit', 'Здорово и стабильно');
+    if (score >= 60) return _t('Needs attention', 'Diqqət tələb edir', 'Требует внимания');
+    return _t('Action recommended', 'Addım atmaq tövsiyə olunur', 'Рекомендуется действие');
   }
 
   String _healthDetails(StatisticsScreenState state) {
     if (_hasNoStatisticsData(state)) {
-      return 'Connect a device and wait for first readings to generate a health score.';
+      return _t(
+        'Connect a device and wait for first readings to generate a health score.',
+        'Sağlamlıq balı yaratmaq üçün cihaz qoşun və ilk ölçmələri gözləyin.',
+        'Подключите устройство и дождитесь первых измерений для расчета оценки.',
+      );
     }
     if (state.anomalyCount > 0) {
-      return 'Detected ${state.anomalyCount} anomaly signals. Review trend cards below.';
+      return _t(
+        'Detected ${state.anomalyCount} anomaly signals. Review trend cards below.',
+        '${state.anomalyCount} anomaliya siqnalı aşkarlandı. Aşağıdakı trend kartlarına baxın.',
+        'Обнаружено аномальных сигналов: ${state.anomalyCount}. Проверьте карточки трендов ниже.',
+      );
     }
     if (state.outOfRangeCount > 0) {
-      return 'Some readings are outside target thresholds.';
+      return _t(
+        'Some readings are outside target thresholds.',
+        'Bəzi ölçmələr hədəf hədlərdən kənardadır.',
+        'Некоторые измерения вне целевых порогов.',
+      );
     }
-    return 'Most key soil indicators are inside recommended ranges.';
+    return _t(
+      'Most key soil indicators are inside recommended ranges.',
+      'Əsas torpaq göstəricilərinin çoxu tövsiyə olunan aralıqdadır.',
+      'Большинство ключевых показателей почвы в рекомендуемых пределах.',
+    );
   }
 
   String _metricStatus(SoilStatisticModel stat, {double? value}) {
     final ranges = _idealRange(stat.label);
-    if (ranges == null) return 'No target';
+    if (ranges == null) return _t('No target', 'Hədəf yoxdur', 'Нет целевого диапазона');
     final v = value ?? stat.value;
-    if (v < ranges.$1) return 'Low';
-    if (v > ranges.$2) return 'High';
-    return 'Healthy';
+    if (v < ranges.$1) return _t('Low', 'Aşağı', 'Низкий');
+    if (v > ranges.$2) return _t('High', 'Yüksək', 'Высокий');
+    return _t('Healthy', 'Sağlam', 'Норма');
   }
 
   (double, double)? _idealRange(String label) {
@@ -772,9 +802,15 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
 
   String _idealHint(SoilStatisticModel stat) {
     final range = _idealRange(stat.label);
-    if (range == null) return 'No reference range';
+    if (range == null) {
+      return _t('No reference range', 'İstinad aralığı yoxdur', 'Нет референсного диапазона');
+    }
     final unit = stat.unit.isNotEmpty ? stat.unit : '';
-    return 'Ideal: ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} $unit'
+    return _t(
+      'Ideal: ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} $unit',
+      'İdeal: ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} $unit',
+      'Идеал: ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} $unit',
+    )
         .trim();
   }
 
@@ -787,53 +823,70 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
 
   Color _statusColor(BuildContext context, String status) {
     final scheme = Theme.of(context).colorScheme;
-    switch (status) {
-      case 'Healthy':
-        return AppTheme().success;
-      case 'Low':
-      case 'High':
-        return AppTheme().warning;
-      default:
-        return scheme.secondary;
-    }
+    final healthy = _t('Healthy', 'Sağlam', 'Норма');
+    final low = _t('Low', 'Aşağı', 'Низкий');
+    final high = _t('High', 'Yüksək', 'Высокий');
+    if (status == healthy) return AppTheme().success;
+    if (status == low || status == high) return AppTheme().warning;
+    return scheme.secondary;
   }
 
   String _xAxisTitleForRange(_ChartRange range) {
     return switch (range) {
-      _ChartRange.day => 'Recent samples (hours)',
-      _ChartRange.week => 'Samples across week',
-      _ChartRange.month => 'Samples across two weeks',
+      _ChartRange.day => _t('Recent samples (hours)', 'Son nümunələr (saat)', 'Последние сэмплы (часы)'),
+      _ChartRange.week => _t('Samples across week', 'Həftə üzrə nümunələr', 'Сэмплы за неделю'),
+      _ChartRange.month => _t('Samples across two weeks', 'İki həftəlik nümunələr', 'Сэмплы за две недели'),
     };
   }
 
   String _insightHeadline(StatisticsScreenState state) {
     if (_hasNoStatisticsData(state)) {
-      return 'Waiting for first sensor readings';
+      return _t('Waiting for first sensor readings', 'İlk sensor ölçmələri gözlənilir',
+          'Ожидание первых показаний датчиков');
     }
     if (state.anomalyCount > 0) {
-      return 'Moisture volatility detected';
+      return _t('Moisture volatility detected', 'Nəmlik dəyişkənliyi aşkarlandı',
+          'Обнаружена волатильность влажности');
     }
     final moisture = state.stats
         .where((e) => e.label == 'Avg Moisture')
         .map((e) => e.value)
         .firstOrNull;
     if (moisture != null && moisture < 30) {
-      return 'Moisture slightly below ideal';
+      return _t('Moisture slightly below ideal', 'Nəmlik idealdan bir qədər aşağıdır',
+          'Влажность немного ниже нормы');
     }
-    return 'pH and nutrients are mostly balanced';
+    return _t('pH and nutrients are mostly balanced', 'pH və qida maddələri əsasən balansdadır',
+        'pH и питательные вещества в целом сбалансированы');
   }
 
   String _insightBody(StatisticsScreenState state) {
     if (_hasNoStatisticsData(state)) {
-      return 'After your device sends data, this section will highlight trends and actionable insights.';
+      return _t(
+        'After your device sends data, this section will highlight trends and actionable insights.',
+        'Cihaz məlumat göndərdikdən sonra bu bölmə trend və tətbiq oluna bilən tövsiyələri göstərəcək.',
+        'После отправки данных устройством этот раздел покажет тренды и практические выводы.',
+      );
     }
     if (state.anomalyCount > 0) {
-      return 'Sensor signals show unusual movement. Consider checking irrigation schedule and device placement.';
+      return _t(
+        'Sensor signals show unusual movement. Consider checking irrigation schedule and device placement.',
+        'Sensor siqnallarında qeyri-adi dəyişiklik var. Suvarma qrafikini və cihazın yerləşməsini yoxlayın.',
+        'Сигналы датчиков показывают необычную динамику. Проверьте график полива и размещение устройства.',
+      );
     }
     if (state.outOfRangeCount > 0) {
-      return 'Some values are outside expected ranges. Prioritize fields with repeated out-of-range events.';
+      return _t(
+        'Some values are outside expected ranges. Prioritize fields with repeated out-of-range events.',
+        'Bəzi dəyərlər gözlənilən aralıqdan kənardadır. Təkrarlanan kənar hadisələri olan sahələrə üstünlük verin.',
+        'Некоторые значения вне ожидаемых диапазонов. В приоритете участки с повторяющимися выходами за пределы.',
+      );
     }
-    return 'Current trend is stable. Continue monitoring daily moisture and weekly nutrient drift.';
+    return _t(
+      'Current trend is stable. Continue monitoring daily moisture and weekly nutrient drift.',
+      'Mövcud trend sabitdir. Gündəlik nəmlik və həftəlik qida sürüşməsini izləməyə davam edin.',
+      'Текущий тренд стабилен. Продолжайте отслеживать ежедневную влажность и недельный дрейф питательных веществ.',
+    );
   }
 
   bool _hasNoStatisticsData(StatisticsScreenState state) {
@@ -848,6 +901,17 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
     final dt = points[index].dayTs;
     if (dt == null) return index.toString();
     return '${dt.day}';
+  }
+
+  String _t(String en, String az, String ru) {
+    switch (_langCode) {
+      case 'az':
+        return az;
+      case 'ru':
+        return ru;
+      default:
+        return en;
+    }
   }
 }
 
@@ -930,7 +994,8 @@ class _SoilHealthOverviewCard extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: scheme.outlineVariant, width: 1),
+        border: Border.all(color: AppTheme().cardBorderColor(context), width: 1),
+        boxShadow: AppTheme().cardAmbientShadows(context),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -943,7 +1008,8 @@ class _SoilHealthOverviewCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Soil Health Overview',
+                      _tr(context, 'Soil Health Overview', 'Torpaq sağlamlığı icmalı',
+                          'Обзор состояния почвы'),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
@@ -984,12 +1050,22 @@ class _SoilHealthOverviewCard extends StatelessWidget {
           Row(
             children: [
               _StatusBadge(
-                text: '$anomalyCount anomalies',
+                text: _tr(
+                  context,
+                  '$anomalyCount anomalies',
+                  '$anomalyCount anomaliya',
+                  '$anomalyCount аномалий',
+                ),
                 color: anomalyCount > 0 ? appTheme.warning : appTheme.success,
               ),
               const SizedBox(width: 8),
               _StatusBadge(
-                text: '$outOfRangeCount out-of-range',
+                text: _tr(
+                  context,
+                  '$outOfRangeCount out-of-range',
+                  '$outOfRangeCount aralıqdan kənar',
+                  '$outOfRangeCount вне диапазона',
+                ),
                 color: outOfRangeCount > 0 ? appTheme.warning : appTheme.success,
               ),
             ],
@@ -1054,9 +1130,9 @@ class _MetricWindowChips extends StatelessWidget {
     return Wrap(
       spacing: 8,
       children: [
-        _chip(context, _MetricWindow.today, 'Today'),
-        _chip(context, _MetricWindow.week, 'This Week'),
-        _chip(context, _MetricWindow.month, 'This Month'),
+        _chip(context, _MetricWindow.today, _tr(context, 'Today', 'Bu gün', 'Сегодня')),
+        _chip(context, _MetricWindow.week, _tr(context, 'This Week', 'Bu həftə', 'Эта неделя')),
+        _chip(context, _MetricWindow.month, _tr(context, 'This Month', 'Bu ay', 'Этот месяц')),
       ],
     );
   }
@@ -1104,11 +1180,7 @@ class _AnalyticsChartCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1121,7 +1193,7 @@ class _AnalyticsChartCard extends StatelessWidget {
               Icon(Icons.straighten_rounded, size: 14, color: scheme.primary),
               const SizedBox(width: 4),
               Text(
-                'Y-axis: $yAxisTitle',
+                _tr(context, 'Y-axis: $yAxisTitle', 'Y oxu: $yAxisTitle', 'Ось Y: $yAxisTitle'),
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
@@ -1132,7 +1204,7 @@ class _AnalyticsChartCard extends StatelessWidget {
               Icon(Icons.schedule_rounded, size: 14, color: scheme.secondary),
               const SizedBox(width: 4),
               Text(
-                'X-axis: $xAxisTitle',
+                _tr(context, 'X-axis: $xAxisTitle', 'X oxu: $xAxisTitle', 'Ось X: $xAxisTitle'),
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
@@ -1142,14 +1214,14 @@ class _AnalyticsChartCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: (legendItems ??
-                    const [
+                    [
                       _LegendItemData(
                         color: Color(0xFF2D6A4F),
-                        label: 'Moisture',
+                        label: _tr(context, 'Moisture', 'Nəmlik', 'Влажность'),
                       ),
                       _LegendItemData(
                         color: Color(0xFF2B7A78),
-                        label: 'pH / reference',
+                        label: _tr(context, 'pH / reference', 'pH / istinad', 'pH / референс'),
                       ),
                     ])
                 .map((item) => Padding(
@@ -1217,25 +1289,21 @@ class _NutrientInsightCard extends StatelessWidget {
       _ => (0.0, 1.0),
     };
     final status = stat.value < range.$1
-        ? 'Low'
+        ? _tr(context, 'Low', 'Aşağı', 'Низкий')
         : stat.value > range.$2
-            ? 'High'
-            : 'Healthy';
+            ? _tr(context, 'High', 'Yüksək', 'Высокий')
+            : _tr(context, 'Healthy', 'Sağlam', 'Норма');
     final progress =
         ((stat.value - range.$1) / (range.$2 - range.$1)).clamp(0.0, 1.0);
-    final color = status == 'Healthy'
+    final color = status == _tr(context, 'Healthy', 'Sağlam', 'Норма')
         ? AppTheme().success
-        : status == 'Low'
+        : status == _tr(context, 'Low', 'Aşağı', 'Низкий')
             ? scheme.secondary
             : AppTheme().warning;
 
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Column(
         children: [
           Row(
@@ -1267,7 +1335,12 @@ class _NutrientInsightCard extends StatelessWidget {
               _StatusBadge(text: status, color: color),
               const SizedBox(width: 8),
               Text(
-                'Target ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} ${stat.unit}',
+                _tr(
+                  context,
+                  'Target ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} ${stat.unit}',
+                  'Hədəf ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} ${stat.unit}',
+                  'Цель ${range.$1.toStringAsFixed(0)}-${range.$2.toStringAsFixed(0)} ${stat.unit}',
+                ),
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
@@ -1395,4 +1468,11 @@ class _LegendDot extends StatelessWidget {
       ],
     );
   }
+}
+
+String _tr(BuildContext context, String en, String az, String ru) {
+  final code = Localizations.localeOf(context).languageCode;
+  if (code == 'az') return az;
+  if (code == 'ru') return ru;
+  return en;
 }

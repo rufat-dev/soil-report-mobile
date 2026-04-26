@@ -61,11 +61,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
             .loadRecommendations(forceRemote: true),
         child: Skeletonizer(
           enabled: isLoading,
-          effect: PulseEffect(
-            from: AppTheme().elevatedSurface(context).withAlpha(100),
-            to: AppTheme().elevatedSurface(context).withAlpha(240),
-            duration: const Duration(milliseconds: 800),
-          ),
+          effect: AppTheme().skeletonPulseEffect(context),
           child: ListView(
             padding: EdgeInsets.only(
               top: 100.devicePaddingTop(context) + 15,
@@ -169,11 +165,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: colorScheme.outlineVariant, width: 1),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -255,14 +247,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outlineVariant,
-          width: 1,
-        ),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: const Skeleton.leaf(
         child: SizedBox(height: 100, width: double.infinity),
       ),
@@ -285,11 +270,7 @@ class _RecommendationScreenState extends ConsumerState<RecommendationScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant, width: 1),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: Row(
         children: [
           Icon(Icons.timeline_rounded, color: colorScheme.primary),
@@ -438,11 +419,7 @@ class _RecommendationsSummaryStrip extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
@@ -520,15 +497,10 @@ class _ErrorStateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -44,11 +44,7 @@ class _DashboardPageState extends ConsumerState<DashboardScreen> {
         child: Skeletonizer(
           enabled: showSkeleton,
           ignorePointers: showSkeleton,
-          effect: PulseEffect(
-            from: AppTheme().elevatedSurface(context).withAlpha(100),
-            to: AppTheme().elevatedSurface(context).withAlpha(240),
-            duration: const Duration(milliseconds: 800),
-          ),
+          effect: AppTheme().skeletonPulseEffect(context),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),

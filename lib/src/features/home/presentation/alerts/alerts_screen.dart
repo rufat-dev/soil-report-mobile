@@ -42,11 +42,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
             ref.read(alertsScreenControllerProvider.notifier).loadAlerts(),
         child: Skeletonizer(
           enabled: isLoading,
-          effect: PulseEffect(
-            from: AppTheme().elevatedSurface(context).withAlpha(100),
-            to: AppTheme().elevatedSurface(context).withAlpha(240),
-            duration: const Duration(milliseconds: 800),
-          ),
+          effect: AppTheme().skeletonPulseEffect(context),
           child: ListView(
             padding: EdgeInsets.only(
               top: 100.devicePaddingTop(context) + 15,

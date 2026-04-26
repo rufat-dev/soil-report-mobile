@@ -1,5 +1,6 @@
 import 'package:soilreport/src/core/utils/theme_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AppTheme {
   AppTheme._();
@@ -22,6 +23,11 @@ class AppTheme {
   static const _surfaceLight200 = Color(0xFFEDE9E0);
   static const _surfaceLight300 = Color(0xFFE0DCD3);
   static const _surfaceLight400 = Color(0xFFD0CBC2);
+
+  /// Light-mode borders: slightly stronger than [_surfaceLight200] so cards read
+  /// off the warm scaffold without changing hue family.
+  static const _lightOutlineMuted = Color(0xFFD8D3C8);
+  static const _lightOutlineEmphasis = Color(0xFFC9C3B6);
 
   // ── Dark surfaces ──────────────────────────────────────────────────
   static const _surfaceDark = Color(0xFF1A2332);
@@ -65,8 +71,8 @@ class AppTheme {
       surface: _surfaceLight,
       onSurface: _textDark,
       onSurfaceVariant: _textMuted,
-      outline: _surfaceLight300,
-      outlineVariant: _surfaceLight200,
+      outline: _lightOutlineEmphasis,
+      outlineVariant: _lightOutlineMuted,
     ),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: _surfaceLight,
@@ -87,9 +93,11 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 0,
+      shadowColor: const Color(0x142D6A4F),
+      surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: _surfaceLight200, width: 1),
+        side: const BorderSide(color: _lightOutlineMuted, width: 1),
       ),
       margin: EdgeInsets.zero,
     ),
@@ -576,12 +584,95 @@ class AppTheme {
   Color gray900Theme(BuildContext context) =>
       !context.isDarkMode ? surfaceLight900 : surfaceDark900;
 
-  // Card surface for the new design system
+  /// Primary elevated panels (stats, list cards). Light: warm white so it reads
+  /// off [ColorScheme.surface]; dark: unchanged slate step.
   Color cardSurface(BuildContext context) =>
-      !context.isDarkMode ? Colors.white : _surfaceDark100;
+      !context.isDarkMode ? const Color(0xFFFFFCF8) : _surfaceDark100;
 
+  /// Nested chips / icon wells on cards. Light: one step down from scaffold for
+  /// hierarchy without going as flat as the old F5F2EB on white.
   Color elevatedSurface(BuildContext context) =>
-      !context.isDarkMode ? _surfaceLight100 : _surfaceDark200;
+      !context.isDarkMode ? _surfaceLight200 : _surfaceDark200;
+
+  /// Card outline: light gets a hair of primary tint so edges feel intentional;
+  /// dark uses theme outline variant.
+  Color cardBorderColor(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    if (context.isDarkMode) {
+      return scheme.outlineVariant;
+    }
+    return Color.alphaBlend(
+      scheme.primary.withValues(alpha: 0.06),
+      scheme.outlineVariant,
+    );
+  }
+
+  /// Very soft elevation for light cards only — calm, not Material-default heavy.
+  List<BoxShadow> cardAmbientShadows(BuildContext context) {
+    if (context.isDarkMode) {
+      return const [];
+    }
+    return [
+      BoxShadow(
+        color: _primaryGreen.withValues(alpha: 0.045),
+        blurRadius: 18,
+        offset: const Offset(0, 8),
+        spreadRadius: -4,
+      ),
+      BoxShadow(
+        color: const Color(0x0A000000),
+        blurRadius: 6,
+        offset: const Offset(0, 2),
+      ),
+    ];
+  }
+
+  /// Standard app card shell (surface + border + optional ambient shadow).
+  BoxDecoration appCardDecoration(
+    BuildContext context, {
+    double borderRadius = 16,
+    Color? borderColor,
+    Color? color,
+    List<BoxShadow>? boxShadow,
+    double borderWidth = 1,
+  }) {
+    final resolvedBorder = borderColor ?? cardBorderColor(context);
+    final shadows = boxShadow ?? cardAmbientShadows(context);
+    return BoxDecoration(
+      color: color ?? cardSurface(context),
+      borderRadius: BorderRadius.circular(borderRadius),
+      border: Border.all(color: resolvedBorder, width: borderWidth),
+      boxShadow: shadows,
+    );
+  }
+
+  /// Skeletonizer pulse tuned per brightness: light uses cooler mid-tones so
+  /// placeholders read on warm white cards; dark keeps the existing soft pulse.
+  PulseEffect skeletonPulseEffect(BuildContext context) {
+    if (context.isDarkMode) {
+      return PulseEffect(
+        from: elevatedSurface(context).withAlpha(100),
+        to: elevatedSurface(context).withAlpha(240),
+        duration: const Duration(milliseconds: 800),
+      );
+    }
+    final scheme = Theme.of(context).colorScheme;
+    final from = Color.alphaBlend(
+      scheme.onSurface.withValues(alpha: 0.07),
+      const Color(0xFFE4DFD4),
+    );
+    final to = Color.lerp(
+          cardSurface(context),
+          scheme.primary,
+          0.09,
+        ) ??
+        cardSurface(context);
+    return PulseEffect(
+      from: from,
+      to: to,
+      duration: const Duration(milliseconds: 820),
+    );
+  }
 
   // ══════════════════════════════════════════════════════════════════
   //  SHIMMER / SKELETON GRADIENT

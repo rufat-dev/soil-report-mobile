@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:soilreport/src/common_widgets/primary_button.dart';
 import 'package:soilreport/src/features/home/domain/dashboard_device_model.dart';
+import 'package:soilreport/src/features/home/presentation/dashboard_screen/dashboard_screen_controller.dart';
 import 'package:soilreport/src/features/home/presentation/group_add/add_group_screen_controller.dart';
 import 'package:soilreport/src/localization/app_localizations.dart';
+import 'package:soilreport/src/routing/app_router.dart';
 import 'package:soilreport/src/utils/themed_dialogs.dart';
 
 bool _isUngrouped(DashboardDeviceModel d) {
@@ -162,7 +164,16 @@ class _AddGroupScreenState extends ConsumerState<AddGroupScreen> {
         content: l10n.addGroupSuccessSubtitle,
       );
       if (mounted) {
-        context.pop(true);
+        if (context.canPop()) {
+          context.pop(true);
+        } else {
+          await ref
+              .read(dashboardScreenControllerProvider.notifier)
+              .loadScreen(useCache: false);
+          if (mounted) {
+            context.goNamed(AppRoute.home.name);
+          }
+        }
       }
       return;
     }

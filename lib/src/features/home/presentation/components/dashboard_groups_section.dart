@@ -58,15 +58,10 @@ class DashboardGroupsSection extends ConsumerWidget {
 
   Widget _buildEmptyCard(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,11 +100,7 @@ class DashboardGroupsSection extends ConsumerWidget {
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

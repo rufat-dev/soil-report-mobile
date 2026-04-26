@@ -50,15 +50,10 @@ class DashboardDevicesSection extends StatelessWidget {
 
   Widget _buildEmptyCard(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,14 +93,12 @@ class DashboardDevicesSection extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: needsAttention
-              ? statusColor.withAlpha(120)
-              : colorScheme.outlineVariant,
-        ),
+      decoration: AppTheme().appCardDecoration(
+        context,
+        borderRadius: 14,
+        borderColor: needsAttention
+            ? statusColor.withAlpha(120)
+            : AppTheme().cardBorderColor(context),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

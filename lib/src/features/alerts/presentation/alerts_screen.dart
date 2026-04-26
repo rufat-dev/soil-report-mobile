@@ -48,11 +48,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
             .loadAlerts(forceRemote: true),
         child: Skeletonizer(
           enabled: isLoading,
-          effect: PulseEffect(
-            from: AppTheme().elevatedSurface(context).withAlpha(100),
-            to: AppTheme().elevatedSurface(context).withAlpha(240),
-            duration: const Duration(milliseconds: 800),
-          ),
+          effect: AppTheme().skeletonPulseEffect(context),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
@@ -185,11 +181,7 @@ class _AlertsSummaryStrip extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
@@ -277,14 +269,9 @@ class _AlertsErrorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme().cardSurface(context),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: scheme.outlineVariant),
-      ),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -370,16 +357,15 @@ class _AlertInboxTile extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.fromLTRB(12, 12, 10, 12),
-            decoration: BoxDecoration(
-              color: AppTheme().cardSurface(context),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: alert.isRead
-                    ? scheme.outlineVariant
-                    : severityColor.withAlpha(100),
-                width: alert.isRead ? 1 : 1.4,
-              ),
+            decoration: AppTheme().appCardDecoration(
+              context,
+              borderRadius: 14,
+              borderColor: alert.isRead
+                  ? AppTheme().cardBorderColor(context)
+                  : severityColor.withAlpha(100),
+              borderWidth: alert.isRead ? 1 : 1.4,
               boxShadow: [
+                ...AppTheme().cardAmbientShadows(context),
                 if (!alert.isRead)
                   BoxShadow(
                     color: severityColor.withAlpha(24),
@@ -549,13 +535,7 @@ Widget _alertTileSkeleton(BuildContext context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 10),
     padding: const EdgeInsets.all(14),
-    decoration: BoxDecoration(
-      color: AppTheme().cardSurface(context),
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(
-        color: Theme.of(context).colorScheme.outlineVariant,
-      ),
-    ),
+    decoration: AppTheme().appCardDecoration(context, borderRadius: 14),
     child: const Skeleton.leaf(
       child: SizedBox(height: 88, width: double.infinity),
     ),

@@ -159,22 +159,22 @@ GoRouter goRouter(Ref ref) {
         builder: (context, state) => const TabbedScreen(),
         routes: [
           GoRoute(
-            path: '/menu',
+            path: 'menu',
             name: AppRoute.menu.name,
             builder: (context, state) => const MenuScreen(),
             routes: [
               GoRoute(
-                path: '/conditionsAndTerms',
+                path: 'conditionsAndTerms',
                 name: AppRoute.conditionsAndTerms.name,
                 builder: (context, state) => ConditionsAndTermsScreen(),
               ),
               GoRoute(
-                path: '/changeAccount',
+                path: 'changeAccount',
                 name: AppRoute.changeAccount.name,
                 builder: (context, state) => const ChangeAccountScreen(),
               ),
               GoRoute(
-                path: '/linkedAccountOtp',
+                path: 'linkedAccountOtp',
                 name: AppRoute.linkedAccountOtp.name,
                 builder: (context, state) {
                   if (state.extra is Map) {
@@ -192,7 +192,7 @@ GoRouter goRouter(Ref ref) {
                 },
               ),
               GoRoute(
-                path: '/linkedAccountSuccess',
+                path: 'linkedAccountSuccess',
                 name: AppRoute.linkedAccountSuccess.name,
                 builder: (context, state) {
                   if (state.extra is Map) {
@@ -210,34 +210,34 @@ GoRouter goRouter(Ref ref) {
                 },
               ),
               GoRoute(
-                path: '/securityPolicy',
+                path: 'securityPolicy',
                 name: AppRoute.securityPolicy.name,
                 builder: (context, state) => SecurityPolicyScreen(),
               ),
               GoRoute(
-                path: '/offers',
+                path: 'offers',
                 name: AppRoute.offers.name,
                 builder: (context, state) => OffersScreen(),
               ),
               GoRoute(
-                path: '/notifications',
+                path: 'notifications',
                 name: AppRoute.notifications.name,
                 builder: (context, state) => const NotificationsScreen(),
               ),
             ],
           ),
           GoRoute(
-            path: '/profile',
+            path: 'profile',
             name: AppRoute.profile.name,
             builder: (context, state) => const ProfileScreen(),
           ),
           GoRoute(
-            path: '/addDevice',
+            path: 'addDevice',
             name: AppRoute.addDevice.name,
             builder: (context, state) => const AddDeviceScreen(),
           ),
           GoRoute(
-            path: '/addGroup',
+            path: 'addGroup',
             name: AppRoute.addGroup.name,
             builder: (context, state) => const AddGroupScreen(),
           ),

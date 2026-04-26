@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:soilreport/src/common_widgets/primary_button.dart';
 import 'package:soilreport/src/features/home/domain/dashboard_device_model.dart';
+import 'package:soilreport/src/features/home/presentation/dashboard_screen/dashboard_screen_controller.dart';
 import 'package:soilreport/src/features/home/presentation/device_add/add_device_screen_controller.dart';
 import 'package:soilreport/src/features/home/presentation/device_add/device_location_picker_screen.dart';
 import 'package:soilreport/src/localization/app_localizations.dart';
+import 'package:soilreport/src/routing/app_router.dart';
 import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 import 'package:soilreport/src/utils/themed_dialogs.dart';
 
@@ -231,7 +233,10 @@ class _AddDeviceScreenState extends ConsumerState<AddDeviceScreen> {
     }
     final lat = _latitude;
     final lng = _longitude;
-    final location = (lat != null && lng != null) ? '$lat,$lng' : null;
+    // Backend BigQuery uses ST_GEOGFROMTEXT — expects OGC WKT, not "lat,lon".
+    final location = (lat != null && lng != null)
+        ? 'POINT($lng $lat)'
+        : null;
 
     final payload = DeviceCreatePayload(
       deviceId: _deviceIdController.text.trim(),
@@ -266,8 +271,18 @@ class _AddDeviceScreenState extends ConsumerState<AddDeviceScreen> {
         title: l10n.addDeviceSuccessTitle,
         content: l10n.addDeviceSuccessSubtitle,
       );
+      if (!mounted) {
+        return;
+      }
+      await ref
+          .read(dashboardScreenControllerProvider.notifier)
+          .loadScreen(useCache: false);
       if (mounted) {
-        context.pop(true);
+        if (context.canPop()) {
+          context.pop(true);
+        } else {
+          context.goNamed(AppRoute.home.name);
+        }
       }
       return;
     }

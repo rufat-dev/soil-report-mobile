@@ -1,15 +1,14 @@
-import 'package:soilreport/src/common_widgets/otp_dialog.dart';
-import 'package:soilreport/src/core/utils/size_extension.dart';
-import 'package:soilreport/src/core/utils/theme_extensions.dart';
-import 'package:soilreport/src/features/home/presentation/profile/profile_controller.dart';
-import 'package:soilreport/src/localization/app_localizations.dart';
-import 'package:soilreport/src/utils/app_theme.dart';
-import 'package:soilreport/src/utils/async_value_ui.dart';
-import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:soilreport/src/core/utils/size_extension.dart';
+import 'package:soilreport/src/core/utils/theme_extensions.dart';
+import 'package:soilreport/src/features/home/domain/purchase_record_model.dart';
+import 'package:soilreport/src/features/home/presentation/profile/profile_controller.dart';
+import 'package:soilreport/src/utils/app_theme.dart';
+import 'package:soilreport/src/utils/async_value_ui.dart';
+import 'package:soilreport/src/utils/extensions/async_value_extension.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -19,226 +18,191 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
+  ProviderSubscription<ProfileState>? _profileSub;
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
+    _profileSub = ref.listenManual<ProfileState>(
+      profileControllerProvider,
+      (_, next) {
+        final check = next.checkState;
+        if (check == null || !mounted) return;
+        check.when(
+          data: (data) {
+            if (data == null || !mounted) return;
+            String? message;
+            if (data == 'verification_sent') {
+              message = 'Verification email sent. Check your inbox.';
+            } else if (data == 'password_reset_sent') {
+              message = 'Password reset email sent.';
+            }
+            if (message == null) return;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message!)),
+              );
+            });
+          },
+          loading: () {},
+          error: (error, stackTrace) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              check.showAlertOnError(context);
+            });
+          },
+        );
+      },
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(profileControllerProvider.notifier).loadUserData();
+      ref.read(profileControllerProvider.notifier).loadProfile();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _emailController.addListener(() => setState(() {}));
-    _phoneController.addListener(() => setState(() {}));
-
     ref.watch(profileControllerProvider);
-    final activeState =
-        ref.read(profileControllerProvider.notifier).effectiveState;
+    final state = ref.read(profileControllerProvider.notifier).effectiveState;
     final controller = ref.read(profileControllerProvider.notifier);
-    final l10n = AppLocalizations.of(context);
-
-    ref.listen<ProfileState>(profileControllerProvider, (prev, next) {
-      final check = next.checkState;
-      if (check == null) return;
-      check.when(
-        data: (data) {
-          if (data == 'email_sent') {
-            _showOtpDialog(
-              email: _emailController.text,
-              phoneNumber: next.phoneNumber,
-              pin: '',
-              isEmailVerifyOtp: true,
-            );
-          } else if (data == 'sms_sent') {
-            _showOtpDialog(
-              email: next.email,
-              phoneNumber: _phoneController.text,
-              pin: '',
-              isEmailVerifyOtp: false,
-            );
-          } else {
-            _emailController.text = next.email;
-            _phoneController.text = next.phoneNumber;
-          }
-        },
-        loading: () {},
-        error: (error, stackTrace) => check.showAlertOnError(context),
-      );
-    });
+    final scheme = Theme.of(context).colorScheme;
+    final background = context.isDarkMode
+        ? AppTheme().surfaceDark
+        : Color.alphaBlend(
+            scheme.primary.withValues(alpha: 0.08),
+            scheme.surface,
+          );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: background,
       body: Skeletonizer(
-        enabled: activeState.checkState.isNullOrLoading,
-        effect: PulseEffect(
-          from: AppTheme().gray900Theme(context).withAlpha(90),
-          to: AppTheme().gray900Theme(context).withAlpha(240),
-          duration: const Duration(milliseconds: 800),
-        ),
-        child: _buildContent(context, activeState, controller, l10n),
-      ),
-    );
-  }
-
-  Widget _buildContent(
-    BuildContext context,
-    ProfileState profileState,
-    ProfileController controller,
-    AppLocalizations l10n,
-  ) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            SizedBox(height: 100.devicePaddingTop(context)),
-            _buildHeader(context, l10n),
-            const SizedBox(height: 10),
-            _buildProfilePictureSection(context, controller),
-            const SizedBox(height: 10),
-            _buildNameSection(context, profileState, l10n),
-            const SizedBox(height: 10),
-            _buildEmailSection(context, profileState, controller, l10n),
-            const SizedBox(height: 10),
-            _buildPhoneNumberSection(context, profileState, controller, l10n),
-          ],
+        enabled: state.checkState.isNullOrLoading,
+        effect: AppTheme().skeletonPulseEffect(context),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 100.devicePaddingTop(context) + 8),
+              _buildHeader(context),
+              const SizedBox(height: 14),
+              _buildProfileHeaderCard(context, state),
+              const SizedBox(height: 12),
+              _buildEmailVerificationCard(context, state, controller),
+              const SizedBox(height: 12),
+              _buildSecurityCard(context, state, controller),
+              const SizedBox(height: 12),
+              _buildPurchasesCard(context, state),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
-    return Container(
-      height: 80,
-      padding: const EdgeInsets.only(bottom: 15),
+  Widget _buildHeader(BuildContext context) {
+    return SizedBox(
+      height: 56,
       child: Row(
         children: [
-          GestureDetector(
+          InkWell(
             onTap: () => context.pop(),
+            borderRadius: BorderRadius.circular(12),
             child: Container(
-              margin: const EdgeInsets.all(10),
-              child: Image.asset(
-                'assets/images/static/arrow-left.png',
-                width: 30,
-                color: AppTheme().orange,
+              width: 42,
+              height: 42,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppTheme().elevatedSurface(context),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.arrow_back_rounded,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
           Expanded(
             child: Center(
               child: Text(
-                l10n.profilePageTitle,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: context.isDarkMode
-                          ? AppTheme().white
-                          : AppTheme().black,
-                    ),
+                'Profile',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
           ),
-          const SizedBox(width: 50),
+          const SizedBox(width: 42),
         ],
       ),
     );
   }
 
-  Widget _buildProfilePictureSection(
-      BuildContext context, ProfileController controller) {
+  Widget _buildProfileHeaderCard(BuildContext context, ProfileState state) {
+    final scheme = Theme.of(context).colorScheme;
+    final initials = _initials(state.displayName, state.email);
+    final accountId = state.firebaseUser?.localId ?? state.user.pin;
     return Container(
-      height: 124,
-      padding: const EdgeInsets.only(top: 30, bottom: 15),
-      child: Row(
-        children: [
-          const Spacer(),
-          SizedBox(
-            width: 90,
-            child: Stack(
-              children: [
-                Center(
-                  child: Container(
-                    width: 90,
-                    height: 90,
-                    margin: const EdgeInsets.only(bottom: 7),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-icon-eps-file-easy-to-edit-default-avatar-photo-placeholder-profile-icon-124557887.jpg',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 2,
-                  child: GestureDetector(
-                    onTap: () => controller.changeProfilePicture(),
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: context.isDarkMode
-                            ? AppTheme().surfaceLight700
-                            : AppTheme().surfaceDark700,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        'assets/images/static/square-pen.png',
-                        width: 20,
-                        height: 20,
-                        color: context.isDarkMode
-                            ? AppTheme().black
-                            : AppTheme().white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Spacer(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNameSection(
-      BuildContext context, ProfileState profileState, AppLocalizations l10n) {
-    return Container(
-      height: 80,
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(14),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.profilePageName,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.isDarkMode
-                      ? AppTheme().white
-                      : AppTheme().black,
+          Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: scheme.primary.withValues(alpha: 0.14),
                 ),
+                child: Text(
+                  initials,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: scheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      state.displayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      state.email ?? 'No email',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           Container(
-            padding: const EdgeInsets.only(left: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                profileState.user.fullName ?? '',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppTheme().orange,
-                    ),
-                overflow: TextOverflow.ellipsis,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppTheme().elevatedSurface(context),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              'Account ID: $accountId',
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
         ],
@@ -246,203 +210,315 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  Widget _buildEmailSection(
+  Widget _buildEmailVerificationCard(
     BuildContext context,
-    ProfileState profileState,
+    ProfileState state,
     ProfileController controller,
-    AppLocalizations l10n,
   ) {
-    final hasChanged = _emailController.text != profileState.email;
+    final scheme = Theme.of(context).colorScheme;
+    final verified = state.isEmailVerified;
+    final email = state.email ?? '';
+    final color = verified ? AppTheme().success : AppTheme().warning;
     return Container(
-      height: 90,
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(14),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.profilePageEmail,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.isDarkMode
-                      ? AppTheme().white
-                      : AppTheme().black,
+            'Verify Email',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 4),
+          Text(
+            verified
+                ? 'Your email is verified and ready for account recovery.'
+                : 'Email is not verified yet. Verify to improve account security.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
                 child: Container(
-                  height: 50,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
-                    color: context.isDarkMode
-                        ? AppTheme().surfaceDark700
-                        : Colors.transparent,
-                    border: Border.all(
-                      color: context.isDarkMode
-                          ? AppTheme().gray600
-                          : AppTheme().gray100,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
+                    color: color.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: color.withValues(alpha: 0.35)),
                   ),
-                  child: TextField(
-                    onSubmitted: hasChanged
-                        ? (_) =>
-                            controller.confirmEmail(_emailController.text)
-                        : null,
-                    controller: _emailController,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppTheme().orange, fontSize: 19),
-                    decoration: InputDecoration(
-                      hintText: l10n.profilePageEnterEmail,
-                      hintStyle: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(
-                              color: AppTheme().gray300, fontSize: 19),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.only(left: 10),
-                    ),
+                  child: Text(
+                    verified ? 'Verified' : 'Not verified',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: color,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                 ),
               ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: hasChanged
-                    ? () =>
-                        controller.confirmEmail(_emailController.text)
-                    : null,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  width: 20,
-                  height: 20,
-                  child: Image.asset(
-                    hasChanged
-                        ? 'assets/images/static/check.png'
-                        : 'assets/images/static/square-pen.png',
-                    color: AppTheme().orange,
-                  ),
+              const SizedBox(width: 8),
+              OutlinedButton.icon(
+                onPressed: () => controller.refreshVerificationStatus(),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(96, 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
+                icon: const Icon(Icons.refresh_rounded, size: 18),
+                label: const Text('Refresh'),
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          if (!verified)
+            FilledButton.icon(
+              onPressed: email.trim().isEmpty
+                  ? null
+                  : () => controller.sendEmailVerification(),
+              icon: const Icon(Icons.mark_email_unread_outlined, size: 18),
+              label: const Text('Send verification email'),
+            ),
+          if (verified)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              decoration: BoxDecoration(
+                color: scheme.primary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: scheme.primary.withValues(alpha: 0.25),
+                ),
+              ),
+              child: Text(
+                'Verified: $email',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSecurityCard(
+    BuildContext context,
+    ProfileState state,
+    ProfileController controller,
+  ) {
+    final email = state.email ?? '';
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Reset Password',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Send a reset link to your current account email.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme().elevatedSurface(context),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              'Reset email: ${email.isEmpty ? 'Not available' : email}',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ),
+          const SizedBox(height: 10),
+          FilledButton.icon(
+            onPressed: email.trim().isEmpty
+                ? null
+                : () => controller.sendPasswordReset(),
+            icon: const Icon(Icons.lock_reset_rounded, size: 18),
+            label: const Text('Send password reset email'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPhoneNumberSection(
-    BuildContext context,
-    ProfileState profileState,
-    ProfileController controller,
-    AppLocalizations l10n,
-  ) {
-    final hasChanged = _phoneController.text != profileState.phoneNumber;
+  Widget _buildPurchasesCard(BuildContext context, ProfileState state) {
+    final scheme = Theme.of(context).colorScheme;
+    final purchases = [...state.purchases]
+      ..sort((a, b) {
+        final aa = a.purchaseDateTime ?? DateTime.fromMillisecondsSinceEpoch(0);
+        final bb = b.purchaseDateTime ?? DateTime.fromMillisecondsSinceEpoch(0);
+        return bb.compareTo(aa);
+      });
     return Container(
-      height: 90,
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(14),
+      decoration: AppTheme().appCardDecoration(context, borderRadius: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.profilePagePhoneNumber,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.isDarkMode
-                      ? AppTheme().white
-                      : AppTheme().black,
-                ),
-          ),
-          const SizedBox(height: 5),
           Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: context.isDarkMode
-                        ? AppTheme().surfaceDark700
-                        : Colors.transparent,
-                    border: Border.all(
-                      color: context.isDarkMode
-                          ? AppTheme().gray600
-                          : AppTheme().gray100,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: TextField(
-                    controller: _phoneController,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppTheme().orange, fontSize: 19),
-                    decoration: InputDecoration(
-                      hintText: l10n.profilePageEnterPhoneNumber,
-                      hintStyle: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(
-                              color: AppTheme().gray300, fontSize: 19),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.only(left: 10),
-                    ),
-                    onSubmitted: hasChanged
-                        ? (_) => controller
-                            .confirmPhoneNumber(_phoneController.text)
-                        : null,
-                  ),
+                child: Text(
+                  'Purchases',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                 ),
               ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: hasChanged
-                    ? () => controller
-                        .confirmPhoneNumber(_phoneController.text)
-                    : null,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  width: 20,
-                  height: 20,
-                  child: Image.asset(
-                    hasChanged
-                        ? 'assets/images/static/check.png'
-                        : 'assets/images/static/square-pen.png',
-                    color: AppTheme().orange,
-                  ),
-                ),
+              Text(
+                '${purchases.length} items',
+                style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
           ),
+          const SizedBox(height: 4),
+          Text(
+            'Recent account purchases and statuses.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 10),
+          if (state.purchasesError != null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: scheme.error.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: scheme.error.withValues(alpha: 0.25)),
+              ),
+              child: Text(
+                state.purchasesError!,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: scheme.error,
+                    ),
+              ),
+            )
+          else if (purchases.isEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme().elevatedSurface(context),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'No purchases yet. Purchases linked to your account will appear here.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            )
+          else
+            ...purchases.take(6).map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _PurchaseItemTile(item: item),
+                  ),
+                ),
         ],
       ),
     );
   }
 
-  void _showOtpDialog({
-    required String email,
-    required String phoneNumber,
-    required String pin,
-    required bool isEmailVerifyOtp,
-  }) {
-    showOtpDialog(
-      context: context,
-      email: email,
-      phoneNumber: phoneNumber,
-      pin: pin,
-      isEmailVerifyOtp: isEmailVerifyOtp,
-      onOtpVerified: () {
-        ref.read(profileControllerProvider.notifier).loadUserData();
-        final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.profileVerificationSuccessful),
-            backgroundColor: Colors.green,
-          ),
-        );
-      },
-    );
+  String _initials(String displayName, String? email) {
+    final name = displayName.trim();
+    if (name.isNotEmpty) {
+      final parts = name.split(' ').where((e) => e.isNotEmpty).toList();
+      if (parts.length == 1) return parts.first.substring(0, 1).toUpperCase();
+      return '${parts.first.substring(0, 1)}${parts.last.substring(0, 1)}'
+          .toUpperCase();
+    }
+    final e = (email ?? '').trim();
+    return e.isEmpty ? 'A' : e.substring(0, 1).toUpperCase();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _phoneController.dispose();
+    _profileSub?.close();
     super.dispose();
+  }
+}
+
+class _PurchaseItemTile extends StatelessWidget {
+  const _PurchaseItemTile({required this.item});
+
+  final PurchaseRecordModel item;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final status = switch (item.status) {
+      1 => ('Completed', AppTheme().success),
+      2 => ('Pending', AppTheme().warning),
+      3 => ('Failed', scheme.error),
+      _ => ('Unknown', scheme.onSurfaceVariant),
+    };
+    final when = item.purchaseDateTime;
+    final dateText = when == null
+        ? 'Date unknown'
+        : '${when.day.toString().padLeft(2, '0')}.${when.month.toString().padLeft(2, '0')}.${when.year}';
+    final amount = item.price == null || item.price!.isEmpty
+        ? '—'
+        : '${item.price} ${item.currency ?? ''}'.trim();
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme().elevatedSurface(context),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppTheme().cardBorderColor(context)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Device ${item.deviceId}',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: status.$2.withValues(alpha: 0.13),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  status.$1,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: status.$2,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Amount: $amount  •  $dateText',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          if (item.notes?.trim().isNotEmpty ?? false) ...[
+            const SizedBox(height: 2),
+            Text(
+              item.notes!,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ],
+        ],
+      ),
+    );
   }
 }

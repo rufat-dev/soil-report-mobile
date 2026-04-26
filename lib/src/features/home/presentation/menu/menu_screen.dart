@@ -69,8 +69,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 100.devicePaddingTop(context) + 15),
-                  _buildTopNavigationButtons(),
-                  _buildSettingsTitle(l10n),
+                  
+                  _buildTopNavigationButtons(l10n),
                   const SizedBox(height: 20),
                   _buildMenuCard(
                     context,
@@ -80,8 +80,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       _buildMenuRow(
                         context,
                         'user-plus.png',
-                        l10n.menuPageChangeAccount,
-                        () => context.pushNamed(AppRoute.changeAccount.name),
+                        l10n.profilePageTitle,
+                        () => context.pushNamed(AppRoute.profile.name),
                       ),
                     ],
                   ),
@@ -121,25 +121,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                   ),
                   _buildMenuCard(
                     context,
-                    title: l10n.menuCardLegalTitle,
-                    subtitle: l10n.menuCardLegalSubtitle,
-                    children: [
-                      _buildMenuRow(
-                        context,
-                        'scale.png',
-                        l10n.menuPageConditionAndTerms,
-                        () => context.pushNamed(AppRoute.conditionsAndTerms.name),
-                      ),
-                      _buildMenuRow(
-                        context,
-                        'shield.png',
-                        l10n.menuPageSecurityPolicy,
-                        () => context.pushNamed(AppRoute.securityPolicy.name),
-                      ),
-                    ],
-                  ),
-                  _buildMenuCard(
-                    context,
                     title: l10n.menuCardSupportTitle,
                     subtitle: l10n.menuCardSupportSubtitle,
                     children: [
@@ -160,7 +141,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                         l10n.menuPageContactUs,
                         () async {
                           try {
-                            final uri = Uri.parse('${Urls.websiteUrl}contacts');
+                            final uri = Uri.parse('mailto:ruf31145@gmail.com');
                             await uri.launchWithTitle(l10n.menuPageContactUs);
                           } catch (_) {}
                         },
@@ -350,9 +331,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     );
   }
 
-  Widget _buildTopNavigationButtons() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 45, right: 25, top: 10, bottom: 10),
+  Widget _buildTopNavigationButtons(AppLocalizations l10n) {
+    return Container(
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
       child: Row(
         children: [
           GestureDetector(
@@ -363,7 +344,20 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               color: _pageText,
             ),
           ),
-          const Expanded(child: SizedBox.shrink()),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                l10n.menuSettingsTitle,
+                style: const TextStyle(
+                  color: _pageText,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
