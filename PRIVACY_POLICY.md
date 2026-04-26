@@ -4,7 +4,7 @@ Last updated: April 26, 2026
 
 App name: Soil Report
 Owner: Rufat Mammadov (independent developer)
-Contact: your-email@example.com
+Contact: rufat.publishing@gmail.com
 
 ## 1. Overview
 
@@ -98,7 +98,7 @@ Depending on your location, you may have rights to:
 - Request data portability
 - Withdraw consent (where consent is the basis)
 
-To exercise these rights, contact: your-email@example.com
+To exercise these rights, contact: rufat.publishing@gmail.com
 
 ## 10. Children's Privacy
 
@@ -118,5 +118,5 @@ The updated version will be posted with a revised "Last updated" date. Material 
 
 For privacy-related questions or requests:
 
-Email: your-email@example.com
+Email: rufat.publishing@gmail.com
 Owner: Rufat Mammadov
